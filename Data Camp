@@ -1,0 +1,40 @@
+# Put the x-axis on a logarithmic scale
+plt.xscale('log')
+
+
+# Show and clean up again
+plt.show()
+plt.clf()
+
+
+# change the opacity of bubble (scatter plot)
+plt.scatter(x = gdp_cap, y = life_exp, s = np.array(pop) * 2,c=col,alpha=0.8) # s:size,c:color
+
+
+# add grid lines
+after plt.text() -> add particular text for particular point
+plt.grid(True)
+
+
+# Get index of 'germany': ind_ger
+ind_ger = countries.index('germany')
+# Use ind_ger to print out capital of Germany
+print(capitals[ind_ger])
+
+
+# Print out the keys in europe
+print(europe.keys())
+# Print out value that belongs to key 'norway'
+print(europe['norway'])
+
+
+           List                  Vs                Dictionary
+Select, update and remove: []            Select, update and remove: []
+indexed by range of numbers              indexed by unique keys
+Collection of values, order matters      Lookup with unique keys
+
+
+# add things to dictionary
+dic_name['new_key'] = corresponding_value
+
+
