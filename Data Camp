@@ -56,3 +56,7 @@ Notice that not has a higher priority than and and or, it is executed first.
 
 ## find the subset 
 You can use   cars[cars['drives_right']] to build sel
+
+## enumerate()
+for index, area in enumerate(areas) :
+    print("room" + str(index) + ": " + str(area))
