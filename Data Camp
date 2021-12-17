@@ -248,7 +248,8 @@ c. collapsing data into categories
     group_names = ['0-200k','200k-500k','500k+']
     demographics['income_group']=pd.cut(demographics['household_income'],bins=ranges,labels = group_names)
     demographics[['income_group'],['household_income']]
-    
+ 
+  
   2) >>> map categories to fewer ones
   operation_system column is 'a','b','c','d','e'
   operation_system column should be ' abc','de'
@@ -257,4 +258,6 @@ c. collapsing data into categories
   devices['operation_system']=devices['operating_system'].replace(mapping)
   devices['operation_system'].unique()
   
+  d. replace
+  airlines['dest_region'] = airlines['dest_region'].replace({'eur':'europe'})
     
