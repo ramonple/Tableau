@@ -175,3 +175,86 @@ assert ride_sharing['duration_time'].dtype == 'int'
 # Print formed columns and calculate average ride duration
 print(ride_sharing[['duration','duration_trim','duration_time']])
 print((ride_sharing['duration_time']).mean())
+
+
+
+# table value constraints
+
+Use .loc[] to set all values of xx in a range
+
+# Convert tire_sizes to integer ->xxx.astype(' ')
+ride_sharing['tire_sizes'] = ride_sharing['tire_sizes'].astype('int')
+
+example" Set all values above 27 to 27 -- .loc[xxx>xx,xxx] = yyy
+ride_sharing.loc[ride_sharing["tire_sizes" >27, "tire_sizes"] = 27
+
+
+# Convert ride_date to datetime
+ride_sharing['ride_dt'] = pd.to_datetime(ride_sharing['ride_date'])
+
+# Save today's date
+today = dt.date.today()
+
+# Set all in the future to today's date
+ride_sharing.loc[ride_sharing['ride_dt'] > today, 'ride_dt'] = today
+
+
+### uniqueness constraints -> duplicated values
+- find the duplicated values: .duplicated()
+.duplicated(subset = , keep=)
+subset: list of column names to check for duplication
+keep: whether to keep first('first'), last('last') or all(False) duplicated values
+
+
+duplicates = df.duplicated()
+print(duplicates) -> will print true or false
+df[duplicates] -> output the duplicated information
+dr[duplicates].sort_values(by ='xxx')
+
+How to treat duplicate values?
+.drop_duplicates()
+inplace: drop duplicated rows directly inside DateFrame without creating new objects, inplace = True
+
+.groupby()
+.agg()
+
+
+
+### Membership constraints
+
+> finding inconsistent categories
+inconsistent_categories = set(study_data['blood_type']).difference(categories['blood_type'])
+print(inconsistent_categories)
+
+> find the incosistent rows
+inconsistent_rows = study_date['blood_type'].isin(inconsistent_catogies)
+
+> drop inconsistent rows
+inconsistent_data = study_data[incosistent_rows] - find
+# Drop
+inconsistent_data = study_data[~incosistent_rows]
+
+## Categorical variables
+a. value consistency
+Upper and Lower case:
+1. marriage_status['marriage_status'] = marriage_status['marriage_status'].str.upper()
+   marriage_status['marriage_status'] = marriage_status['marriage_status'].str.lower()
+b. blank space
+   marriage_status['marriage_status'] = marriage_status['marriage_status'].str.strip()
+c. collapsing data into categories
+  1) >>> create categories out of data: income_group column from income column
+    import pandas as pd
+    ranges=[0,200000,500000,np.inf]
+    group_names = ['0-200k','200k-500k','500k+']
+    demographics['income_group']=pd.cut(demographics['household_income'],bins=ranges,labels = group_names)
+    demographics[['income_group'],['household_income']]
+    
+  2) >>> map categories to fewer ones
+  operation_system column is 'a','b','c','d','e'
+  operation_system column should be ' abc','de'
+  
+  mapping ={a':'abc','b':'abc,'c':'abc,'d':'de','e':'de'}
+  devices['operation_system']=devices['operating_system'].replace(mapping)
+  devices['operation_system'].unique()
+  
+    
