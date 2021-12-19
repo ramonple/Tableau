@@ -93,12 +93,15 @@ but not very efficient. On every iteration, you're creating a new Pandas Series.
 If you want to add a column to a DataFrame by calling a function on another column, 
 the iterrows() method in combination with a for loop is not the preferred way to go. Instead, you'll want to use apply().
 
-##########################################################  
+------------------------------------------------------------  
+>>> use lab,row and iterrows (Pandas)
+
 for lab, row in brics.iterrows() :
     brics.loc[lab, "name_length"] = len(row["country"])
 
 brics["name_length"] = brics["country"].apply(len)
-############################################################ 
+
+------------------------------------------------------------  
 
 ## Pandas: apply
 cars["COUNTRY"] = cars["country"].apply(str.upper)
@@ -164,6 +167,27 @@ for i in range(10) :
 
 
 ################################# Data Manipulation with pandas ######################################################################################
+-- parenthese!!!
+dataframe.sort_values("column_A")
+dataframe.sort_values("column_A,asceding = False)
+dataframe.sort_values("columnA","columnB",ascending=[True,False])
+
+subsetting columns
+
+dataframe["columnA"]
+dataframe[ ["columnA","columnB"]]
+dataframe["columnA"] > 15
+dataframe{dataframe["columnA"] > 15]
+dataframe[ dataframe["columnA"] == xxx ]
+dataframe[ dataframe["columnA"] >'2015-12-01"] #year-month-day
+
+subsetting based on multiple conditions:
+is_lab = dogs["columnA"] == "lab"
+is_brown = dogs["color"] == "brown"
+dogs[is_lab & is_brown] <==> dogs[(dogs["columnA"] == "lab") & (dogs["columnB"] == "brown")]
+
+isin()
+is_black_or_brown = dogs["colors"].isin(["black","brown"])
 
 
 
