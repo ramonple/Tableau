@@ -399,7 +399,7 @@ airlines['day_week'] = airlines['day'].replace(mappings)
 
 
 
-## Cleaning text data
+>>>>>>>>>>>  Cleaning text data
 # replace '+" with '00'
 phones["phone number"] = phones["phones number"].str.replace("+","00")
 # replace phone number with lower than 10 digits to Nan
@@ -463,8 +463,9 @@ banking['acct_year'] = banking['account_opened'].dt.strftime('%Y')
 print(banking['acct_year'])
 
 
------------------------------------------------------------------------
-Grouped summary statistics
+
+
+ >>>>>>>>>>>> Grouped summary statistics
 .groupby()
 
 What percent of sales occurred at each store type?
@@ -493,12 +494,21 @@ unemp_fuel_stats = sales.groupby('type')[['unemployment', 'fuel_price_usd_per_l'
 
 
 Pivot table
+---- The .pivot_table() method is just an alternative to .groupby().
 # Pivot for mean weekly_sales for each store type
 mean_sales_by_type = sales.pivot_table(values='weekly_sales', index='type')
 # Pivot for mean and median weekly_sales for each store type
 mean_med_sales_by_type = sales.pivot_table(values='weekly_sales', index= 'type', aggfunc=[np.mean, np.median])
 # Pivot for mean weekly_sales by store type and holiday 
 mean_sales_by_type_holiday = sales.pivot_table(values='weekly_sales', index= 'type', columns='is_holiday')
+
+
+Fill in missing values and sum values with pivot tables
+The .pivot_table() method has several useful arguments, including fill_value and margins.
+
+fill_value replaces missing values with a real value (known as imputation).
+margins is a shortcut for when you pivoted by two variables, 
+but also wanted to pivot by each of those variables separately: it gives the row and column totals of the pivot table contents.
 
 # Print mean weekly_sales by department and type; fill missing values with 0
 print(sales.pivot_table(values='weekly_sales', index='department', columns='type', fill_value=0))
@@ -507,7 +517,13 @@ print(sales.pivot_table(values="weekly_sales", index="department", columns="type
 
 
 
+
+ >>>>>>>>>>>> Slicing and indexing
+
+.set_index(), reset_index()
+
 ---- Explicit index
+Setting & removing indexes
 
 
 
