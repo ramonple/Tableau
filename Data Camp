@@ -298,7 +298,7 @@ sales_1_1['cum_max_sales'] = sales_1_1['weekly_sales'].cummax()
 print(sales_1_1[["date", "weekly_sales", "cum_weekly_sales", "cum_max_sales"]])
 
 
-Counting
+-- Counting
 Dropping duplicates
 # Drop duplicate store/type combinations
 store_types = sales.drop_duplicates(subset=['store','type'])
