@@ -163,6 +163,15 @@ for i in range(10) :
 
 
 
+
+
+
+
+
+
+
+
+
 ################################# Data Manipulation with pandas ############################################################################################################################################################################
 https://yuleii.github.io/2020/06/27/data-manipulation-with-pandas.html
 ############################################################################################################################################################################
@@ -514,24 +523,233 @@ print(temperatures.iloc[0:5,2:4])
 
 
 
+Working with pivot tables
+
+Pivot temperature by city and year
+It's interesting to see how temperatures for each city change over time—looking at every month results in a big table, 
+which can be tricky to reason about. Instead, let's look at how temperatures change by year.
+
+You can access the components of a date (year, month and day) using code of the form 
+dataframe["column"].dt.component. 
+For example, the month component is dataframe["column"].dt.month, and the year component is dataframe["column"].dt.year.
+
+Once you have the year column, you can create a pivot table with the data aggregated by city and year, which you'll explore in the coming exercises.
+
+# Add a year column to temperatures
+temperatures['year'] = temperatures['date'].dt.year
+
+# Pivot avg_temp_c by country and city vs year
+temp_by_country_city_vs_year = temperatures.pivot_table('avg_temp_c', index=['country','city'], columns='year')
+
+# See the result
+print(temp_by_country_city_vs_year)
 
 
 
+Subsetting pivot tables
+A pivot table is just a DataFrame with sorted indexes. the .loc[] + slicing combination is often helpful.
+
+# Subset for Egypt to India
+temp_by_country_city_vs_year.loc['Egypt':'India']
+
+# Subset for Egypt, Cairo to India, Delhi
+temp_by_country_city_vs_year.loc[('Egypt','Cairo'):('India','Delhi')]
+
+# Subset in both directions at once
+temp_by_country_city_vs_year.loc[('Egypt','Cairo'):('India','Delhi'),'2005':'2010']
 
 
+Calculating on a pivot table
+Pivot tables are filled with summary statistics, but they are only a first step to finding something insightful. 
+Often you'll need to perform further calculations on them. A common thing to do is to find the rows or columns where the highest or lowest value occurs.
 
+Recall from Chapter 1 that you can easily subset a Series or DataFrame to find rows of interest using a logical condition inside of square brackets. 
+For example: series[series > value].
 
+# Get the worldwide mean temp by year
+mean_temp_by_year = temp_by_country_city_vs_year.mean()
 
+# Filter for the year that had the highest mean temp
+print(mean_temp_by_year[mean_temp_by_year == mean_temp_by_year.max()])
 
+# Get the mean temp by city
+mean_temp_by_city = temp_by_country_city_vs_year.mean(axis='columns')
 
-
+# Filter for the city that had the lowest mean temp
+print(mean_temp_by_city[mean_temp_by_city==mean_temp_by_city.min()])
 
 
 -------------- COURSE 4: Creating and Visualizing DataFrames --------------
 
+Which avocado size is most popular?
+
+# Get the total number of avocados sold of each size
+nb_sold_by_size = avocados.groupby('size')['nb_sold'].sum()
+
+# Create a bar plot of the number of avocados sold by size
+nb_sold_by_size.plot(kind='bar')
+
+# Show the plot
+plt.show()
+
+
+Changes in sales over time
+# Import matplotlib.pyplot with alias plt
+import matplotlib.pyplot as plt
+
+# Get the total number of avocados sold on each date
+nb_sold_by_date = avocados.groupby('date')['nb_sold'].sum()
+
+# Create a line plot of the number of avocados sold by date
+nb_sold_by_date.plot(kind='line')
+
+# Show the plot
+plt.show()
+
+
+# Scatter plot of nb_sold vs avg_price with title
+avocados.plot(x='nb_sold', y='avg_price', kind='scatter',title="Number of avocados sold vs. average price")
+
+# Show the plot
+plt.show()
+
+
+
+Creating multiple plots for different subsets of data allows you to compare groups. 
+In this exercise, you'll create multiple histograms to compare the prices of conventional and organic avocados.
+
+# # Histogram of conventional avg_price 
+avocados[avocados["type"] == "conventional"]["avg_price"].hist(bins=20, alpha=0.5)
+
+# Histogram of organic avg_price
+avocados[avocados["type"] == "organic"]["avg_price"].hist(bins=20, alpha=0.5)
+
+# Add a legend
+plt.legend(["conventional", "organic"])
+
+# Show the plot
+plt.show()
+
+
+
+
+Missing values
+Finding missing values
+.isna(), .any()
+
+# Import matplotlib.pyplot with alias plt
+import matplotlib.pyplot as plt
+
+# Print a DataFrame that shows whether each value in avocados_2016 is missing or not.
+print(avocados_2016.isna())
+
+# Print a summary that shows whether any value in each column is missing or not.
+print(avocados_2016.isna().any())
+
+# Bar plot of missing values by variable
+avocados_2016.isna().sum().plot(kind='bar')
+
+# Show plot
+plt.show()
+
+
+
+
+Removing missing values
+.dropna()
+
+# Remove rows with missing values
+avocados_complete = avocados_2016.dropna()
+
+# Check if any columns contain missing values
+print(avocados_complete.isna().any())
+
+
+
+Replacing missing values
+# From previous step
+cols_with_missing = ["small_sold", "large_sold", "xl_sold"]
+avocados_2016[cols_with_missing].hist()
+plt.show()
+
+# Fill in missing values with 0
+avocados_filled = avocados_2016.fillna(0)
+
+# Create histograms of the filled columns
+avocados_filled[cols_with_missing].hist()
+
+# Show the plot
+plt.show()
+
+
+
+
+Creating DataFrames
+List of dictionaries
+# Create a list of dictionaries with new data
+avocados_list = [
+    {'date': "2019-11-03", 'small_sold': 10376832, 'large_sold': 7835071},
+    {'date': "2019-11-10", 'small_sold': 10717154, 'large_sold': 8561348},
+]
+
+# Convert list into DataFrame
+avocados_2019 = pd.DataFrame(avocados_list)
+
+# Print the new DataFrame
+print(avocados_2019)
+
+
+
+Dictionary of lists
+# Create a dictionary of lists with new data
+avocados_dict = {
+  "date": ["2019-11-17", "2019-12-01"],
+  "small_sold": [10859987, 9291631],
+  "large_sold": [7674135, 6238096]
+}
+
+# Convert dictionary into DataFrame
+avocados_2019 = pd.DataFrame(avocados_dict)
+
+# Print the new DataFrame
+print(avocados_2019)
+>          date  small_sold  large_sold
+
+
+
+# Read CSV as DataFrame called airline_bumping
+airline_bumping = pd.read_csv("airline_bumping.csv")
+
+# For each airline, select nb_bumped and total_passengers and sum
+airline_totals = airline_bumping.groupby("airline")[["nb_bumped", "total_passengers"]].sum()
+
+# Create new col, bumps_per_10k: no. of bumps per 10k passengers for each airline
+airline_totals["bumps_per_10k"] = airline_totals["nb_bumped"] / airline_totals["total_passengers"] * 10000
+
+
+
+DataFrame to CSV
+# Create airline_totals_sorted
+airline_totals_sorted = airline_totals.sort_values('bumps_per_10k', ascending=False)
+
+# Print airline_totals_sorted
+print(airline_totals_sorted)
+
+# Save as airline_totals_sorted.csv
+airline_totals_sorted.to_csv("airline_totals_sorted.csv")
 
 
 ####################################################################################################################################
+
+
+
+
+
+
+
+
+
+
 
 
 #################################  Data Cleaning  ##################################################################
@@ -714,5 +932,7 @@ banking['acct_year'] = banking['account_opened'].dt.strftime('%Y')
 
 # Print acct_year
 print(banking['acct_year'])
+
+
 
 
