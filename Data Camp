@@ -193,7 +193,7 @@ Parts of a DataFrame
 Sorting and subsetting
 Sorting rows
 # Sort homelessness by individual
-homelessness_ind = homelessness.sort_values('individuals')
+homelessness_ind = homelessness.sort_values('individuals')    --- ！！！！！！！！ only () no []
 
 # Sort homelessness by descending family members
 homelessness_fam = homelessness.sort_values('family_members',ascending=False)
@@ -218,9 +218,8 @@ ind_gt_10k = homelessness[homelessness['individuals']>10000]
 # Filter for rows where region is Mountain
 mountain_reg = homelessness[homelessness['region']=="Mountain"]
 
-# Filter for rows where family_members is less than 1000 
-# and region is Pacific
-fam_lt_1k_pac = homelessness[(homelessness['family_members']<1000) & (homelessness['region']
+# Filter for rows where family_members is less than 1000 and region is Pacific
+fam_lt_1k_pac = homelessness[(homelessness['family_members']<1000) & (homelessness['region']=="Pacific")]
 
 Subsetting rows by categorical variables
 |, .isin()
@@ -241,8 +240,6 @@ homelessness['total'] = homelessness['individuals'] + homelessness['family_membe
 # Add p_individuals col as proportion of individuals
 homelessness['p_individuals'] = homelessness['individuals'] / homelessness['total']
 
-# See the result
-print(homelessness)
 
 Combo-attack!
 # Create indiv_per_10k col as homeless individuals per 10k state pop
@@ -257,9 +254,6 @@ high_homelessness_srt = high_homelessness.sort_values('indiv_per_10k', ascending
 # From high_homelessness_srt, select the state and indiv_per_10k cols
 result = high_homelessness_srt[['state','indiv_per_10k']]
 
-# See the result
-print(result)
-
 
 -------------- COURSE 2: Aggregating DataFrames --------------
 
@@ -273,7 +267,9 @@ Mean and median
 .min()
 
 Efficient summaries
-The .agg() method allows you to apply your own custom functions to a DataFrame, as well as apply functions to more than one column of a DataFrame at once, making your aggregations super efficient.
+
+The .agg() method allows you to apply your own custom functions to a DataFrame, 
+as well as apply functions to more than one column of a DataFrame at once, making your aggregations super efficient.
 
 # A custom IQR function
 def iqr(column):
@@ -286,7 +282,7 @@ print(sales['temperature_c'].agg(iqr)
 print(sales[["temperature_c", 'fuel_price_usd_per_l', 'unemployment']].agg(iqr))
 
 
-Cumulative statistics
+-- Cumulative statistics
 .cummax(),.cummin(), .cumprod()
 
 # Sort sales_1_1 by date
