@@ -347,7 +347,7 @@ sales_B = sales[sales["type"] == "B"]["weekly_sales"].sum()
 # Subset for type C stores, calc total weekly sales
 sales_C = sales[sales["type"] == "C"]["weekly_sales"].sum()
 
-# Get proportion for each type
+------- # Get proportion for each type
 sales_propn_by_type = [sales_A, sales_B, sales_C] / (sales_A+sales_B+sales_C)
 print(sales_propn_by_type)
 
@@ -453,7 +453,7 @@ print(temperatures_ind.sort_index(level=['country','city'], ascending=[True, Fal
 Slicing index values
 Compared to slicing lists, there are a few things to remember.
 
-You can only slice an index if the index is sorted (using .sort_index()).
+!!!! < You can only slice an index if the index is sorted (using .sort_index()).> !!!!!
 To slice at the outer level, first and last can be strings.
 To slice at inner levels, first and last should be tuples.
 If you pass a single slice to .loc[], it will slice the rows.
@@ -543,7 +543,8 @@ print(temp_by_country_city_vs_year)
 
 
 Subsetting pivot tables
-A pivot table is just a DataFrame with sorted indexes. the .loc[] + slicing combination is often helpful.
+[ A pivot table is just a DataFrame with sorted indexes.] 
+the .loc[] + slicing combination is often helpful.
 
 # Subset for Egypt to India
 temp_by_country_city_vs_year.loc['Egypt':'India']
