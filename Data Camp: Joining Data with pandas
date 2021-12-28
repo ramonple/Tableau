@@ -1,0 +1,21 @@
+################################################ Course 1: Data Merging Basics ###########################################################################
+
+Inner join
+new_name = item1.merge( item2, on = 'xxx',suffixes=('_a','_b') )
+---- The suffix is needed only when the merged dataframe has two columns with same name. 
+
+# Merge the taxi_owners and taxi_veh tables
+taxi_own_veh = taxi_owners.merge(taxi_veh,on='vid')
+
+# Merge the taxi_owners and taxi_veh tables setting a suffix
+taxi_own_veh = taxi_owners.merge(taxi_veh, on='vid', suffixes=('_own','_veh'))
+
+
+Inner joins and number of rows returned
+It is necessary to understand that inner joins only return the rows with matching values in both tables.
+
+# Merge the wards and census tables on the ward column
+wards_census = wards.merge(census, on='ward')
+
+
+One to many relationship 
