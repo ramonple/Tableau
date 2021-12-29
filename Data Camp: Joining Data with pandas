@@ -8,16 +8,27 @@ newdf = df1.merge(df2,on='col') \
             .merge(df4,on='col')
 print(newdf.groupby('a').agg({ 'column' : 'count'/'median'/'mean'/'sum'}) )            
 
+% notice the sequence in .agg(). First column name and then the function
+
+
+
 Left Join, Right Join, Outer Join
 genres_movies = movie_to_genres.merge(pop_movies, how='right'/'left'/'outer', 
                                       left_on='movie_id', 
                                       right_on='id')
-
+Merge on multiple columns:
+ctry_date = pd.merge_ordered(gdp, pop, on=('date','country'),
+                             fill_method='ffill')
+			     
 Merging on indexes
 When usting left_on/ right_on, we should set left_index =True / right_index = True
 movies_genres = movies.merge(movie_to_genres,left_on='id',left_index=Ture,right_on='movie_id',right_index=True)
 
-
+Merge Filling method
+ctry_date = pd.merge_ordered(gdp, pop, on=('date','country'),
+                             fill_method='ffill')
+			     
+			     
 Sort_Values:
 new_name = sort_item(by='target_item',asceding = True/False)
 
@@ -158,13 +169,23 @@ What is a semi-join?
 - No duplicates
 
 genres_tracks = genres.merge(top_tracks, on = 'gid')
-genres['gid'].isin(genres_tracks['gid']) % compares any gid in the geres table with the gid in the genres_tracks table
-             - the output will be Boolean series True or False
-genres_tracks = genres.merge(top_tracks, on = 'gid')
 top_generes = generes[genres['gid'].isin(generes_tracks['gid'])]
-print(top_generes.head())
 
- It first merges the tables, then searches it for which rows belong in the final result creating a filter and subsets the left table with that filter.
+It first merges the tables, then searches it for which rows belong in the final result creating a filter and subsets the left table with that filter.
+
+
+# Merge the non_mus_tck and top_invoices tables on tid
+tracks_invoices = non_mus_tcks.merge(top_invoices, on='tid')
+
+# Use .isin() to subset non_mus_tcsk to rows with tid in tracks_invoices
+top_tracks = non_mus_tcks[non_mus_tcks['tid'].isin(tracks_invoices['tid'])]
+
+# Group the top_tracks by gid and count the tid rows
+cnt_by_gid = top_tracks.groupby(['gid'], as_index=False).agg({'tid':'count'})
+
+# Merge the genres table to cnt_by_gid on gid and print
+print(cnt_by_gid.merge(genres, on='gid'))
+
 
 
 What is anti-join?
@@ -175,7 +196,7 @@ step 1:
 genres_tracks = genres.merge(top_tracks, on = 'gid',how='left',indicator=True)
     %  with indicator set to True, the merge method adds a clumn called "_merge" to the output, show the source of each row 'both' or 'left_only'
 step 2:
-gid_list = genres_tracks.loc[genres_track['_merge'] == 'left_only',gid]
+gid_list = genres_tracks.loc[genres_track['_merge'] == 'left_only','gid']
    % shows the one with merge == left_only, and only the 'gid' column
 % step 3: isin() method to filter for the rows
 generes_tracks = genres.merge(top_tracks,on='gid',how='left',indicator=True)
@@ -188,7 +209,7 @@ empl_cust = employees.merge(top_cust, on='srid',
                                  how='left', indicator=True)
 
 # Select the srid column where _merge is left_only
-srid_list = empl_cust.loc[empl_cust['_merge'] == 'left_only', 'srid']
+srid_list = empl_cust.loc[empl_cust['_merge'] == 'left_only', 'srid'] % notice the new column name is '_merge'
 
 # Get employees not working with top customers
 print(employees[employees['srid'].isin(srid_list)])
@@ -198,11 +219,261 @@ print(employees[employees['srid'].isin(srid_list)])
 
 Concatenate DataFrames together vertically
 
+pd.concat([inv_jan,inv_fec,inv_mar],ingore_index = False, keys=['jan','feb','mar'] )
+
+concatenate tables with different column names
+pd.contact([inv_jan,inv_feb],sort=True)
+pd.contact([inv_jan,inv_feb],join='inner')
+
+# Concatenate the tables and add keys
+inv_jul_thr_sep = pd.concat([inv_jul, inv_aug, inv_sep], 
+                            keys=['7Jul','8Aug','9Sep'])
+
+# Group the invoices by the index keys and find avg of the total column
+avg_inv_by_month = inv_jul_thr_sep.groupby(level=0).agg({'total':'mean'}) # must be familar with the agg function
+
+# Bar plot of avg_inv_by_month
+avg_inv_by_month.plot(kind='bar')
+plt.show()
+
+
+The .concat() method is excellent when you need a lot of control over how concatenation is performed. 
+However, if you do not need as much control, then the .append() method is another option.
+
+using append method
+.append()
+- simplified version of the .concat() meothod
+- supports: ingore_index and sort
+- Does not suppport: keys and joins. Always join = outer
+
+inv_jan.apped([inv_feb,inv_mar],ingore_index=True, sort= True)
+
+# Use the .append() method to combine the tracks tables
+metallica_tracks = tracks_ride.append([tracks_master,tracks_st], sort=False)
+
+# Merge metallica_tracks and invoice_items
+tracks_invoices = metallica_tracks.merge(invoice_items,on='tid',how='inner')
+
+# For each tid and name sum the quantity sold
+tracks_sold = tracks_invoices.groupby(['tid','name']).agg({'quantity':'sum'})
+
+# Sort in decending order by quantity and print the results
+print(tracks_sold.sort_values(by='quantity', ascending=False))
+
+
+
+
+
+Verifying integrity
+
+.merge(validate=None)
+- check if the merge is of specified types:
+  'one_to_one','one_to_many','many_to_one','many_to_many'
+  
+tracks.merge(specs,on='tid',validate='one_to_one')
+tracks.merge(specs,on='tid',validate='one_to_many')
+
+
+-- duplicated values
+
+.concat(verify_integrity=False)
+- check whether the new concatenated index contains duplicates
+- default value is False
+
+example: two tables has same iid
+pd.concat([inv_feb,inv_mar],verify_integrity=True) -> Cannot work
+should be: pd.concat([inv_feb,inv_mar],verify_integrity=False)
+
+
+Why verify integrity and what to do?
+why:
+real world data is often NOT clean
+what to do?
+- fix incorrect data
+- drop duplicate rows
+
+
+# Concatenate the classic tables vertically
+classic_18_19 = pd.concat([classic_18, classic_19], ignore_index=True)
+
+# Concatenate the pop tables vertically
+pop_18_19 = pd.concat([pop_18, pop_19], ignore_index=True)
+
+# Merge classic_18_19 with pop_18_19
+classic_pop = classic_18_19.merge(pop_18_19,on='tid')
+
+# Using .isin(), filter classic_18_19 rows where tid is in classic_pop
+popular_classic = classic_18_19[classic_18_19['tid'].isin(classic_pop['tid'])]
 
 
 
 
 
 
+############################################### Course 4: Merging Ordered and Time-Series Data ##############################################################################################
+
+Using merge_ordered()
+.merge() default how = 'inner', df1.merge(df2)
+.merge_ordered() default how='outer', pd.merge_ordered(df1, df2)
+
+import pandas as pd
+pd.merge_ordered(appl,mcd,on='date',suffixes=('_appl','_mcd'),fill_method='ffile') % fill with the cell before
+
+when to use merge_ordered()?
+- ordered data/ time series
+- filling in missing data
+
+# Use merge_ordered() to merge gdp and sp500, interpolate missing value
+gdp_sp500 = pd.merge_ordered(gdp, sp500, left_on='year', right_on='date', 
+                             how='left',  fill_method='ffill')
+
+# Subset the gdp and returns columns
+gdp_returns = gdp_sp500[['gdp','returns']] -- two []
+
+# Print gdp_returns correlation
+print(gdp_returns.corr())
 
 
+# Use merge_ordered() to merge inflation, unemployment with inner join
+inflation_unemploy = pd.merge_ordered(inflation,unemployment, how='inner',on='date')
+
+# Print inflation_unemploy 
+print(inflation_unemploy)
+
+# Plot a scatter plot of unemployment_rate vs cpi of inflation_unemploy
+inflation_unemploy.plot(kind='scatter',x='unemployment_rate',y='cpi')
+plt.show()
+
+# Merge gdp and pop on date and country with fill and notice rows 2 and 3
+ctry_date = pd.merge_ordered(gdp, pop, on=('date','country'),
+                             fill_method='ffill')
+
+
+
+
+Using merge_asof()
+This is similar to a left-join except that we match on nearest key rather than equal keys. Both DataFrames must be sorted by the key.
+- similar to a merge_ordred() left_join
+- match on the nearest key column and not exact matches
+
+pd.merge_asof(visa,ibm,on=['date_time'],suffixes=('_visa','_ibm'),direction='forward')
+
+# Use merge_asof() to merge jpm and wells
+jpm_wells = pd.merge_asof(jpm,wells,on='date_time',suffixes=('', '_wells'),direction='nearest')
+
+
+# Use merge_asof() to merge jpm_wells and bac
+jpm_wells_bac = pd.merge_asof(jpm_wells,bac,on='date_time',suffixes=('_jpm', '_bac'),direction='nearest')
+
+
+# Compute price diff
+price_diffs = jpm_wells_bac.diff()
+
+# Plot the price diff of the close of jpm, wells and bac only
+price_diffs.plot(y=['close_jpm', 'close_wells', 'close_bac'],kind='line')
+plt.show()
+
+
+
+# Merge gdp and recession on date using merge_asof()
+gdp_recession = pd.merge_asof(gdp, recession, on='date')
+
+# Create a list using a list comprehension and a conditional expression, named is_recession, 
+# where for each row if the gdp_recession['econ_status'] value is equal to 'recession' then enter 'r' else 'g'.
+is_recession = ['r' if s=='recession' else 'g' for s in gdp_recession['econ_status']]
+
+# Plot a bar chart of gdp_recession
+gdp_recession.plot(kind='bar', y='gdp', x='date', color=is_recession, rot=90)
+plt.show()
+
+
+Summary:
+
+.merge_order()
+it allows for a right join during the merge
+if it cannot match the rows of the table exactly, it can use forward fill to interpolate the missing data
+
+.merge_asof()
+after matching two tables, if there are missing values at the top of the table from the right table, this function can fill them in
+Has an argument that can be set to 'forward' to select the first row in the right table whose key column is greater than or equal to the left's.
+It can be used to do fuzzy matching of dates between tables.
+
+both
+This function can be used when working with ordered and time-series data.
+This function can set the suffix for overlapping column names.
+
+
+
+
+Selecting data with .query()
+
+.query('some selection statement')
+- input string is similar to where clause in SQL statement
+
+stock.query('nike>=90')
+stock.query('nike>=90 and disney<140')
+stock.query('nike>=90 or disney< 98')
+
+using .query() to select text
+stocks_long.query('stock =='disney' or (stock=='nike' and clock <90)')
+
+# Merge gdp and pop on date and country with fill
+gdp_pop = pd.merge_ordered(gdp, pop, on=['country','date'], fill_method='ffill')
+
+# Add a column named gdp_per_capita to gdp_pop that divides the gdp by pop
+gdp_pop['gdp_per_capita'] = gdp_pop['gdp'] / gdp_pop['pop']
+
+# Pivot gdp_pop so values='gdp_per_capita', index='date', and columns='country', save as gdp_pivot.
+gdp_pivot = gdp_pop.pivot_table('gdp_per_capita', index='date', columns='country')
+
+# Select dates equal to or greater than 1991-01-01
+recent_gdp_pop = gdp_pivot.query('date >= "1991-01-01"') % need to use another pair of " of date
+
+
+
+
+Reshaping data with .melt()
+Unpivot a DataFrame from wide to long format, optionally leaving identifiers set.
+This function is useful to massage a DataFrame into a format where one or more columns are identifier variables (id_vars), 
+while all other columns, considered measured variables (value_vars), are “unpivoted” to the row axis, 
+leaving just two non-identifier columns, ‘variable’ and ‘value’.
+
+
+example of .melt()
+social_fin_tall = social_fin.melt(id_vars=['financial','company'])
+
+melting with value_vars
+social_fin_tall = social_fin.melt(id_vars=['financial','company'],value_vars=['2018','2017'])
+
+melting with column names
+social_fin_tall = social_fin.melt(id_vars=['financial','company'],value_vars=['2018','2017'],var_name=['year'],value_name='dollars')
+
+
+# Use .melt() to unpivot all of the columns of ur_wide except year and ensure that the columns with the 
+# months and values are named month and unempl_rate, respectively. Save the result as ur_tall.
+ur_tall = ur_wide.melt(id_vars=['year'], var_name='month', 
+                       value_name='unempl_rate')
+
+# Add a column to ur_tall named date which combines the year and month columns as year-month format into a larger string, and converts it to a date data type.
+ur_tall['date'] = pd.to_datetime(ur_tall['month'] + '-' + ur_tall['year'])
+
+# Sort ur_tall by date in ascending order
+ur_sorted = ur_tall.sort_values('date')
+
+# Plot the unempl_rate by date
+ur_sorted.plot(x='date', y='unempl_rate')
+plt.show()
+
+# Use melt on ten_yr, unpivot everything besides the metric column
+bond_perc = ten_yr.melt(id_vars='metric', var_name='date', value_name='close')
+
+# Use query on bond_perc to select only the rows where metric=close
+bond_perc_close = bond_perc.query('metric == "close"')
+
+# Merge (ordered) dji and bond_perc_close on date with an inner join
+dow_bond = pd.merge_ordered(dji, bond_perc_close, on='date', 
+                            suffixes=('_dow', '_bond'), how='inner')
+
+# Plot only the close_dow and close_bond columns
+dow_bond.plot(y=['close_dow', 'close_bond'], x='date', rot=90)
+plt.show()
