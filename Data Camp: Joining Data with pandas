@@ -8,9 +8,22 @@ newdf = df1.merge(df2,on='col') \
             .merge(df4,on='col')
 print(newdf.groupby('a').agg({ 'column' : 'count'/'median'/'mean'/'sum'}) )            
 
+Left Join, Right Join, Outer Join
+genres_movies = movie_to_genres.merge(pop_movies, how='right'/'left'/'outer', 
+                                      left_on='movie_id', 
+                                      right_on='id')
+
+Merging on indexes
+When usting left_on/ right_on, we should set left_index =True / right_index = True
+movies_genres = movies.merge(movie_to_genres,left_on='id',left_index=Ture,right_on='movie_id',right_index=True)
+
+
 Sort_Values:
 new_name = sort_item(by='target_item',asceding = True/False)
 
+count the total number of missing values in one paricular column:
+xxx.isnull().sum()
+number_of_missing_fin = movies_financials['budget'].isnull().sum()
 
 ################################################ Course 1: Data Merging Basics ###########################################################################
 
@@ -75,6 +88,64 @@ sorted_pop_vac_lic = pop_vac_lic.sort_values(by=['vacant','account','pop_2010'],
 
 
 ################################################ COURSE 2 Merging Tables With Different Join Types ################################################
+Left Join
+
+movies_taglines = movies.merge(taglines, on = 'id',how='left')
+
+# Merge the movies table with the financials table with a left join
+movies_financials = movies.merge(financials, on='id', how='left')
+
+# Count the number of rows in the budget column that are missing 
+number_of_missing_fin = movies_financials['budget'].isnull().sum()
+
+
+
+Other Joins
+
+two tables have differernt columns names but the same thing
+tv_movies = movies.merge(tv_genre,how='right',left_on='id',right_on='movie_id')
+
+Outer Joins
+family_comedy = family.merge(comdedy,on='movie_id',how='outer',suffixes =('_fam','_com') )
+
+# Merge action_movies to the scifi_movies with right join
+action_scifi = action_movies.merge(scifi_movies, on='movie_id', how='right',
+                                   suffixes=('_act','_sci'))
+
+# From action_scifi, select only the rows where the genre_act column is null
+scifi_only = action_scifi[action_scifi['genre_act'].isnull()]
+
+# Use right join to merge the movie_to_genres and pop_movies tables
+genres_movies = movie_to_genres.merge(pop_movies, how='right', 
+                                      left_on='movie_id', 
+                                      right_on='id')
+
+# Count the number of genres
+genre_count = genres_movies.groupby('genre').agg({'id':'count'})
+
+
+
+
+Self-Join : Merging a table to itself
+# Merge the crews table to itself
+crews_self_merged = crews.merge(crews, on='id', how='inner',
+                                suffixes=('_dir','_crew'))
+
+# Create a boolean index to select the appropriate rows
+boolean_filter = ((crews_self_merged['job_dir'] == 'Director') & 
+                  (crews_self_merged['job_crew'] != 'Director'))
+direct_crews = crews_self_merged[boolean_filter]
+
+
+
+Merging on indexes
+
+samuel = pd.read_csv('samuel.csv',index_col =['movie_id','cast_id'])
+casts=pd.read_csv('casts.csv',index_col=['movie_id','casts_id'])
+samuel_casts = samuel.merge(casts,on=['movie_id','cast_id'])
+
+movies_genres = movies.merge(movie_to_genres,left_on='id',left_index=Ture,right_on='movie_id',right_index=True)
+
 
 
 
