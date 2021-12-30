@@ -1,0 +1,239 @@
+########################################## Course 1:  Introduction to Matplotlib #############################################################################################
+
+# Import the matplotlib.pyplot submodule and name it plt
+import matplotlib.pyplot as plt
+
+# Create a Figure and an Axes with plt.subplots -- IMPORTANT !!!
+fig, ax = plt.subplots()
+
+# Plot MLY-PRCP-NORMAL from seattle_weather against the MONTH
+ax.plot(seattle_weather["MONTH"],seattle_weather['MLY-PRCP-NORMAL'] )
+
+# Plot MLY-PRCP-NORMAL from austin_weather against MONTH
+ax.plot(austin_weather["MONTH"],austin_weather['MLY-PRCP-NORMAL'] )
+
+# Call the show function
+plt.show()
+
+
+
+Customizing your plots
+1. marker
+ax.plot(seattle_weather["MONTH"],seattle_weather['MLY-PRCP-NORMAL'],marker='o'/'v' )
+2. linestyle
+ax.plot(seattle_weather["MONTH"],seattle_weather['MLY-PRCP-NORMAL'],marker='o'/'v',linestyle='--'/'none' )
+3. color
+ax.plot(seattle_weather["MONTH"],seattle_weather['MLY-PRCP-NORMAL'],marker='o'/'v',linestyle='--'/'none',color='r' )
+
+labels
+ax.set_xlabel('xxx')
+ax.set_ylabel('yyy')
+title
+ax.set_title('zzz')
+
+
+
+
+Small multiples
+
+fig,ax =plt.subplots(3,2) % subplots with 3 rows and 2 clumns
+ax.shape = (3,2)
+ax[0,0].plot(seattle_weather["MONTH"],seattle_weather['MLY-PRCP-NORMAL'],marker='o'/'v',linestyle='--'/'none',color='r' )
+
+if we only have one row or one column: ax[0] or ax[1]
+
+fig, ax =plt.subplot(2,1, sharey=True) % both subplots will have the same range of y-axis values from both datasets
+
+
+# Create a Figure and an array of subplots with 2 rows and 2 columns
+fig, ax = plt.subplots(2, 2)
+
+# Addressing the top left Axes as index 0, 0, plot month and Seattle precipitation
+ax[0, 0].plot(seattle_weather["MONTH"], seattle_weather["MLY-PRCP-NORMAL"])
+
+# In the top right (index 0,1), plot month and Seattle temperatures
+ax[0, 1].plot(seattle_weather["MONTH"], seattle_weather["MLY-TAVG-NORMAL"])
+
+# In the bottom left (1, 0) plot month and Austin precipitations
+ax[1, 0].plot(austin_weather["MONTH"], austin_weather["MLY-PRCP-NORMAL"])
+
+# In the bottom right (1, 1) plot month and Austin temperatures
+ax[1, 1].plot(austin_weather["MONTH"], austin_weather["MLY-TAVG-NORMAL"])
+plt.show()
+
+
+
+# Create a figure and an array of axes: 2 rows, 1 column with shared y axis
+fig, ax = plt.subplots(2, 1, sharey=True)
+
+# Plot Seattle precipitation in the top axes
+ax[0].plot(seattle_weather["MONTH"], seattle_weather["MLY-PRCP-NORMAL"], color='b')
+ax[0].plot(seattle_weather["MONTH"], seattle_weather["MLY-PRCP-25PCTL"], color='b', linestyle='--')
+ax[0].plot(seattle_weather["MONTH"], seattle_weather["MLY-PRCP-75PCTL"], color='b', linestyle='--')
+
+# Plot Austin precipitation in the bottom axes
+ax[1].plot(austin_weather["MONTH"], austin_weather["MLY-PRCP-NORMAL"], color='r')
+ax[1].plot(austin_weather["MONTH"], austin_weather["MLY-PRCP-25PCTL"], color='r', linestyle='--')
+ax[1].plot(austin_weather["MONTH"], austin_weather["MLY-PRCP-75PCTL"], color='r', linestyle='--')
+
+plt.show()
+
+
+
+
+########################################## Course 2: Plotting time-series data  ##########################################
+
+import matplotlib.pyplot as plt
+fig, ax = plt. subplots()
+
+ax.plot(climate_change.index, climate_change['co2'])
+ax.set_xlabel('Time')
+ax.set_ylabel('Co2(ppm)')
+plt.show()
+
+Zooming in on a decade
+
+sixties = climate_change["1960-01-01":"1969-12-31"]
+fig, ax = plt.subplots()
+ax.plot(sixties.index,sixties['Co2'])
+ax.set_xlabel('Time')
+ax.set_ylabel('Co2(ppm)')
+plt.show()
+
+
+Zooming in on one year
+sixty_nine = climate_change["1969-01-01":"1969-12-31"]
+fig, ax = plt.subplots()
+ax.plot(sixty_nine.index,sixty_nine['Co2'])
+ax.set_xlabel('Time')
+ax.set_ylabel('Co2(ppm)')
+plt.show()
+
+
+
+# Read the data from file using read_csv
+# Use the parse_dates key-word argument to parse the "date" column as dates.
+# Use the index_col key-word argument to set the "date" column as the index.
+climate_change = pd.read_csv('climate_change.csv', parse_dates=["date"], index_col="date")
+
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+
+# Add the data from climate_change to the plot: 
+# use the DataFrame index for the x value and the "relative_temp" column for the y values.
+ax.plot(climate_change.index, climate_change["relative_temp"])
+
+# Set the x-axis label
+ax.set_xlabel('Time')
+
+# Set the y-axis label
+ax.set_ylabel('Relative temperature (Celsius)')
+
+# Show the figure
+plt.show()
+
+
+
+
+
+
+Plotting time-series with different variables
+
+import pandas as pd
+climate_change = pd.read_csv('climiate_change.csv', parse_dates = ['date'],index_col='date'). 
+# What does Parse_dates do in Python?  Reading date columns from a CSV file
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.plot(climiate_change.index, climate_change['co2'])
+ax.plot(climiate_change.index, climiate_change['relative_temp'])
+ax.set_xlabel("time")
+ax.set_ylabel('co2'/'relative temperature')
+plt.show()
+-- NOT right. As two variables have different measure units
+
+
+< Using twin axes> 
+
+fig, ax = plt.subplots()
+ax.plot(climiate_change.index, climate_change['co2'])
+ax.set_xlabel("time")
+ax.set_ylabel('co2')
+ax2 = ax.twinx() - share the same x axis but different y-axises
+ax2.plot(climiate_change.index, climiate_change['relative_temp'])
+ax2.set_ylabel('relative temperature')
+
+
+Separating variables by color, and coloring the ticks
+
+fig, ax = plt.subplots()
+ax.plot(climiate_change.index, climate_change['co2'],color='blue')
+ax.set_xlabel("time")
+ax.set_ylabel('co2',color='blue')
+ax.tick_params('y',colors='blue')
+ax2 = ax.twinx() - share the same x axis but different y-axises
+ax2.plot(climiate_change.index, climiate_change['relative_temp'],color='red')
+ax2.set_ylabel('relative temperature',color='red')
+ax2.tick_params('y',colors='red')
+
+
+
+
+A function that plots time-series
+
+def plot_timesseries(axes,x,y,color,xlabel,ylabel):
+    axes.plot(x,y,color=color)
+    axes.set_xlabel(xlabel)
+    axes.set_ylabel(ylabel)
+    axes.tick_params('y',colors=colors)
+    
+    
+    
+Using a plotting function
+# assume the defined function named 'plot_timeseries'
+fig, ax = plt.subplots()
+
+# Plot the CO2 levels time-series in blue
+plot_timeseries(ax, climate_change.index, climate_change["co2"], "blue", "Time (years)", "CO2 levels")
+
+# Create a twin Axes object that shares the x-axis
+ax2 = ax.twinx()
+
+# Plot the relative temperature data in red
+plot_timeseries(ax2, climate_change.index, climate_change["relative_temp"], "red", "Time (years)", "Relative temperature (Celsius)")
+
+plt.show()
+
+
+
+
+
+
+Annotating time-series data
+
+fig, ax = plt.subplots()
+plot_timeseries(ax,climiate_change.index,climiate_change['co2'],'blue','time','co2')
+ax2=ax.twinx()
+plot_timeseries(ax2, climate_change.index, climate_change["relative_temp"], "red", "Time (years)", "Relative temperature (Celsius)")
+
+--- Annotation
+ax2.annotate(">1 degree", xy=[pd.TimeStamp("2015-10-06"),1])
+## annotate(text, xy, *args, **kwargs): Annotate the point xy with text text
+
+--- positioning the text
+ax2.annotate(">1 degree", xy=[pd.TimeStamp("2015-10-06"),1],xytext=(pd.TimeStamp('2008-10-06',-0.2))
+
+--- Adding arrows to annotation
+ax2.annotate(">1 degree", xy=[pd.TimeStamp("2015-10-06"),1],xytext=(pd.TimeStamp('2008-10-06',-0.2),arrowprops={"arrowstyle":"->", "color":"gray"})
+
+
+
+
+
+
+
+
+
+
+
+
