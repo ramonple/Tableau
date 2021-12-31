@@ -1,1 +1,101 @@
 #################################### Course 1: Introduction to Seaborn ####################################
+
+advantages of seaborn:
+1.easy to use
+2. works well with pandas data structures
+3. bulit on top of matplotlib
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+example 1: scatter plot : sns.scatterplot
+height=[62,34,54,65,23,45,12]
+weight=[123,142,100,90,23,123,110,101]
+sns.scatterplot(x=height,y=weight)
+
+example 2: create a count plot:  sns.countplot
+geneder=['F','F','M','F','M','F']
+sns.countplot(x=gender)
+
+
+
+Using pandas with Seaborn
+using dataframes with countplot()
+
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+df = pd.read_csv("masculinity.csv")
+sns.countplot(x='how_masculine',data=df) !! notice, data = df, no ''
+
+
+Adding a third variable with < hue > -- use <hue> to distinguish sub-groups
+
+import pandas as pd
+import seaborn as sns
+tips=sns.load_dataset("tips")
+sns.scatterplot(x='total_bill',y='tip',data=tips,hue='smoker',hue_order=["yes","no"]) # Change the legend order in the scatter plot
+
+specifying hue colors
+hue_colors = {"yes":"black","no":"red"})
+sns.scatterplot(x='total_bill',y='tip',data=tips,hue='smoker',palette=hue_colors)
+
+
+
+
+
+#################################### Course 2. Visualizing Two Quantitative Variables ####################################
+
+Introduction to relational plots and subplots
+
+relational plot:
+height vs weight
+GDP vs percent literate
+
+
+- relplot() -> relational plot
+--  create relational plots: scatter plots or line plots
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+sns.relplot(x='total_bill',y='tip',data=tips,kind='scatter',col='smoker',row='time')
+
+col_wrap() : how many plots you want to show in each row
+sns.relplot(x='total_bill',y='tip',data=tips,kind='scatter',col='day',col_wrap=2,col_order=["thur","fri","Sat","Sun"])
+
+
+
+
+
+Customizing scatter plots
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+sns.relplot(x='total_bill',y='tip',data=tips,kind='scatter',size='size',hue='size',style='smoker',alpha=0.4)
+ --> size='size' larger size variable will have large circle size
+ --> style ='smoker', different style for different type of smoker
+ --> alpha : transparency -> for overlapping data
+
+
+
+
+
+Introduction to line plots
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
