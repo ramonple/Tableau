@@ -234,6 +234,195 @@ ax2.annotate(">1 degree", xy=[pd.TimeStamp("2015-10-06"),1],xytext=(pd.TimeStamp
 
 
 
+########################################## Course 3: Quantitative comparisons and statistical visualizations  ##########################################
+
+
+BAR
+
+Quantitative comparisons: bar-charts
+
+medals=pd.read_csv('medals_by_country_2016.csv',index_col=0)
+fig, ax =plt.subplots()
+ax.bar(medals.index,medals['Gold'])
+plt.show()
+
+Interlude: rotatethe tick labels
+fig, ax =plt.subplots()
+ax.bar(medals.index,medals['Gold'])
+{ ax.set_xticklabels(medals.index,rotation=90) }
+ax.set_ylabel("Number of medals")
+plt.show()
+
+Olympic medals: visulazing the other medals
+fig, ax =plt.subplots()
+ax.bar(medals.index,medals['Gold'])
+ax.bar(medals.index,medals['Silver'],bottom=medals["Gold"]) -- each new data will be stacked on top of the previous data
+ax.bar(medals.index,medals['Bronze'],bottom=medals["Gold"]+ medals["Silver"]) 
+
+Adding a legend
+ax.bar(medals.index,medals['Gold'],label="gold")
+ax.bar(medals.index,medals['Silver'],bottom=medals["Gold"],label="siler") -- each new data will be stacked on top of the previous data
+ax.bar(medals.index,medals['Bronze'],bottom=medals["Gold"]+ medals["Silver"],label="bronze")
+ax.legend()
+
+
+
+
+
+
+Histogram
+
+Quantitative comparisons: histograms
+
+a bar chart again
+fig, ax = plt.subplots()
+ax.bar("Rowing",mens_rowing["height"].mean() )
+ax.bar("Gymnasics", mens_gymnastics["Height"].mean() )
+ax.set_ylabel("height")
+plt.show()
+
+Histograms
+fig, ax = plt.subplots()
+ax.hist(mens_rowing["Height"],label='Rowing',bins=5)
+ax.hist(mens_gymnastic["Height"],label="Gymnastics",bins=5)
+ax.set_xlabel("height")
+ax.set_ylabel("# of observations")
+ax.legend()
+plt.show()
+
+transparency
+
+histtype = 'step'
+ax.hist(mens_rowing["Height"],label='Rowing',bins=5,histtype='step')
+
+
+
+
+Statistical plotting
+
+adding error bars to bar chars:
+fig,ax=plt.subplots()
+ax.bar("Rowing",mens_rowing["Height"].mean,yerr=mens_rowing["Height"].std() )
+ax.bar("Gymnastics",mens_rowing["Height"].mean,yerr=mens_rowing["Height"}.std() )
+ax.set_ylabel("height")
+plt.show()
+
+
+fig,ax=plt.subplots()
+ax.errorbar(seattle_weather["month"],seattle_weather["mly-tav-normal"],yerr=seattle_weather['mly-tav-stddev'])
+ax.set_ylabel("temperature")
+
+adding boxplots
+fig, ax = plt.subplots()
+ax.boxplot([ mens_rowing['height'],mens_gymnastics['height'] ] )
+ax.set_xticklabels(['Rowing','Gymnastics']) --- ax.set_xticklabels()
+ax.set_ylabel("height')
+
+
+
+
+Quantitative comparisons: scatter plots
+
+fig, ax = plt.subplots()
+ax.scatter(climate_change['co2'],climiate_change['relative_temp'])
+ax.set_xlabel()
+ax.set_ylabel()
+plt.show()
+
+cutomizing scatter plot
+eighties=climate('1980-01-01':'1989-12-31')
+nineties=climate('1990-01-01':'1999-12-31')
+fig, ax = plt.subplots()
+ax.scatter(eighties['co2'],eight['relative_temp'],color='red',label='eighties')
+ax.scatter(nineties['co2'],nineties['relative_temp'],color='blue',label=nineties')
+ax.legend()
+ax.set_xlabel('co2')
+ax.set_ylabel('relative temperature')
+plt.show()
+
+encoding a third variable by color
+- encoding time in color
+ax.scatter(climate_change['co2'],climiate_change['relative_temp'],c = climate_change.index)
+ax.set_xlabel('co2')
+ax.set_ylabel('relative temperature')
+plt.show()
+
+
+
+
+
+
+
+
+########################################## Course 4: Sharing visualizations with others  ##########################################
+
+Changing plot style
+
+choosing a stype
+plt.style.use("ggplot") / plt.style.use("seaborn-colorblind")
+fig, ax = plt.subplots()
+ax.plot()
+ax.set_xlabel
+ax.set_ylabel
+plt.show()
+
+back to default
+plt.style.use("defaul")
+
+Guidelines for choosing plotting style
+If color is important: "seaborn-colorblind" or "tableau-colorblind10"
+if figure will be printed in black and white styple: "grayscale"
+
+
+
+Saving your visualizations
+
+fig.savefig("name.png/jpg/svg",quality = 50/ dpi=300)
+fig.set_size_inches([5,3])
+ls # give a list of files 
+
+
+
+
+
+
+Automating figures from data
+
+how many different kinds of data?
+
+sports = summer_2016_medals["sports"].unique()
+
+bar-chart of heights for all sports:
+
+fig,ax=plt.subplots()
+for sport sports:
+    sport_df = summer_2016_medals[ summer_2016_medals["sports"] == sport] % select a sub table
+    ax.bar(sport,sport_df["height"].mean() 
+           yerr=sport_df["height"].std() )
+ax.set_ylabel("height")
+ax.set_xticklabels(sports,rotation=90)
+
+
+
+
+
+sports = summer_2016_medals["Sport"].unique()
+
+for sport in sports:
+  sport_df = summer_2016_medals[summer_2016_medals["Sport"]== sport]
+  ax.bar(sport,sport_df["Weight"].mean(),
+  yerr = sport_df["Weight"].std())
+
+ax.set_ylabel("Weight")
+ax.set_xticklabels(sports, rotation=90)
+
+fig.savefig("sports_weights.png")
+
+
+
+
+
+
 
 
 
