@@ -44,7 +44,7 @@ sns.scatterplot(x='total_bill',y='tip',data=tips,hue='smoker',palette=hue_colors
 
 
 
-#################################### Course 2. Visualizing Two Quantitative Variables ####################################
+#################################### Course 2. Visualizing Two Quantitative Variables #####################################################
 
 Introduction to relational plots and subplots
 
@@ -83,19 +83,181 @@ sns.relplot(x='total_bill',y='tip',data=tips,kind='scatter',size='size',hue='siz
 
 Introduction to line plots
 
+two types of relational plots: scatter plot and line plot
+
+scatter plot:
+each plot point is an indepedent obeservation
+line plot:
+each plot point represents the same 'thing' typically tracked over time
+
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+sns.relplot(x='',y='',data=,kind='line',hue='',ci='') # ci: confident interval
+-- replace CI with std, ci='sd'
+-- ci=None
+
+
+
+# Make the shaded area show the standard deviation
+sns.relplot(x="model_year", y="mpg",
+            data=mpg, kind="line",ci='sd')
+            
+# Add markers and make each line have the same style
+sns.relplot(x="model_year", y="horsepower", 
+            data=mpg, kind="line", 
+            ci=None, style="origin", 
+            hue="origin", markers=True,
+            dashes=False)
 
 
 
 
 
+#################################### Course 3. Visualizing a Categorical and a Quantitative Variable #####################################################
+
+Count plots and bar plots
+
+catplot(): use to create categorical plots
+
+sns.catplot(x='',data='',kind='')
+category_order = [ 'a','b','c']
+sns.catplot(x='',data=,kind='count',order=category_order)
+
+bar plots
+sns.catplot(x='',y='',data=,kind='bar',ci=)
+
+
+# Create count plot of internet usage
+sns.catplot(x="Internet usage",data = survey_data, kind='count')
+
+# Change the orientation of the plot
+sns.catplot(y="Internet usage", data=survey_data, kind="count") -- from x to y
+
+# Separate into column subplots based on age category
+sns.catplot(y="Internet usage", data=survey_data,
+            kind="count", col="Age Category")
+
+
+
+
+Box plot
+
+sns.catplot(x='',y='',data=,kind='box',order = ['',''],sym='') # sym: outliers
+
+changing whiskers using 'whis' whis=2.0, 
+shows 5th and 95th percentiles: whis=[5,95]
+shows min and max values: whis=[0,100]
+
+
+point plot
+
+points show mean of quantitative variable
+vertical lines show 95% confidence intervals
+point plot has categorical variable on x-axis
+
+sns.catplot(...,kind='point')
+
+displaying median instead of mean: 
+from numpy import median
+sns.catplot(xxxx,estimator=median)
+
+customizing the confidence interval: sns.catplot(xxxx,capsize=0.2)
+
+turning off confidence interval: ci=None
+
+# Remove the lines joining the points
+sns.catplot(x="famrel", y="absences",
+			data=student_data,
+            kind="point",
+            capsize=0.2,
+            join=False)
+            
+            
+            
+            
+#################################### Course 4. Customizing Seaborn Plots #####################################################
+            
+Changing plot style and color
+
+Figure 'style' includes background and axes
+present options:"white","dark","whitegrid","bardgrid","ticks"
+sns.set_style()
+
+Figure 'palette' changes the color of the main elements
+sns.set_palette()
+--> sequential palette
+# Set a custom color palette
+sns.set_palette(["#39A7D0","#36ADA4"])
+
+
+changing the scale:
+Figure 'context' changes the scale of the plot elements and labels
+sns.set_context()
+-- from small to large: paper -> notebook -> talk -->  poster
+
+
+            
+
+
+Adding titles and labels
+
+seaborn plots create two different types of objects: FaceGrid and AxesSubplot
+
+FaceGrid        replot(), catplot()                   Can create subplots              g.fig.suptitle("",y = ) g.set_titles("This is {col_name}") g.set(xlabel="", ylabel="") 
+AxesSubplot     scatterplot(), countplot(), ect.      ONLY creates a single plot       
+
+Adding a title to FaceGrid
+
+g = sns.catplot(x='',y='',data=,kind='')
+g.fig.suptitle("", y = xxx) # y is the position of the title
+
+if have subplots:
+g = sns.catplot(x='',y='',data=,kind='',col=)
+g.fig.suptitle("", y= ) # title for the whole plots
+g.set_titles("This is {col_name}")
+
+Adding axis labels
+g.set(xlabel="", ylabel="")
+
+rotating x-axis tick labels
+plt.xticks(rotation = 90)
 
 
 
 
 
+------------------------------------------------
+Putting it all together
+------------------------------------------------
+import seaborn as sns
+import matplotlib.pyplot as plt
+plt.show()
+
+relational plots: show relationship -> scatter plots, line plots. => sns.relplot(x=,y=,data,kind=)
+
+categorical plots: shows the distribution of a quantitative variable within categories defined by a categorical variable
+-> bar plots, count plots, box plots, point plots => sns.catplot(,y,data,kind)
 
 
 
+Adding a third variable (hue)
+Adding a third variable (col / row) 
+
+customization
+sns.set_style()
+sns.set_palettee() -- > sns.set_palette("Blues")
+sns.set_context()
+
+Adding a title
+FaceGrid: relplot, catplot  g.fig.suptitle()
+AxesSubplot: scatterplot, counterplot, g.set_title
+
+g.set(xlabel=,ylabel=)
+plt.xticks(rotation = )
 
 
-
+            
+            
+            
+            
