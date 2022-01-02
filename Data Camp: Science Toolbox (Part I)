@@ -1,4 +1,4 @@
-######################################### Course 1: 1 Writing your own functions #########################################
+######################################### Course 1:  Writing your own functions #########################################
 
 User-defined functions
 
@@ -143,6 +143,183 @@ yell1, yell2 = shout_all('congratulations', 'you') -- NOTICE!!!
 # Print yell1 and yell2
 print(yell1)
 print(yell2)
+
+
+
+--- Bring it all together
+
+
+# Import pandas
+import pandas as pd
+
+# Import Twitter data as DataFrame: df
+df = pd.read_csv('tweets.csv')
+
+# Initialize an empty dictionary: langs_count
+langs_count = {}
+
+# Extract column from DataFrame: col
+col = df['lang']
+
+# Iterate over lang column in DataFrame
+for entry in col:
+
+    # If the language is in langs_count, add 1
+    if entry in langs_count.keys():
+        langs_count[entry] += 1. # notice: langs_count[entry]
+    # Else add the language to langs_count, set the value to 1
+    else:
+        langs_count[entry] = 1
+
+# Print the populated dictionary
+print(langs_count)
+
+
+
+
+# Define count_entries()
+def count_entries(df, col_name):
+    """Return a dictionary with counts of 
+    occurrences as value for each key."""
+
+    # Initialize an empty dictionary: langs_count
+    langs_count = {}
+    
+    # Extract column from DataFrame: col
+    col = df[col_name]
+
+    # Iterate over lang column in DataFrame
+    for entry in col:
+
+        # If the language is in langs_count, add 1
+        if entry in langs_count.keys():
+            langs_count[entry] += 1
+        # Else add the language to langs_count, set the value to 1
+        else:
+            langs_count[entry] = 1
+
+    # Return the langs_count dictionary
+    return langs_count
+
+# Call count_entries(): result
+result = count_entries(tweets_df, 'lang')
+
+# Print the result
+print(result)
+
+
+
+
+######################################### Course 2: Default arguments, variable-length arguments and scope #########################################
+
+Scope and user-defined functions
+- not all objects are accessible everywhere in a script
+- scope - part of the program where an object or name may be accessible
+   Global scope
+   Local scope
+   built-in scope (e.g., sum() )
+
+
+   
+# Create a string: team
+team = "teen titans"
+
+# Define change_team()
+def change_team():
+    """Change the value of the global variable team."""
+
+    # Use team in global scope
+    global team
+
+    # Change the value of team in global: team
+    team  = "justice league"
+# Print team
+print(team)
+
+# Call change_team()
+change_team()
+
+# Print team
+print(team)
+-- teen titans
+   justice league
+
+
+
+
+----------  Nested functions ----------
+
+def outer(...):
+    """ ..... """
+    x = ...
+    
+    def inner (...):
+         """ ..... """
+         y= x ** 2
+    return
+    
+    
+(2):    
+def mod2pluts5(x1,x2,x3):
+    "" Return the remainder plus 5 of three values. """
+    
+    new_x1 = x1 % 2 + 5
+    new_x2 = x2 % 2 + 5
+    new_x3 = x3 % 2 + 5
+    
+    return (new_x1,new_x2,new_x3)
+    
+
+(3);
+def mod2plus(x1,x2,x3):
+    "" Return the remainder plus 5 of three values. """
+    
+    def inner(x):
+         "" Return the remainder plus 5 of three values. """
+         return x %2 + 5
+    return (new_x1,new_x2,new_x3)
+    
+    
+print(inner(x1),inner(x2),inner(x3))
+
+    
+
+returning functions:
+
+def raise_val(n):
+    "" Return the remainder plus 5 of three values. """
+    
+    def inner(x):
+         "" Return the remainder plus 5 of three values. """
+         raised x ** n
+         return raised
+         
+    return inner
+    
+square = raise_val(2)
+cube = raise_val(3)
+print(square(2),cube(4)) --> 4 64
+
+
+Using nonlocal
+
+def outer():
+    """ prints the value of n."""
+    n = 1
+    
+    def inner():
+        nonlocal n
+        n = 2
+        print(n)
+        
+    inner()
+    print(n)
+
+outer() --> 2
+            2
+       
+ 
+
 
 
 
