@@ -313,13 +313,64 @@ for num1 in range(0,2)
  pairs_2=[(num1,num2) for num1 in range(0,2) for num2 in range(6,8)]
  
  
+ # Create a 5 x 5 matrix using a list of lists: matrix
+# In the inner list comprehension - that is, the output expression of the nested list comprehension 
+# - create a list of values from 0 to 4 using range(). Use col as the iterator variable.
+ matrix = [[col for col in range(5)] for row in range(5)]
  
  
  
  
- 
- 
- 
+Advanced comprehensions
+
+conditionals in comprehensions:
+[num ** 2 for num in range(10) if num % 2 == 0] # % is the modulo operator
+
+# Use member as the iterator variable in the list comprehension. 
+# For the conditional, use len() to evaluate the iterator variable. Note that you only want strings with 7 characters or more.
+# Create list comprehension: new_fellowship
+new_fellowship = [member for member in fellowship if len(member) >= 7]
+
+# In the output expression, keep the string as-is if the number of characters is >= 7, 
+# else replace it with an empty string - that is, '' or "".
+new_fellowship = [member if len(member) >= 7 else '' for member in fellowship]
+
+
+
+Dict comprehensions:
+create dictionaries
+use curly braces {} instead of bracket []
+pos_neg ={num: - num for num in range(9)}
+
+# Create dict comprehension: new_fellowship
+new_fellowship = { member: len(member) for member in fellowship }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
