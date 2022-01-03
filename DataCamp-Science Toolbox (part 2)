@@ -347,9 +347,12 @@ new_fellowship = { member: len(member) for member in fellowship }
 
 
 
+generator expressions
 
-
-
+List comprehension vs. generators
+- list comprehension - returns a list
+- generators - returns a generator object
+- both can be iterated over
 
 
 
