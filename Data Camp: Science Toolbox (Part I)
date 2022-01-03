@@ -544,15 +544,75 @@ report_status(name="luke", affiliation="jedi" ,status="missing")
 report_status(name="anakin", affiliation="sith lord", status="deceased")
 
 
+---- *args and **kwargs
+In Python, we can pass a variable number of arguments to a function using special symbols. There are two special symbols:
+
+1. *args (Non Keyword Arguments)
+2. **kwargs (Keyword Arguments)
+
+We use *args and **kwargs as an argument when we are [ unsure about the number of arguments] to pass in the functions.
+
+Example 1: Using *args to pass the variable length arguments to the function
+def adder(*num):
+    sum = 0
+    
+    for n in num:
+        sum = sum + n
+
+    print("Sum:",sum)
+
+adder(3,5)
+adder(4,5,6,7)
+adder(1,2,3,5,6)
+
+output:
+Sum: 8
+Sum: 22
+Sum: 17
 
 
 
 
+
+Example 2: Using **kwargs to pass the variable keyword arguments to the function 
+
+def intro(**data):
+    print("\nData type of argument:",type(data))
+
+    for key, value in data.items():
+        print("{} is {}".format(key,value))
+
+intro(Firstname="Sita", Lastname="Sharma", Age=22, Phone=1234567890)
+intro(Firstname="John", Lastname="Wood", Email="johnwood@nomail.com", Country="Wakanda", Age=25, Phone=9876543210)
+
+output:
+Data type of argument: <class 'dict'>
+Firstname is Sita
+Lastname is Sharma
+Age is 22
+Phone is 1234567890
+
+Data type of argument: <class 'dict'>
+Firstname is John
+Lastname is Wood
+Email is johnwood@nomail.com
+Country is Wakanda
+Age is 25
+Phone is 9876543210
+
+
+
+Things to Remember:
+*args and **kwargs are special keyword which allows function to take variable length argument.
+*args passes variable number of non-keyworded arguments list and on which operation of the list can be performed.
+**kwargs passes variable number of keyword arguments dictionary to function on which operation of a dictionary can be performed.
+*args and **kwargs make the function flexible.
 
 ######################################### Course 3: Lambda functions and error-handling #########################################
 
 lambda functions
-syntax: lambda arguments : expression
+syntax: 
+lambda arguments : expression
 
 raise_to_power = lambda x,y: x ** y
 raise_to_power(2,3) -> 8
@@ -564,11 +624,16 @@ echo_word = (lambda word1, echo: word1 * echo)
 anonymous functions:
 - function map takes two arguments: map(fun,seq)
 - map() applies the function to ALL elements in the sequence
+
+Python's map() is a built-in function that allows you to process and transform all the items in an iterable without using an explicit for loop, 
+a technique commonly known as mapping. 
+map() is useful when you need to apply a transformation function to each item in an iterable and transform them into a new iterable.
+
 for example:
 nums=[48,6,9,21,1]
 square_all = map(lambda num: num ** 2, nums)
 print(square_all) -> map object at 0x103e065c
-print(list(square_all)) -> 2304,36,81,441,1
+print(list(square_all)) -> 2304,36,81,441,1. -> you should use 'list'
 
 
 
