@@ -1,0 +1,6 @@
+seaborn:
+sns.distplot(df['xx'])
+
+pandas: 
+df['xx'].plot.hist()
+
