@@ -1,3 +1,6 @@
+
+####################################  Course 1: Seaborn Introduction ####################################
+
 seaborn:
 sns.distplot(df['xx'])
 
@@ -19,3 +22,30 @@ Customizations: kde, rug, hist, kdeplot, rugplot
 Regression Plots in Seaborn
 
 sns.regplot(x='',y='',data=df)
+
+implot() builds on top of the base regplot()
+- regplot - low level
+   sns.regplot(x='',y='',data=)
+   
+- implot - high level --> much more powerful
+   sns.lmplot(x='',y='',data=)
+   
+   
+
+implot faceting
+
+ - organize data by colors (hue)
+      sns.lmplot(x='',y='',data= , hue='type')
+ - organize data by columns (col)
+      sns.lmplot(x='',y='',data=, col='type')
+      
+ 
+ 
+ 
+ 
+ 
+ 
+ #################################### Course 2:  Customizing Seaborn Plots  ####################################
+ 
+ 
+ 
