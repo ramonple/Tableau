@@ -4,3 +4,18 @@ sns.distplot(df['xx'])
 pandas: 
 df['xx'].plot.hist()
 
+
+Using the distribution plot
+Customizations: kde, rug, hist, kdeplot, rugplot
+          # bin sargument for matplotlib hist(), or None, optional Specification of hist bins. If unspecified, as reference rule is used that tries to find a useful default.
+            kde (True/False, optional) Whether to plot a gaussian kernel density estimate.
+            rug (True/False, optional) Whether to draw a rugplot on the support axis.
+            hist (True/False, optional) Whether to plot a (normed) histogram.
+            kde_kws   show a shaded kde. e.g., kde_kws={'shade'=True})
+
+
+
+
+Regression Plots in Seaborn
+
+sns.regplot(x='',y='',data=df)
