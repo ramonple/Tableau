@@ -31,6 +31,44 @@ implot() builds on top of the base regplot()
    sns.lmplot(x='',y='',data=)
    
    
+   
+   
+   
+####################################  Course 2:Customizing Seaborn Plots ####################################
+setting styles:
+
+sns.set()
+
+df[''].plot.hist()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 implot faceting
 
