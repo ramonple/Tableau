@@ -2,7 +2,7 @@
 ####################################  Course 1: Seaborn Introduction ####################################
 
 seaborn:
-sns.distplot(df['xx'])
+sns.distplot(df['xx']) --dist: distribution
 
 pandas: 
 df['xx'].plot.hist()
@@ -23,67 +23,63 @@ Regression Plots in Seaborn
 
 sns.regplot(x='',y='',data=df)
 
-implot() builds on top of the base regplot()
+lmplot() builds on top of the base regplot()
 - regplot - low level
    sns.regplot(x='',y='',data=)
    
-- implot - high level --> much more powerful
+- lmplot - high level --> much more powerful
    sns.lmplot(x='',y='',data=)
    
    
    
-   
-   
-####################################  Course 2:Customizing Seaborn Plots ####################################
-setting styles:
 
-sns.set()
-
-df[''].plot.hist()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-implot faceting
+ implot faceting
 
  - organize data by colors (hue)
       sns.lmplot(x='',y='',data= , hue='type')
  - organize data by columns (col)
       sns.lmplot(x='',y='',data=, col='type')
-      
- 
- 
- 
- 
- 
- 
+
+
+
+
  #################################### Course 2:  Customizing Seaborn Plots  ####################################
+ sns.set()
+ df[''].plot.hist()
  
  
  
+ 
+ sns.set_style
+ 
+ for style in ['white','dark','whitegrid','darkgrid','ticks']:
+     sns.set_styple(style)
+     sns.displotstyle(df[''])
+     plt.show()
+     
+
+
+removing axes with despine()
+- seaborn contains a shortcut for removing spines of a plot:
+sns.set_style('white')
+sns.distplot(df[''])
+sns.despine(top=True,right=True,left=True)
+
+
+
+-- colors in seaborn
+ 
+seaborn supports assigning colors to plots using matplotlib color codes
+
+sns.set(color_codes=True)
+sns.distplot(df['Tuition'],color='g')
+
+
+set palettes
+set_palette() function to define a platte
+
+      
+      
+      
+      
+      
