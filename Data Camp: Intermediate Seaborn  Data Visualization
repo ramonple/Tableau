@@ -78,7 +78,98 @@ sns.distplot(df['Tuition'],color='g')
 set palettes
 set_palette() function to define a platte
 
+sns.palplot() - displays a palette
+sns.color_palette() - returns the current palette
+
+for p in sns.palettes.SEABORN_PLAETTES:
+      sns.set_palette(p)
+      sns.palplot(sns.color_palette())
+      plt.show()
       
+      
+defining customer palettes
+
+circular colors = when the data is not ordered -> sns.palplot(sns.color_palette('Paired',12))
+sequential colors = when the data has a consistent range from high to low -> sns.palplot(sns.color_palette('Blues',12))
+divering colors = when both the low and high values are interesting -> sns.palplot(sns.color_palette('BrBg',12))
+
+
+----- sns.palplot(sns.color_palette('xxxx',number_of_color))
+
+
+
+# Set the default Seaborn style and enable the matplotlib color codes.
+sns.set(color_codes=True) ---> set default as True
+# Create a distplot for the fmr_3 column using matplotlib's magenta (m) color code.
+sns.distplot(df['fmr_3'], color='m')
+
+# Show the plot
+plt.show()
+
+
+# Create a for loop to show the difference between the bright and colorblind palette.
+for p in ['bright', 'colorblind']:
+    sns.set_palette(p)
+    sns.distplot(df['fmr_3'])
+    plt.show()
+    
+    
+    
+    
+
+    
+Customizing with matplotlib
+
+most customisation available through matplotlib Axes objects
+Axes can be passed to seaborn functions
+    
+ fig,ax = plt.subplots()
+ sns.distplot(df[''],ax=ax)
+ ax.sett(xlabel='',)
+ 
+ the axes objects supports many common customisations
+  fig,ax = plt.subplots()
+  sns.distplot(df[''],ax=ax)
+  ax.sett(xlabel='',ylabel='',xlim=(0,xxxx),title ='')
+  
+    
+ combing plots
+ 
+# Create a plot with 1 row and 2 columns that share the y axis label
+fig, (ax0, ax1) = plt.subplots(nrows=1, ncols=2, sharey=True)
+
+# Plot the distribution of 1 bedroom apartments on ax0
+sns.distplot(df['fmr_1'], ax=ax0)
+ax0.set(xlabel="1 Bedroom Fair Market Rent", xlim=(100,1500))
+
+# Plot the distribution of 2 bedroom apartments on ax1
+sns.distplot(df['fmr_2'], ax=ax1)
+ax1.set(xlabel="2 Bedroom Fair Market Rent", xlim=(100,1500))
+
+# Display the plot
+plt.show()
+ 
+ 
+ vertical line using --- axvline --- 
+# Add vertical lines for the median and mean
+ax.axvline(x=median, color='m', label='Median', linestyle='--', linewidth=2)
+ax.axvline(x=mean, color='b', label='Mean', linestyle='-', linewidth=2)
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  #################################### Course 3: Additional Plot Types   ####################################
+  
+  Categorical Plot Types
+ 
+
+
+
+
       
       
       
