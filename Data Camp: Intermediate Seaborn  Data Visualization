@@ -165,7 +165,112 @@ ax.axvline(x=mean, color='b', label='Mean', linestyle='-', linewidth=2)
   #################################### Course 3: Additional Plot Types   ####################################
   
   Categorical Plot Types
+ -- data which takes on a limited and fixed number of values
  
+sns.stripplot(data=,y='',x='',jitter=True) -- 
+     Jitter is simply the addition of a small amount of horizontal (or vertical) variability to the data in order to ensure all data points are visible.
+
+sns.swarmplot(data=df,y='',x='')
+---- swarmplot: uses a complex algorithm tto place the observarions in a manner where they are not overlap.
+---- downside: the swarmplot() does not scale well to large datasets
+
+sns.boxplot(data=df,y='',x='')
+
+sns.violinplot(data=df,y='',x='')
+
+sns.lvplot(data=df,y='',x='')
+--- lvplot() is a hybrid between a boxplot() and violineplott() and is relatively quick to render and easy to interpret
+
+sns.pointplot() 
+
+sns.countplot()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Regression Plot
+
+sns.regplot(data=df,x='',y='',marker='+')
+
+Evaluating regression with residplot()
+--- a residual plot is useful for evaluating tthe fit of a model
+--- seaborn supports through residplot() function
+sns.residplot(data=df,x='',y='') --> ideally be random
+
+
+polynomial regression
+--- seaborn supports polynomial regression using the order paramer
+sns.regplot(data=df,x='',y='',order=2)
+sns.residplot(data=df,x='',y='',order=2)
+
+
+
+Categorical values
+sns.regplot(data=df,x='',y='',x_jitter=.1,order=2)
+
+
+
+Estimators
+in some cases, an x_estimattor can be useful for highlighting trends
+sns.regplot(data=df,x='',y='',x_estimator=np.mean,order=2)
+
+
+x_bins --> divide the data into several bins
+sns.regplot(data=df,x='',y='',x_bins=4)
+
+
+
+
+
+
+
+
+Matrix plots
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
