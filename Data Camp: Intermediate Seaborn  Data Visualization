@@ -188,19 +188,6 @@ sns.countplot()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 Regression Plot
 
 sns.regplot(data=df,x='',y='',marker='+')
@@ -238,7 +225,63 @@ sns.regplot(data=df,x='',y='',x_bins=4)
 
 
 
-Matrix plots
+
+Matrix plot - heat map
+
+A heatmap is a common matrix plot that can be used to graphically summarize the relationship between two variables.
+
+seaborns heatmap()
+pandas crosstab() is frequently used to manipulate the data
+
+pd.crosstab(df['xx'],df[''],values=df['xx'],aggfunc='mean').round(0)
+
+
+Build a heatmap
+sns.heatmap(pd.crosstab(df['xx'],df[''],values=df['xx'],aggfunc='mean'))
+
+
+Customise a heatmap
+sns.heatmap(df_crosstab,annot=True,fmt='d',cmap='YlGnBu',cbar=False,linewidths=.5)
+ ---  annot equals True to turn on annotations in the individuals cells
+ ---  the fmt (format) option ensures the results are displated in integers
+ ---  a custom cmap of Yellow-Green-Blue to change the shading we use
+ ---  cbar = False the color bar does not show
+ ---  passing a variable to linewidths put set some space between cells
+
+
+
+centering a heatmap
+-- seaborn supports centering the heatmap colors on a specific value
+-- center = df_crosstab.loc[]
+sns.heatmap(df_crosstab,annot=True,fmt='d',cmap='YlGnBu',cbar=True,center=df_crosstab.loc[9,6])
+
+
+Customizing heatmaps
+plotting a correlation matrix
+- pandas corr function calculates correlations between columns in a dataframe
+- the output can be converted to a heatmap with seaborn
+sns.heatmap(df.corr())
+
+
+
+
+
+
+
+-- exercise:
+
+# Create a crosstab table of the data
+pd_crosstab = pd.crosstab(df["Group"], df["YEAR"])
+print(pd_crosstab)
+
+# Plot a heatmap of the table
+sns.heatmap(pd_crosstab)
+
+# Rotate tick marks for visibility
+plt.yticks(rotation=0)
+plt.xticks(rotation=90)
+
+plt.show()
 
 
 
@@ -248,34 +291,197 @@ Matrix plots
 
 
 
+Customizing heatmaps
+# Plot a heatmap of the table with no color bar and using the BuGn palette
+sns.heatmap(pd_crosstab, cbar=False, cmap="BuGn", linewidths=0.3)
 
 
 
 
 
 
+  #################################### Course 4: Creating Plots on Data Aware Grids   ####################################
 
+Using FacetGrid, factorplot and lmplot
 
+1. Using FacetGrid, factorplot and lmplot
+One of Seaborn's most powerful features is its ability to combine multiple smaller plots into a larger visualization that can help identify trends 
+in data with many variables. 
+2. Multiple plots of data
+The concept of small multiples is useful for analyzing data with many variables. 
+The idea is that you can quickly identify trends in data by comparing multiple plots side by side using the same scales and axes. 
+These plots are referred to as a trellis or lattice plot. 
+In data science, this concept is also frequently called <faceting>. 
+3. Tidy data
+One very important requirement for Seaborn to create these plots is that the data must be in tidy format. 
+This means that each row of the data is a single observation and the columns contain the variables. 
+4. FacetGrid
+Seaborn's FacetGrid manages the back end data manipulations to make sure that the data is split across rows, columns and hue and then used to make the appropriate plot type.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+g = sns.FaceGrid(df,col='')
+g.map(sns.boxplot,'xx',order=['1,'2','3','4'])
       
-      
-      
+
+factorplot()
+is a simpler way to use a FacetGrid for categorical data
+combines the facetting and mapping process into 1 function
+sns.factorplot(x='',data=df,col='',kind='box') --> same output as previous code:  
+                               g = sns.FaceGrid(df,col='')
+                               g.map(sns.boxplot,'xx',order=['1,'2','3','4'])
+
+
+lmplot() -> used to draw a scatter plot onto a FacetGrid
+sns.lmplot(data=df,x='',y='',col='',fit_reg=False)
+
+lmplot with regression
+sns.lmplot(data=df,x='',y='',col='',row='')
+
+
+
+
+Exercise:
+# Create FacetGrid with Degree_Type and specify the order of the rows using row_order
+g2 = sns.FacetGrid(df, 
+             row="Degree_Type",
+             row_order=['Graduate', 'Bachelors', 'Associates', 'Certificate'])
+
+# Map a pointplot of SAT_AVG_ALL onto the grid
+g2.map(sns.pointplot, 'SAT_AVG_ALL')
+
+
+
+Using a factorplot
+In many cases, Seaborn's factorplot() can be a simpler way to create a FacetGrid. 
+Instead of creating a grid and mapping the plot, we can use the factorplot() to create a plot with one line of code.
+
+# Create a factor plot that contains boxplots of Tuition values
+sns.factorplot(data=df,
+         x='Tuition',
+         kind='box',  --> boxplot
+         row='Degree_Type')
+        
+# Create a facetted pointplot of Average SAT_AVG_ALL scores facetted by Degree Type 
+sns.factorplot(data=df,
+        x='SAT_AVG_ALL',
+        kind='point',  --> point plot
+        row='Degree_Type',
+        row_order=['Graduate', 'Bachelors', 'Associates', 'Certificate'])        
+
+
+
+
+Using a lmplot
+The lmplot is used to plot scatter plots with regression lines on FacetGrid objects.
+
+# Create a FacetGrid varying by column and columns ordered with the degree_order variable
+g = sns.FacetGrid(df, col="Degree_Type", col_order=degree_ord) ---> col_order = /row_order=
+
+# Map a scatter plot of Undergrad Population compared to PCTPELL
+g.map(plt.scatter, 'UG', 'PCTPELL')
+
+
+# Re-create the previous plot as an lmplot
+sns.lmplot(data=df,
+        x='UG',
+        y='PCTPELL',
+        col="Degree_Type",
+        col_order=degree_ord)
+        
+        
+        
+# Create an lmplot that has a column for Ownership, a row for Degree_Type and hue based on the WOMENONLY column
+sns.lmplot(data=df,
+        x='SAT_AVG_ALL',
+        y='Tuition',
+        col="Ownership",
+        row='Degree_Type',
+        row_order=['Graduate', 'Bachelors'],
+        hue='WOMENONLY',
+        col_order=inst_ord)
+        
+        
+        
+        
+        
+
+
+Using PairGrid and pairplot
+When exploring a dataset, one of the earliest tasks is exploring the relationship between pairs of variables. 
+This step is normally a precursor to additional investigation.
+
+PairGrid shows pairwise relationships between data elements
+g = sns.PairGrid(df,vars=['',''])
+g = g.map(plt.scatter)
+
+g = g.map_diag(plt.hist)
+g = g.map_offdiag(plt.scatter)
+
+
+pairplot is a shortcut of pairGrid
+
+sns.pairplot(df,vars=['',''],kind='reg',diag_kind='hist') --> diag_kind
+
+sns.pairplot(df.query(''),vars=['',''],hue=]],palette='',plot_kws={''})
+
+
+
+# Build a pairplot with different x and y variables
+sns.pairplot(data=df,
+             x_vars=["fatal_collisions_speeding", "fatal_collisions_alc"], --> different x and y
+             y_vars=['premiums', 'insurance_losses'],
+             kind='scatter',
+             hue='Region',
+             palette='husl')
+
+plt.show()
+plt.clf()
+
+
+
+
+
+diag_kind can be used to specify the plot type on the diagonals.
+kind can be used to specify the non-diagonal plot type
+
+
+# plot relationships between insurance_losses and premiums
+sns.pairplot(data=df,
+             vars=["insurance_losses", "premiums"],
+             kind='reg',
+             palette='BrBG',
+             diag_kind = 'kde',
+             hue='Region')
+
+plt.show()
+plt.clf()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       
