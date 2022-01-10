@@ -460,19 +460,73 @@ plt.clf()
 
 
 
+Using JointGrid and Jointplot
+
+basic JointGrid
+g = sns.JointGrid(data=df,x='',y='')
+g.plot(sns.regplot,sns.distplot)
+
+
+Advanced JointGrid
+g = sns.JointGrid(data=df,x='',y='')
+g = g.plot_joint(sns.kdeplot) --> a kde plot should be included in the center-- Kdeplot is a Kernel Distribution Estimation Plot 
+g = g.plot_marginals(sns.kdeplot,shade=True)
+g = g.annotate(stats.pearsonr)
+
+
+
+jointplot()
+sns.jointplot(data=df,x='',y='',kind='')
+
+g = ( sns.jointplot( x='', y='', xlim=(), marginal_kws=dict(bins=15,rug=True), data=df.query('xx') ) .plot_joint(sns.kdeplot)) 
+
+
+
+# Build a JointGrid comparing humidity and total_rentals
+sns.set_style("whitegrid")
+g = sns.JointGrid(x="hum",
+            y="total_rentals",
+            data=df,
+            xlim=(0.1, 1.0)) 
+
+g.plot(sns.regplot, sns.distplot)
+
+
+
+# Create a jointplot with a 2nd order polynomial regression plot comparing temp and total_rentals.
+# 2nd order??
+
+# Plot temp vs. total_rentals as a regression plot
+sns.jointplot(x="temp",
+              y="total_rentals",
+              kind='reg',
+              data=df,
+              order=2,
+              xlim=(0, 1))
+              
+              
+              
+# Plot a jointplot showing the residuals
+sns.jointplot(x="temp",
+        y="total_rentals",
+        kind='resid', ---> showing the residuals use kind='resid'
+        data=df,
+        order=2)
 
 
 
 
-
-
-
-
-
-
-
-
-
+# Create a jointplot of temp vs. casual riders
+# Include a kdeplot over the scatter plot
+g = (sns.jointplot(x="temp",
+             y="casual",
+             kind='scatter',
+             data=df,
+             marginal_kws=dict(bins=10, rug=True))
+    .plot_joint(sns.kdeplot))
+    
+plt.show()
+plt.clf()
 
 
 
