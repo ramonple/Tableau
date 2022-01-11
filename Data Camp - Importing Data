@@ -1,0 +1,53 @@
+############################################# Course 1: Introduction and flat files #############################################
+
+-- Reading plain text files:
+filename='xx.txt'
+file=open(filename,mode='r') # r is to read --> 'w' to write
+text = file.read()
+file.close()
+print(text)
+
+with open('xxx.txt') as file:
+
+     print(file.read())
+
+--> read lines of the file -> file.readline()
+
+# Read & print the first 3 lines
+with open('moby_dick.txt') as file:
+    print(file.readline())
+    print(file.readline())
+    print(file.readline())
+    
+    
+    
+    
+    
+    The importance of flat files in data science
+    
+Flat files: text files containing records. That is, table data. Record: row of fields or attributes; column: features
+            Header
+
+File extension" .csv: comma separated values
+                .txt: text file
+                
+
+import flat files -: pandas, numpy
+
+
+
+import flat files using NumPy
+
+
+
+
+
+
+
+
+############################################# Course 2: Importing data from other file types #############################################
+
+
+############################################# Course 3: Working with relational databases in Python #############################################
+
+
