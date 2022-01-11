@@ -1,0 +1,55 @@
+1. Calculate the std
+import numpy as np
+sd_age = np.std(age)
+
+2. show the sqrt of all values in a df:
+print(df.apply(np.sqrt))
+---> 
+      apply() method. 
+      This function acts as a map() function in Python. It takes a function as an input and applies this function to an entire DataFrame.
+
+
+3. select one column from the df
+print(df.loc[:,["gh owner"])
+
+
+4. show the row satisfies a condition
+print(df[df["stars"] == 1450)
+
+
+6. drop duplicates:
+chess.drop(columns = "Gender",inplace=True)
+
+
+8. Do calculation on a particular column of the df
+import pandas as pd
+print(df.stars.transform(lambda x: x/1000)) # stars is the column name
+
+
+
+9. find the target column
+print(df.loc['two':])
+
+
+10. show the descriptions:
+print(food.describe())
+
+
+
+14. output all index of the df:
+print(food.index)
+
+
+
+
+inter-quatile range:
+np.percentile() 
+scipy.stats.iqr() --> iqr_age = stats.iqr(age)
+
+
+sns.scatterplot(x = "age", y = "value", hue = "emissions", data = valuation)
+
+
+Differences between:
+print(df.iloc[:,[2]])
+print(df.loc[:,["gh owner"]])
