@@ -53,3 +53,19 @@ sns.scatterplot(x = "age", y = "value", hue = "emissions", data = valuation)
 Differences between:
 print(df.iloc[:,[2]])
 print(df.loc[:,["gh owner"]])
+
+
+
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
