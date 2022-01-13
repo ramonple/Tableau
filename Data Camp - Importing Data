@@ -1,3 +1,9 @@
+ np.loadtxt()
+ np.genfromtxt() 
+ np.recfromcsv()
+
+
+
 ############################################# Course 1: Introduction and flat files #############################################
 
 -- Reading plain text files:
@@ -41,11 +47,326 @@ import flat files using NumPy
 
 
 
+Importing flat files using NumPy
+import numpy as np
+filename='xxx.txt'
+data=np.loadtxt(filename,delimiter=',',skiprows=1,usecols=[0,2],dtype=str) --> usecols[0,2] only comma ,
+
+# Print the 10th element of data_float
+print(data_float[9])
 
 
+
+ The function np.loadtxt() will freak at this. 
+ There is another function, np.genfromtxt(), which can handle such structures. 
+ If we pass dtype=None to it, it will figure out what types each column should be.
+ 
+ data = np.genfromtxt('titanic.csv', delimiter=',', names=True, dtype=None)
+ # names tells us there is a header.
+ 
+ 
+ 
+ np.loadtxt()
+ np.genfromtxt() to import data containing mixed datatypes
+ np.recfromcsv() -> behaves similarly to np.genfromtxt(), except that its default dtype is None
+ 
+ 
+ 
+ 
+ 
+ 
+ Importing flat files using pandas
+ 
+ import pandas as pd
+ filename='xxx.csv'
+ data=pd.read_csv(filename)
+ data.head()
+ 
+ 
+ # Read the first 5 rows of the file into a DataFrame: data
+data = pd.read_csv(file, nrows=5, header=None)
+ 
+# Build a numpy array from the DataFrame: data_array
+data_array = data.values
+
+
+
+# Import file: data
+data = pd.read_csv(file, sep='\t', comment='#', na_values=['Nothing'])
+--- comment takes characters that comments occur after in the file
+--- na_values takes a list of strings to recognize as NA/NaN, in this case the string 'Nothing'
 
 
 ############################################# Course 2: Importing data from other file types #############################################
+
+other file types:
+Excel 
+Matlab
+SAS 
+Stata
+HDF5
+
+
+
+
+--------------------------- Excel ---------------------------------------------------------------------------------
+excel spreadsheet:
+file='xxx.xlsx'
+data=pd.ExcelFile(file)
+
+['1960-1966','1970-1974']
+df1=data.parse('1960-1966') # sheet name, as a string
+df2=data.parse(0) # sheet index, as a float
+
+---- Parse
+Convert data in a certain format into a more usable format.
+
+
+ use the IPython magic command <! ls> to explore your current working directory. 
+using the library  < os >, which consists of miscellaneous operating system interfaces.
+
+import os # imports the library os
+wd = os.getcwd() # stores the name of the current directory in a string called wd
+os.listdir(wd) # outputs the contents of the directory in a list to the shell
+
+
+
+# Import pickle package
+import pickle
+
+# Open pickle file and load data
+with open('data.pkl', 'rb') as file: ->'rb'  opens the file in binary format for reading 'wb' for writing
+    d = pickle.load(file)
+
+
+
+
+# Import pandas
+import pandas as pd
+
+# Assign spreadsheet filename: file
+file = 'battledeath.xlsx'
+
+# Load spreadsheet: xls
+xls = pd.ExcelFile(file)
+
+# Print sheet names --> important .sheet_names
+print(xls.sheet_names) 
+
+
+
+
+
+# Load the sheet '2004' into the DataFrame df1 using its name as a string.
+df1 = xls.parse('2004')
+
+# Print the head of df1 to the shell.
+print(df1.head())
+
+# Load the sheet 2002 into the DataFrame df2 using its index (0).
+df2=xls.parse(0)
+
+# Print the head of df2 to the shell
+print(df2.head())
+
+
+
+
+The spreadsheet 'battledeath.xlsx' is already loaded as xls.
+
+# Parse the first sheet and rename the columns: df1
+df1 = xls.parse(0, skiprows=[0], names=['Country', 'AAM due to War (2002)']) --> the first sheet: 0, skiprows=[x]
+
+# Print the head of the DataFrame df1
+print(df1.head())
+
+# Parse the first column of the second sheet and rename the column: df2
+df2 = xls.parse(1, usecols=[0], skiprows=[0], names=['Country']) --> the seond sheet:1 
+                                                    usecols=[0]: parse only the first column
+# Print the head of the DataFrame df2
+print(df2.head())
+
+
+--------------------------- SAS/ Stata files ------------------------------------------------------
+import pandas as pd
+from sas7bdat import SAS7BDAT
+with SAS7BDAT('xxxx.sas7dbat' as file:
+     df_sas = file.to_data_frame() --> file.to_data_frame()
+
+import pandas as pd
+data=pd.read_stata('xxx.dta')
+
+
+
+# Import sas7bdat package
+from sas7bdat import SAS7BDAT
+
+# Save file to a DataFrame: df_sas
+with SAS7BDAT('sales.sas7bdat') as file:
+    df_sas = file.to_data_frame() -> file.to_data_frame()
+
+# Print head of DataFrame
+print(df_sas.head())
+
+# Plot histograms of a DataFrame feature (pandas and pyplot already imported)
+pd.DataFrame.hist(df_sas[['P']])
+plt.ylabel('count')
+plt.show()
+
+
+
+
+# Import pandas
+import pandas as pd
+
+# Load Stata file into a pandas DataFrame: df
+df=pd.read_stata('disarea.dta')
+
+# Print the head of the DataFrame df
+print(df.head())
+
+# Plot histogram of one column of the DataFrame
+pd.DataFrame.hist(df[['disa10']]) --> pd.DataFrame.hist()
+plt.xlabel('Extent of disease')
+plt.ylabel('Number of countries')
+plt.show()
+
+
+
+
+# Import pandas
+import pandas as pd
+
+# Load Stata file into a pandas DataFrame: df
+df=pd.read_stata('disarea.dta')
+
+# Print the head of the DataFrame df
+print(df.head())
+
+# Plot histogram of one column of the DataFrame
+pd.DataFrame.hist(df[['disa10']])
+plt.xlabel('Extent of disease')
+plt.ylabel('Number of countries')
+plt.show()
+
+
+
+
+
+-------------------------- Importing HDF5 files  ----------------------------------------------------
+Hierachical Data Format version 5
+
+import h5py
+filename='xxx.hdf5') # # Assign filename: file
+data=h5py.File(filename,'r') --> r is to read # Load file: data
+
+
+-- the structer of the file
+for key in data.keys():
+    print(key)
+--> meta
+    quality
+    strain
+print(type(data['meta']))
+--> < class 'h5py._hl.group.Group'>
+
+for key in data['meta'].keys():
+    print(key)
+--> Description
+    DescriptionURL
+    Detector
+    ....
+print(data['meta']['Description'].value, data['meta']['Detector'].value)    
+    
+    
+    
+    
+    
+ -- exercise:
+ # Import packages
+import numpy as np
+import h5py
+
+# Assign filename: file
+file = 'LIGO_data.hdf5'
+
+# Load file: data
+data = h5py.File(file, 'r')
+
+# Print the datatype of the loaded file
+print(type(data))
+
+# Print the keys of the file
+for key in data.keys():
+    print(key)
+    
+    
+    
+    
+    
+    
+# Get the HDF5 group: group
+group = data['strain']
+
+# Check out keys of group
+for key in group.keys():
+    print(key)
+
+# Set variable equal to time series data: strain
+strain = data['strain']['Strain'].value
+
+# Set number of time points to sample: num_samples
+num_samples = 10000
+
+# Set time vector
+time = np.arange(0, 1, 1/num_samples)
+
+# Plot data
+plt.plot(time, strain[:num_samples])
+plt.xlabel('GPS Time (s)')
+plt.ylabel('strain')
+plt.show()
+   
+    
+    
+    
+    
+
+--------------------------  Importing MATLAB files --------------------------  
+SciPy
+scipy.io.loadmat() -> read .mat file
+scipy.io.savemat() -> write .mat file
+
+import scipy.io
+filename='xx.mat'
+mat = scipy.io.loadmat(filename')
+print(type(mat))
+--> class dic
+
+
+# Import package
+import scipy.io
+
+# Load MATLAB file: mat
+mat = scipy.io.loadmat('albeck_gene_expression.mat')
+
+# Print the datatype type of mat
+print(type(mat))
+
+
+
+
+Use the method .keys() on the dictionary mat to print the keys.
+
+# Print the keys of the MATLAB dictionary
+print(mat.keys())
+
+# Print the type of the value corresponding to the key 'CYratioCyt'
+print(type(mat['CYratioCyt']))
+
+# Print the shape of the value corresponding to the key 'CYratioCyt'
+print(np.shape(mat['CYratioCyt'])) ---> np.shape
+
 
 
 ############################################# Course 3: Working with relational databases in Python #############################################
