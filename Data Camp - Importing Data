@@ -2,8 +2,7 @@
  np.genfromtxt() 
  np.recfromcsv()
 
-
-
+    
 ############################################# Course 1: Introduction and flat files #############################################
 
 -- Reading plain text files:
@@ -554,23 +553,29 @@ print(df.head())
 
 
 
+##########################################################################################
+Exercise Tips:
+s = pd.read_csv(file,header = None)
+scipy.io.loadmat('xx.mat')
+
+df = data.parse(1,parse_cols = [0], --> parse_cols from the first column
+skiprows = "0", 
+names = ['Country']) -> should be 'names'
+print(df.head())
 
 
+for key in filename.keys():
+    print(key)
+ ---> Each key in the output is an HDP group
+ 
+ 
+print(type(html)) ---> < class 'bytes' >
+
+The correct statement: 
+The BeautifulSoup package is used to structure html data from a website
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+url = ('http://www.omdbapi.com/?apikey=72bc447a&t=the+social+network')
 
 
 
