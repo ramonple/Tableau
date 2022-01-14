@@ -319,3 +319,13 @@ cd = ['clinton', 'trump', 'sanders', 'cruz']
 ax = sns.barplot(cd, [clinton, trump, sanders, cruz])
 ax.set(ylabel="count")
 plt.show()
+
+
+
+
+
+----------------------- Practice 
+df = pd.DataFrame(tweets_data,columns = ['lang','text'])print(df.head(2)) # no " " for database
+
+A set of protocols and routines for building and interacting with software applications: API
+
