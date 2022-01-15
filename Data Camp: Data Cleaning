@@ -1,8 +1,186 @@
 ########################################## Course 1: Common data problems ##########################################
+----- Data type
+
+# get the data types of columns
+sales.dtypes
+
+# print sum of all Revenue column
+sales['Revenue'].sum()
+
+String to integers: --> str.strip('')
+# Remove $ from Revenue column
+sales['Revenue'] = sales['Revenue'].str.strip('$') --> .str.strip('xx')
+sales['Revenue'] = sales['Revenue'].astype('int')
+
+# verify that Revenue is now an integer
+assert sales['Revenue'].dtype == 'int'
+
+
+Numeric or categorical?
+# convert to categorical:
+df['marriage_status'] = df['marriage_status'].astype('category')
+
+# Print the information of ride_sharing
+print(ride_sharing.info()) ---> data.info()
+
+# Print summary statistics of user_type column
+print(ride_sharing['user_type'].describe()) --> data.decribe()
+
+# Convert user_type from integer to category
+ride_sharing['user_type_cat'] = ride_sharing['user_type'].astype('category)
+
+# Write an assert statement confirming the change
+assert ride_sharing['user_type_cat'].dtype == 'category'
+
+# Print new summary statistics 
+print(ride_sharing['user_type_cat'].describe())
+
+# Strip duration of minutes
+ride_sharing['duration_trim'] = ride_sharing['duration'].str.strip("minutes")
+
+# Print formed columns and calculate average ride duration 
+print(ride_sharing[['duration','duration_trim','duration_time']])
+print(ride_sharing["duration_time"].mean())
 
 
 
-########################################## Course 2:
+
+--------------- Data range constraints
+
+# import data time:
+import datetime as dt
+today_date = dt. date. today()
+user_signups[user_signups['date'] > dt.date.today()]
+
+
+Deal with out of range data:
+- dropping data
+- setting custom min and max
+- treat as missing and impute
+- setting custom value depending on business assumptions
+
+import pandas as pd
+# output Movies with rating > 5
+movies[movies['avg_rating']>5]
+# drop values using filtering
+movies = movies[movies['avg_rating'] <= 5 ]
+# drop values via .drop()
+movies.drop(movies[movies['avg_rating'] > 5].index, inplace= True)
+# Assert values
+assert movies['avg_rating'].max() <= 5
+----  In Python, the assert statement is used to continue the execute if the given condition evaluates to True
+# converting avg_rating > 5 to 5
+movies.loc[movies['avg_rating'] > 5, 'avg_rating'] = 5 -->  loc. Access a group of rows and columns by label
+# Assert statement
+assert movies['avg_rating']max() <= 5
+
+
+Date Range example:
+import datetime as dt
+import pands as pd
+# output data types
+user_signup_date.dtypes. --> .dtypes
+# Convert to datetime
+user_signup['user_signup_date'] = pd.to_datetime(user_signup['user_signup_date']) ---> .to_datetime()
+# Assert that conversion happens
+assert user_signup['user_signup_date'].dtype == 'datetime64[ns]'
+
+today_date = dt.date.today()
+# Drop the values using filtering
+user_singups= user_singnups[user_singups['subscription_date'] < today_date]
+# Drop values using .drop()
+user_singups.drop(user_singups[user_singups['subscription_date'] > today_date, inplace=True)
+# drop values using filtering
+user_signups.loc[user_singups['subscription_date'] > today_date, 'subscription_date']=today_date
+# Assert is true
+assert user_signups.subscription_date.max().date() <= today_date
+
+
+Exercise
+# Convert ride_date to datetime
+ride_sharing['ride_dt'] = pd.to_datetime(ride_sharing['ride_date'])
+
+# Print maximum of ride_dt column
+print(ride_sharing['ride_dt'].max())
+
+
+
+
+
+----- Uniqueness constraints
+duplicate values:
+# how to find duplicate values
+duplicates = height_weight.duplicated() ---> .duplicated()
+height_weight[duplicates]
+
+.duplicated()
+-- subset: list of column to check for duplicates
+-- keep: Whether to keep 'first', 'last' or 'False' (all) duplicated values
+
+duplicates = height_weight.duplicated(subset = column_names, keep = False)
+# output
+height_weight[duplicates].sort_values(by = ' first_name')
+
+
+-- inplace: drop duplicated rows directly inside DataFrame without creating new object (inplace=True)
+column_names =['first_name','last_name','address']
+
+height_weight.drop_duplicates(inplace=True)
+
+
+
+How to treat duplicate values?
+ .groupby() and .agg() method
+ 
+ column_names =['first_name','last_name','address']
+ 
+ # Create  summaries dictionary for aggregation function
+ summaries {'height':'max','weight':'mean'}
+ 
+ height_weight = height_weight.groupby(by = column_names). agg(summaries).rest_index()
+ 
+ ---> we chain this entire line with the .reset_index() method. so that we can have numbered indicies in the final output
+ # Make sure aggregation is done
+ duplicates = height_weight.duplicated(subset = column_names,keep=False)
+ height_weights[duplicates].sort_values(by='first_name')
+ 
+ 
+ 
+ # Group by ride_id and compute new statistics
+ride_unique = ride_sharing.groupby('ride_id').agg(statistics).reset_index()
+
+# Find duplicated values again
+duplicates = ride_unique.duplicated(subset = 'ride_id', keep = False)
+duplicated_rides = ride_unique[duplicates == True]
+ 
+ # Assert duplicates are processed
+assert duplicated_rides.shape[0] == 0
+
+
+########################################## Course 2: Text and categorical data problems##########################################
+
+Finding inconsitent categories
+inconsistent_categories = set (study_date['blood_type']). difference(categories['blood_type'])
+# get and print rows with incosistent categories
+inconsistent_rows = study_date['blood_types'].isin(inconsistent_categories)
+study_data[inconsistent_rows]
+
+Dropping inconsistent categories
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
