@@ -89,6 +89,156 @@ print(andrew.strftime('%Y-%j'))
 
 
 ################################################### Course 2: Combining Dates and Times ###################################################
+include the time:
+from datetime import datetime
+dt=datetime(2017,10,1,15,23,25)  # Oct 1 2017, 3:23:25 pm
+dt=datetime(year=2017,month=10,day=1,hour=15,minute=23,second=25,micriosencond=500000) #5*0
+
+dt.replace(minute=0,second=0)
+
+Counting events before and after noon
+# Within the for loop, complete the if statement to check if the trip started before noon.
+
+# Create dictionary to hold results
+trip_counts = {'AM': 0, 'PM': 0}
+  
+# Loop over all trips
+for trip in onebike_datetimes:
+  # Check to see if the trip starts before noon
+  if trip['start'].hour < 12:
+    # Increment the counter for before noon
+    trip_counts['AM'] += 1
+  else:
+    # Increment the counter for after noon
+    trip_counts['PM'] += 1
+  
+print(trip_counts)
+
+
+
+----------------------------------
+Printing and parsing datetimes
+
+dt=datetime(2017,12,30,15,19,13)
+print(dt.strftime('%Y=%m-%d')
+print(dt.strftime('%Y=%m-%d %H:%M:%S')
+print(dt.isoformat()) --> 2017-12-30 OT 15:19:13
+
+-------> dt.isoformat()
+         dt.strftime('xxx')
+
+parsing datetimes with striptime
+# dt=datetime.strptime(string to invert into the date time, the format of the datetime)
+
+dt = datetime.strptime("12/30/2017 15:19:13","%m/%d/%Y %H:%M:S")
+
+
+-- exercise:
+
+# Write down the format string
+fmt = "%Y-%m-%d %H:%M:%S"
+
+# Initialize a list for holding the pairs of datetime objects
+onebike_datetimes = []
+
+# Loop over all trips
+for (start, end) in onebike_datetime_strings:
+  trip = {'start': datetime.strptime(start, fmt),
+          'end': datetime.strptime(end, fmt)}
+  
+  # Append the trip
+  onebike_datetimes.append(trip)
+
+# Pull out the start of the first trip
+first_start = onebike_datetimes[0]['start']
+
+# Print out date with .isoformat(), then with .strftime() to compare
+print(first_start.isoformat())
+print(first_start.strftime(fmt))
+
+
+# an unique timestamp
+ts=1514665153.0
+# convert to datetime and print
+print(datetime.fromtimestamp(ts))
+---> 2017-12-30 15:19:13
+
+-- exercise:
+
+# Import datetime
+from datetime import datetime
+
+# Starting timestamps
+timestamps = [1514665153, 1514664543]
+
+# Datetime objects
+dts = []
+
+# Loop
+for ts in timestamps:
+  dts.append(datetime.fromtimestamp(ts))
+  
+# Print results
+print(dts)
+
+
+
+
+--- working with durations
+
+start = datetime(2017,10,8,23,46,17)
+end = datetime(2017,10,9,0,10,57)
+# substract datetimes to create a timedelta
+duration = end - start
+# substract datetimes to create a timedelta
+print(duration.total_second())
+
+# create a timedelta
+delta1=timedelta(seconds=1)
+print(start + delta1)
+delta2=timedelta(days=1,seconds=1)
+
+
+--- exercise:
+# Initialize a list for all the trip durations
+onebike_durations = []
+
+for trip in onebike_datetimes:
+  # Create a timedelta object corresponding to the length of the trip
+  trip_duration = trip['end'] - trip['start']
+  
+  # Get the total elapsed seconds in trip_duration
+  trip_length_seconds = trip_duration.total_seconds()
+  
+  # Append the results to our list
+  onebike_durations.append(trip_length_seconds)
+  
+  
+  
+# What was the total duration of all trips?
+total_elapsed_time = sum(onebike_durations)
+
+# What was the total number of trips?
+number_of_trips = len(onebike_durations)
+  
+# Divide the total duration by the number of trips
+print(total_elapsed_time / number_of_trips)
+  
+  
+# Calculate shortest and longest trips
+shortest_trip = min(onebike_durations)
+longest_trip = max(onebike_durations)
+
+# Print out the results
+# turning shortest_trip and longest_trip into strings so they can print.
+print("The shortest trip was " + str(shortest_trip) + " seconds")
+print("The longest trip was " + str(longest_trip) + " seconds") 
+  
+  
+
+
+
+
 
 
 ################################################### Course 3: Time Zones and Daylight Saving ###################################################
