@@ -105,3 +105,39 @@ ax = sns.swarmplot(x="measurement",
                    
 print(employee[employee['salary_usd'] == 5000])                   
                    
+
+
+# Select the three rows having the smallest values
+print(df.nsmallest(3, 'population'))
+
+
+print(df.apply(np.sqrt)) ---> df.apply 
+
+
+
+# barplot
+ax = sns.barplot(x="Grade", y="Count", data=df)
+
+
+# output according to the value of one column
+result = df.sort_values('salary', ascending = True) --> according to 'salary' column
+print(result)
+
+
+
+heart_clean = heart.rename(columns=column_names)
+
+
+
+
+subset_wine = wine[['country', 'price']] --> two [[ ]]
+print(subset_wine.head())
+
+
+
+
+
+
+
+
+
