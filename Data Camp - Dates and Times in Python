@@ -1,5 +1,38 @@
 Working with Dates and Times in Python
 
+Recap:
+
+date() -> takes a year,month and day as arguments
+.year 
+.weekday()
+min(),max(),sort()
+
+to turn date objects into strings,
+.isoformat() 
+.strftime()
+
+datetime() takes all the arguments of date(), plus an hour, minute and second
+.replace()
+convert timedelta into an iteger with its .total_seconds()
+turn strings into dates: .strptime()
+date into strings: .strftime()
+
+
+A datetime is 'timezone aware' when it has its tzinfo set. 
+.replace() to change the time zone of a datetime
+.astimezone() to shift the date and time to match the new timezone
+dateutil.tz provides a comprehensive, updated timezone database
+
+parse_dates  
+pd.to_datetime()
+
+.groupby() grouping by rows
+.first() .min() .mean()
+.resample() groups rows on the basis of a datetime column, by year, month, day as so on
+.tz_localize() to set a timezone, keeping the date and time the same
+.tz_convert() to change the date and time to match a new timezone
+
+
 ################################################### Course 1: Dates and Calendars ###################################################
 
 import datetime import date
