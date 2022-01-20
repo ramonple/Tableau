@@ -1,0 +1,54 @@
+with open("data.txt", mode="r") as file:
+    print(file.read())
+    
+    
+print(game.fillna(0))
+
+hf = h5py.File('LIGO_data.hdf5', 'r')
+
+data = np.loadtxt("data.txt", delimiter="\t", dtype="int")
+
+student['name'] = student['name'].str.replace(' ', '')
+
+food_df = pd.read_excel(food_file, names=['Country', 'Regular Coffee', 'Instant Coffee', 'Tea'])
+df = pd.read_excel(filename, skiprows = 4)
+
+#  Convert the columns math and chemistry from wide to long format.
+df = pd.melt(df, id_vars = 'id', value_vars = ['math', 'chemistry'])
+
+
+# Remove the leading spaces from all entries in the column.
+plants['water_requirement'] = plants['water_requirement'].str.strip()
+
+
+# find the string start with 're'
+print(s.str.startswith('re'))
+# contains 2019
+print(data.str.contains("2019"))
+
+wine_no_duplicates= wine.drop_duplicates(subset=['style', 'type', 'country'], keep= 'first')
+wine_no_duplicates= wine.drop_duplicates()
+
+
+# fill the missing values with the previous observation
+print(data.fillna(method = "ffill"))
+
+
+print(contact.email.str.split('@', expand = True))
+
+           email
+0  mary@datacamp.com
+1   susan@google.com
+2    helen@gmail.com
+to:
+     0             1
+0   mary  datacamp.com
+1  susan    google.com
+2  helen     gmail.com
+
+
+
+food = food.set_index('item')
+
+
+print(pd.merge(df_1, df_2, on = "repo_id", how = 'inner'))
