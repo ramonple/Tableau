@@ -55,17 +55,53 @@ print(df.iloc[:,[2]])
 print(df.loc[:,["gh owner"]])
 
 
+import pandas as pd
+print(pd.DataFrame({
+    "x": [1], 
+    "y": [3],
+}))
+ 
+ 
+print(employee.index) -> no parenthesis after index 
+ 
+ 
+ np.average()
+ np.std()
+ np.var()
+ 
+ 
+ -- a plot with scatterplot and histogram
+ sns.jointplot(x='',y='',data=)
+ 
+ 
+ --> output target columns
+ print(df[['alignment', 'character']]) --> two [[ ]]
+
+
+--> set index
+chess = chess.set_index('Fide id')
 
 
 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
+
+--> facets 
+g = sns.FacetGrid(
+            tips, 
+            col="time", 
+            hue="smoker"
+            row="smoker"
+            )
+            
+            
+--> swarmplot
+ax = sns.swarmplot(x="measurement", 
+                   y="value", 
+                   colors="species", 
+                   hue="species", 
+                   data=iris)
+                   
+                   
+                   
+print(employee[employee['salary_usd'] == 5000])                   
+                   
