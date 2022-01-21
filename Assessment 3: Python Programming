@@ -1,0 +1,151 @@
+1.
+def hours_to_seconds(hours):
+    return hours * 60 * 60
+
+hours_to_seconds(8)
+
+
+
+3.
+if day == 'friday':
+    print('It is Friday!')
+else:
+    print('It is not Friday!')
+    
+    
+4.
+class Planet:
+    def __init__(self, name):
+        self.name = name
+        
+v = Planet('venus')
+
+v.name   
+
+
+
+
+5. 
+boardgames.append('Patchwork')
+
+
+
+
+10. 
+# add to dic
+d = {
+    'apple': 1,
+    'banana': 2,
+    'coconut': 3
+}
+d['durian'] = 4
+
+
+
+11.
+# change values in dic
+book = {
+    'title': 'The Giver',
+    'author': 'Lois Lowry',
+    'rating': 4.13
+}
+
+book['rating'] = 4.6  # single =
+
+
+
+13.
+# add 32 to all values in a list
+vals = [25, 30, 33, 35, 40, 180]
+new_vals = [val + 32 for val in vals]
+
+
+
+14.
+def point(x, y):
+    return x, y
+    
+  
+  
+15.
+letters = ['a', 'b', 'c']
+for ii, x in enumerate(letters):
+
+# The enumerate() method adds a counter to an iterable and returns it (the enumerate object).
+
+
+
+
+
+2.
+class AstroBody:
+    description = 'Natural entity in the observable universe.'    
+
+class Star(AstroBody):
+    pass
+
+sun = Star()
+
+sun.description
+
+
+
+6.
+class Dog:
+    def __init__(self):
+        pass
+    
+    def bark(self):
+        return "bark bark bark bark bark bark..."
+
+d = Dog()
+d.bark() --> should be d.bark() not bark()
+
+
+
+
+
+7.
+class Candy:
+    flavor = 'sweet'
+    
+    def __init__(self, name):
+        self.name = name
+        
+c = Candy('Chocolate')
+
+c.name
+
+
+
+
+12.
+def to_int(x):
+    try:
+        return int(x)
+    except ValueError: --> except statement catches an exception
+        print("that value can't be turned into an integer")
+
+to_int("")
+
+
+
+
+
+14.
+x = (1, 2, 3)
+s = set(x)
+s
+---> {1, 2, 3}
+
+
+
+15.
+class Person:
+   def __init__(self, name):
+        self.name = name
+
+m = Person('Michael')
+
+m.name
+
