@@ -542,3 +542,345 @@ multiply(5, 10)
 
 
 ##################################### Course 4: More on Decorators #####################################
+*args and **kwargs allow you to pass multiple arguments or keyword arguments to a function.
+
+Wrappers around the functions are also knows as decorators which are a very powerful and useful tool in Python since 
+it allows programmers to modify the behavior of function or class.
+
+Decorators allow us to wrap another function in order to extend the behavior of the wrapped function, without permanently modifying it. 
+In Decorators, functions are taken as the argument into another function and then called inside the wrapper function.
+
+def function(n):
+    statement(s)
+
+function = wrapper(function)
+
+-------------------------------------------------------------------
+1. example :
+
+import time
+
+def timer(func):
+    def wrapper(*args,**kwargs):
+        t_start = time.time() -->  time() returns the time as a floating point number expressed in seconds since the epoch, in UTC.
+        result=func(*args,**kwargs)
+        t_total = time.time() - t_start
+        print('{} took {}s' .format(func.__name__,t_total)). -- The __name__ variable gets its value depending on how we execute the containing script.
+        
+ return wrapper
+ 
+ 
+# using timer
+
+@ timer
+def sleep_n_seconds(n):
+    time.sleep(n) --> The sleep() function suspends (waits) execution of the current thread for a given number of seconds.
+    
+sleep_n_seconds(5)
+
+
+2. example:
+
+def memoize(func):
+   """ store the results of the decorated function for fast lookup"""
+   # store results in a dict that maps arguments to results
+   cache={}
+   def wrapper(*args,**kwargs):
+       if (args,kwargs) not in cache:
+          # call func() and store the results.
+          cache[(args,kwargs)] = func(*args,**kwargs)
+       return cache[(args,kwargs)]
+   return wrapper
+   
+   
+@memoize
+def slow_function(a,b):
+    print('sleeping ...')
+    time.sleep(5)
+    return (a+b)
+
+
+
+
+When to use decorators:
+
+@timer
+def foo():
+    # do some computation
+
+@timer
+def bar():
+   # do some other computation
+   
+@timer
+def baz():
+  # do something else
+  
+  
+
+
+---------------------------------------------
+def print_return_type(func):
+  # Define wrapper(), the decorated function
+  def wrapper(*args, **kwargs):
+    # Call the function being decorated
+    result = func(*args, **kwargs)
+    print('{}() returned type {}'.format(
+      func.__name__, type(result)
+    ))
+    return result
+  # Return the decorated function
+  return wrapper
+  
+@print_return_type
+def foo(value):
+  return value
+  
+print(foo(42))
+print(foo([1, 2, 3]))
+print(foo({'a': 42}))
+--------------------------------------------------------------------------------
+def counter(func):
+  def wrapper(*args, **kwargs):
+    wrapper.count += 1
+    # Call the function being decorated and return the result
+    return func(*args, **kwargs)
+  wrapper.count = 0
+  # Return the new decorated function
+  return wrapper
+
+# Decorate foo() with the counter() decorator
+@counter
+def foo():
+  print('calling foo()')
+  
+foo()
+foo()
+
+print('foo() was called {} times.'.format(foo.count))
+--------------------------------------------------------------------------------
+
+
+Decorators and metadata
+
+from functools import wraps
+def timer(func):
+    """ a decorator that prints how long a function took to run """
+    @wraps(func)
+    
+    def wrapper(*args,**kwargs):
+        t_start = time.time()
+        
+        result = func(*args,**kwargs)
+        
+        t_total = time.time() - t_start
+        
+        print('{} took {}'s.format(func.__name__,t_total))
+        
+        return result
+     return wrapper
+
+
+
+
+
+from functools import wraps
+
+def add_hello(func):
+  # Decorate wrapper() so that it keeps func()'s metadata
+  @wraps(func)
+  def wrapper(*args, **kwargs):
+    """Print 'hello' and then call the decorated function."""
+    print('Hello')
+    return func(*args, **kwargs)
+  return wrapper
+  
+@add_hello
+def print_sum(a, b):
+  """Adds two numbers and prints the sum"""
+  print(a + b)
+  
+print_sum(10, 20)
+print_sum_docstring = print_sum.__doc__
+print(print_sum_docstring)
+
+
+
+
+
+@check_everything
+def duplicate(my_list):
+  """Return a new list that repeats the input twice"""
+  return my_list + my_list
+
+t_start = time.time()
+duplicated_list = duplicate(list(range(50)))
+t_end = time.time()
+decorated_time = t_end - t_start
+
+t_start = time.time()
+# Call the original function instead of the decorated one
+duplicated_list = duplicate.__wrapped__(list(range(50))) --> name.__wrapped__
+t_end = time.time()
+undecorated_time = t_end - t_start
+
+print('Decorated time: {:.5f}s'.format(decorated_time))
+print('Undecorated time: {:.5f}s'.format(undecorated_time))
+
+
+
+
+
+------ Decorators that take arguments
+1.
+def run_three_times(func):
+    def wrapper(*args,**kwargs):
+        for i in range(3):
+            func(*args,**kwargs)
+        return wrapper
+@run_three_times
+def print_sum(a,b):
+    print(a+b)
+
+2. 
+def run_n_times(func):
+    def wrapper(*args,**kwargs):
+        for i in range(n):
+            func(*args,**kwargs)
+        return wrapper
+@run_n_times
+def print_sum(a,b):
+    print(a+b)
+@run_n_times
+def print_hello():
+    print('Hello')
+
+3. 
+def run_n_times(func):
+  def decorator(func):
+    def wrapper(*args,**kwargs):
+        for i in range(n):
+            func(*args,**kwargs)
+        return wrapper
+    return decorator
+run_three_times = run_n_times(3)
+@run_n_times
+def print_sum(a,b):
+    print(a+b)
+
+
+
+# Make goodbye() return italicized text
+@html('<i>', '</i>')
+def goodbye(name):
+  return 'Goodbye {}.'.format(name)
+  
+print(goodbye('Alice'))
+
+
+
+
+
+
+
+
+Timeout(): a real world example
+
+def timeout_in_5s(func):
+    @wraps(func)
+    def wrapper(*args,**kwargs):
+     # set an alarm for 5 seconds
+       signal.alarm(5)
+       try:
+          # call the decoreated function
+          return func(*args,**kwargs)
+       finally:
+          # cancel alarm
+          signal.alarm(0)
+    return wrapper
+
+
+
+-- Tag your functions
+--- Tagging something means that you have given that thing one or more strings that act as labels.
+--- For instance, we often tag emails or photos so that we can search for them later. 
+
+def tag(*tags):
+  # Define a new decorator, named "decorator", to return
+  def decorator(func):
+    # Ensure the decorated function keeps its metadata
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+      # Call the function being decorated and return the result
+      return func(*args, **kwargs)
+    wrapper.tags = tags
+    return wrapper
+  # Return the new decorator
+  return decorator
+
+@tag('test', 'this is a tag')
+def foo():
+  pass
+
+print(foo.tags)
+
+
+
+-----------
+def returns_dict(func):
+  # Complete the returns_dict() decorator
+  def wrapper(*args, **kwargs):
+    result = func(*args, **kwargs)
+    assert type(result) == dict
+    return result
+  return wrapper
+
+@returns_dict
+def foo(value):
+  return value
+
+try:
+  print(foo([1,2,3]))
+except AssertionError:
+  print('foo() did not return a dict!')
+
+
+
+----------
+def returns(return_type):
+  # Write a decorator that raises an AssertionError if the
+  # decorated function returns a value that is not return_type
+  def decorator(func):
+    def wrapper(*args, **kwargs):
+      result = func(*args, **kwargs)
+      assert type(result) == return_type
+      return result
+    return wrapper
+  return decorator
+  
+@returns(dict)
+def foo(value):
+  return value
+
+try:
+  print(foo([1,2,3]))
+except AssertionError:
+  print('foo() did not return a dict!')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
