@@ -1,4 +1,4 @@
-################# Course 1: Read, clean and validate
+##################################  Course 1: Read, clean and validate  ###################################################
 value_counts().sort_index()
 .sort_values()
 -------------------------
@@ -12,8 +12,6 @@ data.columns
 ounces = data['birthwgt_oz1']
 # Print the first 5 elements of ounces
 print(ounces.head())
-
-
 
 clean and validate
 
@@ -93,7 +91,28 @@ print('Multiple full-term mean:', mult_full_term_weight.mean())
 
 
 
-################################# Couse 2: Distributions ###################################
+##################################################### Couse 2: Distributions ######################################################################################
+Pmf(data,normalize=True/False)
+Pmf(data['column'],normalize=True/False)
+Pmf(data['column'].plot()
+Pmf(data['column'].bar()
+
+Cdf(data['column']).plot()
+Cdf(data['column']).inverse()
+
+from scipy.stats import norm
+xs=np.linspace(a,b)
+ys=norm(0,1).cdf(xs)
+plt.plot(xs,ys,color='gray')
+
+ys = dist.cdf(xs)
+
+log_income = np.log10(income) 
+
+sns.kdeplot(log_income)
+
+-------------------------------------
+
 PMF: probability mass function
 
 pmf_educ = Pmf(educ,normalize=False)
@@ -104,13 +123,13 @@ pmf_edc[12] --> 0.308294
 
 pmf_educ.bar(label='educ')
 
--- exercise
-# Compute the PMF for year
+
 pmf_year = Pmf(gss['year'], normalize=False)
 
 # Print the result
 print(pmf_year)
 
+plt.plot(xs, ys, color='gray')
 
 ------------------------------
 Cumulative distriburion functions
@@ -153,6 +172,192 @@ print(iqr)
 
 
 Comparing distributions
+
+-- multiple PMFs
+male = gss['sex']==1
+age=gss['age']
+male_age=age[male]
+female_age=age[~male]
+Pmf(male_age).plot(label='Male')
+Pmf(female_age).plot(label='Female')
+
+
+-- multiple CDFs
+Cdf(male_age).plot(label='Male')
+Cdf(female_age).plot(label='Female)
+
+income=gss['realinc']
+pre95=gss['year'] < 1995
+Pmf(income[pre95]).plot(label='Before 1995')
+Pmf(income[~pre95).plot(label='After 1995')
+
+
+--- exercise
+# Select educ
+educ = gss['educ']
+
+# Bachelor's degree
+bach = (educ >= 16)
+
+# Associate degree
+assc = (educ >= 14) & (educ < 16)
+
+# High school
+high = (educ <= 12)
+print(high.mean())
+
+
+
+
+Modeling distributions
+
+--- Normal distribution:
+sample = np.random.normal(size=1000)
+Cdf(sample).plot()
+
+--- The normal CDF
+from scipy.stats import norm
+xs=np.linspace(-3,3)
+ys=norm(0,1).cdf(xs)
+plt.plot(xs,ys,color='gray')
+
+xs=np.linspace(-3,3)
+ys=norm(0,1).pdf(xs)
+plt.plot(xs,ys,color='gray')
+
+
+KDE plot # kernel density estimate
+import seaborn as sns
+sns.kdeplot(sample)
+
+
+-- exercise
+# Extract realinc and compute its log
+income = gss['realinc']
+log_income = np.log10(income) --> calculate the log value
+
+# Compute mean and standard deviation
+mean = log_income.mean()
+std =log_income.std()
+print(mean, std)
+
+# Make a norm object 
+# Make a norm object by passing the computed mean and standard deviation to norm()
+from scipy.stats import norm
+dist = norm(mean,std)
+
+# Evaluate the model CDF
+xs = np.linspace(2, 5.5)
+ys = dist.cdf(xs) ---> calculate the cdf of the distribution
+
+# Plot the model CDF
+plt.clf()
+plt.plot(xs, ys, color='gray')
+
+# Create and plot the Cdf of log_income
+Cdf(log_income).plot()
+    
+# Label the axes
+plt.xlabel('log10 of realinc')
+plt.ylabel('CDF')
+plt.show()
+
+
+
+# Evaluate the normal PDF
+xs = np.linspace(2, 5.5)
+ys = dist.pdf(xs)
+
+# Plot the model PDF
+plt.clf()
+plt.plot(xs, ys, color='gray')
+
+# Plot the data KDE
+sns.kdeplot(log_income)
+    
+# Label the axes
+plt.xlabel('log10 of realinc')
+plt.ylabel('PDF')
+plt.show()
+
+
+##################################################### Course 3: Relationships #####################################################
+---- Exploring relationships
+-> scatter plot
+plt.plot()
+
+transparency (alpha=)
+marker size (markersize)
+plt.plot(x,y,'o',markersize = 1, alpha=0.02)
+
+
+Jittering ---> adding random noise
+height_jitter = height + np.random.normal(0,2,size=len(brfss))
+plt.plot(height_jitter,weight,'0',markersize=1,alpha=0.02)
+
+
+Zoom
+plt.plot(height_jitter,weight_jitter,'o',markersize=1,alpha=0.02)
+plt.axis([140,200,0,160]) --> upper and lower bounds for x and y
+
+--- exercise
+
+# Select the first 1000 respondents
+brfss = brfss[:1000]
+
+
+
+
+
+Visualizing relationships
+
+-> Violin plot
+data = brfss.dropna(subset=['AGE','WTKG3'])
+sns.violinplot(x='AGE',y='WTKG3',data=data, inner=None) --> Never forget x= y=, data = xxx
+
+-> Boxplot
+sns.boxplot(x,y,data,whis=10)
+-- logscale
+plt.yscale('log')
+
+
+
+
+
+
+
+Correlation
+# Select columns
+columns = ['AGE', 'INCOME2', '_VEGESU1']
+subset = brfss[columns]
+
+# Compute the correlation matrix
+print(subset.corr())
+
+
+
+
+
+simple regression
+from scipy.stats import linreagress
+res=linregress(xs,ys)
+
+
+Regression lines
+fx=np.array([xs.min(),xs.max()]) --> never forget the [ ]
+                                 ---> Set fx to the minimum and maximum of xs, stored in a NumPy array.
+fy=res.intercep + res.slope * fx
+plt.plot(fx,fy,'-')
+
+subset = btfss.dropna(subset=['a','b'])
+xs=subset['a']
+ys=subset['b']
+res = linregres(xs,ys)
+
+
+
+
+##################################################### Course 4: Multivariate Thinking #####################################################
 
 
 
