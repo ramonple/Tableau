@@ -1,0 +1,77 @@
+############################ Coure 1: Preparing the data for analysis ############################
+
+# locate missing values
+r.isnull()
+r.isnull().sum()
+r.drop()
+# drop rows
+r.dropna(subset=[''],inplace=True)
+
+
+# Using proper data types
+ri.dtypes
+ri.column.astype('float'/'int') = ri['columnname'].astype()
+
+
+---------
+Creating a DatetimeIndex
+# combine stop_date and stop_time into one column: datetime
+apple.date.str.replace('/','-')
+combined = apple.date.str.cat(apple.time,sep='') ---> .str.cat() # combine date and time
+apple['date_and_time'] = pd.to_datetime(combined)
+# setting the index
+apple.set_index('date_and_time',inplace=True)
+
+-- exercise:
+# Concatenate 'stop_date' and 'stop_time' (separated by a space)
+combined = ri.stop_date.str.cat(ri.stop_time,sep=' ')
+
+# Convert 'combined' to datetime format
+ri['stop_datetime'] = pd.to_datetime(combined) ---> important
+
+# Examine the data types of the DataFrame
+print(ri.dtypes)---> 'S'!!!!!
+
+# Set 'stop_datetime' as the index
+ri.set_index('stop_datetime', inplace=True)
+
+# Examine the index
+print(ri.index) # Use the .index attribute to examine the DataFrame's index.
+
+# Examine the columns
+print(ri.columns) # Use the .columns attribute to examine the DataFrame's columns.
+
+
+############################ Course 2: Exploring the relationship between gender and policing ############################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+############################ Course 3: Visual exploratory data analysis ############################
+############################ Course 4:  Analyzing the effect of weather on policing ############################
