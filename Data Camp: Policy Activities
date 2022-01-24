@@ -43,35 +43,298 @@ print(ri.columns) # Use the .columns attribute to examine the DataFrame's column
 
 
 ############################ Course 2: Exploring the relationship between gender and policing ############################
+.value_counts(): Counts the unique values in a series
+ri.stop_outcome.value_counts()
+ri.stop_outcome.value_counts().sum()
+ri.stop_outcome.value_counts(normalize=True)
+
+
+# Filtering DataFrame rows
+ri[ri.driver_race == 'White']
+
+white.stop_outcome.value_counts(normalize=True)
+asian=ri[ri.drive_race == 'Asian']
+asian.stop_outcome.value_counts(normalize=True)
+
+
+
+-- exercise
+# Count the unique values in 'violation'
+print(ri.violation.value_counts())
+
+# Express the counts as proportions
+print(ri.violation.value_counts(normalize=True))
+
+# Create a DataFrame of female drivers
+female = ri[ri.driver_gender=='F']
+
+# Create a DataFrame of male drivers
+male = ri[ri.driver_gender=='M']
+
+# Compute the violations by female drivers (as proportions)
+print(female.violation.value_counts(normalize=True))
+
+# Compute the violations by male drivers (as proportions)
+print(male.violation.value_counts(normalize=True))
 
 
 
 
+-- Does gender affect who gets a ticket for speeding? (reliationship between variables)
+
+filtering multiple conditions
+female_and_arrested=ri[(ri.driver_gender=='F') & (ri.is_arrested == 'T')]
+female_or_arrested=ri[(ri.driver_gender=='F') | (ri.is_arrested == 'T')]
+
+
+-- Does gender affect whose vehicle is searched?
+- taking the mean of a Boolean series
+ri.is_arrested.value_counts(normalize=True)
+ri.is_arrested.mean()
+- comparing groups using groupby
+ri.district.unique()
+ri[ri.district == ' Zone K1'].is_arrested.mean()
+ri.groupby('district').is_arrested.mean()
+ri.groupby(['district','driver_gender']).is_arrested.mean()
 
 
 
 
+-- Does gender affect who is frisked during a search?
 
+.value_counts() --> delete missing values by default
 
+searching for a string
+ri['inventory'] = ri.search_type.str.contains('Inventory') --> .str.contains('xxx')
 
+-- exercise
+# Count the 'search_type' values
+print(ri.search_type.value_counts())
 
+# Check if 'search_type' contains the string 'Protective Frisk'
+ri['frisk'] = ri.search_type.str.contains('Protective Frisk', na=False)
 
+# Check the data type of 'frisk'
+print(ri.frisk.dtype)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Take the sum of 'frisk'
+print(ri.frisk.sum())
 
 
 ############################ Course 3: Visual exploratory data analysis ############################
+-- Does time of day affect arrest rate?
+- monthly price
+apple.groupby(apple.index.month).price.mean() --> should use .index
+
+import matplotlib.pyplot as plt
+monthly_price.plot()
+
+-- exercise
+# Import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+
+# Create a line plot of 'hourly_arrest_rate'
+hourly_arrest_rate.plot()
+
+# Add the xlabel, ylabel, and title
+plt.xlabel('Hour')
+plt.ylabel('Arrest Rate')
+plt.title('Arrest Rate by Time of Day')
+
+# Display the plot
+plt.show()
+
+
+-- Are drug-related stops on the rise?
+
+-> Resampling the price
+apple.groupby(apple.index.month).price.mean()
+apple.price.resampe('M').mean() --> resample by month
+
+-> Resampling the volume
+apple.volume.resample('M').mean() # Year: A
+
+-> Concating price and volume
+monthly_price = apple.price.resampe('M').mean()
+monthly_value = apple.volume.resample('M').mean()
+pd.concat([monthly_price,monthly_volume],axis='columns')
+monthly = pd.concat([monthly_price,monthly_volume],axis='columns')
+
+monthly.plot() --> a single plot
+plt.show()
+
+monthly.plot(subplots=True) -> two plots --> subplotS
+plt.show()
+
+
+-- What violations are caught in each district?
+- computing a frequency table
+pd.crosstab(ri.drive_race,ri.drive_gender)
+-> output is a frequency table: tally of how many times each combination of values occurs
+ri[(ri.driver_race == 'Asian') & (ri.driver_gender == 'F')].shape
+-> drive_race is along the index, driver_gender is along the columns
+
+# selecting a DataFrame slice
+.loc[] accessor: select from a DataFrame by label
+table.loc['Asian':'hispanic']
+# creating a line plot
+table.plot()
+# create a bat plot
+table.plot(kind='bar')
+- stacking the bar
+table.plot(kind='bar',stacked=True)
+
+-- exercise
+# Create a frequency table of districts and violations
+print(pd.crosstab(ri.district, ri.violation))
+
+# Save the frequency table as 'all_zones'
+all_zones = pd.crosstab(ri.district, ri.violation)
+
+# Select rows 'Zone K1' <through> 'Zone K3'
+print(all_zones.loc['Zone K1':'Zone K3'])
+
+# Save the smaller table as 'k_zones'
+k_zones = all_zones.loc['Zone K1':'Zone K3']
+
+
+-- How long might you be stopped for a violation?
+# Mapping one set of values to another
+- Dictionary maps the values you have to the values you want
+mapping = {'up':True,'down':False}
+apple['is_up'] = apple.change.map(mapping)
+
+- calculating the search rate
+ri.groupby('violation').search_conducted.mean() --> '' for the grouped by column
+search_rate.plot(kind='bar')
+
+ording the bars
+search_rate.sort_values().plot(kind='barh') --> horizontal 
+
+
 ############################ Course 4:  Analyzing the effect of weather on policing ############################
+- Exploring the weather dataset
+.plot(kind='hist',bins=20)
+
+-- exercise
+# Read 'weather.csv' into a DataFrame named 'weather'
+weather = pd.read_csv('weather.csv')
+
+# Describe the temperature columns
+print(weather[['TMIN', 'TAVG', 'TMAX']].describe()) --> NOTICE: [[ ]]
+
+# Create a box plot of the temperature columns
+weather[['TMIN', 'TAVG', 'TMAX']].plot(kind='box')
+
+# Display the plot
+plt.show()
+
+----- exercise
+# Create a 'TDIFF' column that represents temperature difference
+weather['TDIFF'] = weather.TMAX - weather.TMIN
+
+# Describe the 'TDIFF' column
+print(weather.TDIFF.describe())
+
+# Create a histogram with 20 bins to visualize 'TDIFF'
+weather.TDIFF.plot(kind='hist', bins=20)
+
+# Display the plot
+plt.show()
+
+
+
+-- Categorizing the weather
+
+temp=weather.loc[:,'TAVG':'TMAX'] --> all rows, clumns from tavg to tmax
+weather.shape
+weather.columns
+
+temp.sum(axis = 'columns').head()
+
+# Mapping one set of values to another
+ri.stop_duration.unique()
+mapping = {'xxx':'','yyy':'','zzzz':''}
+ri['stop_length'] = ri.stop_duration.map(mapping)
+
+# changing data type from objects to category
+cats = ['short','medium','long'] -> []
+ri['stop_length']=ri.stop_duration.astype('category',ordered=Ture,categories=cats)
+ri[ri.stop_length > 'short'] .shape()
+ri.grooupby('stop_length').is_arrested.mean()
+
+-- exercise
+# Copy 'WT01' through 'WT22' to a new DataFrame
+WT = weather.loc[:,'WT01':'WT22']
+
+# Calculate the sum of each row in 'WT'
+weather['bad_conditions'] = WT.sum(axis='columns')
+
+# Replace missing values in 'bad_conditions' with '0'
+weather['bad_conditions'] = weather.bad_conditions.fillna(0).astype('int')
+
+# Create a histogram to visualize 'bad_conditions'
+weather.bad_conditions.plot(kind='hist')
+
+# Display the plot
+plt.show()
+
+# Create a list of weather ratings in logical order
+cats = ['good', 'bad', 'worse']
+
+# Change the data type of 'rating' to category
+weather['rating'] = weather.rating.astype('category', ordered=True, categories=cats)
+
+# Examine the head of 'rating'
+print(weather.rating.head())
+
+
+
+
+- Merging datasets
+apple.reset_index(inplace=True) #  reset_index in pandas is used to reset index of the dataframe object to default indexing
+
+high = high_low[['DATE','HIGH']]
+
+apple_hight = pd.merge(left=apple,right=high, left_on = 'date',right_on = 'DATE',how='left') --> there is no '' for tables
+
+# setting the index
+apple_high.set_index('date_and_time',inplace=True)
+
+
+
+
+-- Does weather affect the arrest rate?
+search_rate = ri.groupby(['violation','driver_gender']).search_conducted.mean()
+type(search_rate)
+type(search_rate.index)
+
+search_rate.loc['Equipment']
+search_rate.loc['Equipment','M']
+
+
+# Converting a multi-indexed Series to a DataFrame ---> .unstack()
+search_rate.unstack()
+ri.pivot_table(index='violation',columns='driver_gender',values='search_conducted')
+
+
+# Save the output of the groupby operation from the last exercise
+arrest_rate = ri_weather.groupby(['violation', 'rating']).is_arrested.mean()
+
+# Print the 'arrest_rate' Series
+print(arrest_rate)
+
+# Print the arrest rate for moving violations in bad weather ---!!!!
+print(arrest_rate.loc['Moving violation', 'bad'])
+
+# Print the arrest rates for speeding violations in all three weather conditions
+print(arrest_rate.loc['Speeding'])
+
+# Unstack the 'arrest_rate' Series into a DataFrame
+print(arrest_rate.unstack())
+
+# Create the same DataFrame using a pivot table
+print(ri_weather.pivot_table(index='violation', columns='rating', values='is_arrested'))
+
+
+
