@@ -391,11 +391,8 @@ print('Probability of seven or more no-hitters:', p_large)
 
 ######################################## Course 4: Thinking Probabilistically-- Continuous Variables ########################################
 samples = np.random.normal(mean,std,size = 10000)
-
-
-
-
-___________________________________________________________________
+samples = np.random.exponential(mean,size=1000)
+__________________________________________________________________
 PDF probability density function
 
 ---- Introduction to the Normal distribution
@@ -481,8 +478,31 @@ print('Probability of besting Secretariat:', prob)
 
 
 
+____________________________________
+The Exponential distribution
+- the waiting time between arrivals of a Poisson process
+
+mean = np.mean(inter_times)
+samples = np.random.exponential(mean,size=1000)
+x,y = ecdf(inter_times)
+x_theor,y_theor = ecdf(samples)
+_=plt.plot(x_theor,y_theor)
+_=plt.plot(x,y,marker='.',linestyle='none')
+_=plt.xlabel
+_=plt.ylabel
 
 
+---------------- exercise
+# Draw samples of waiting times
+waiting_times = successive_poisson(764, 715, size=100000)
 
+# Make the histogram
+_ = plt.hist(waiting_times, bins=100, histtype='step',
+             normed=True)
 
+# Label axes
+_ = plt.xlabel('total waiting time (games)')
+_ = plt.ylabel('PDF')
 
+# Show the plot
+plt.show()
