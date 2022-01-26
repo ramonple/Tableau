@@ -1,0 +1,85 @@
+# create numbers
+np.linspace(start,end, num=xx)
+
+np.arange([start, ]stop, [step, ], dtype=None)
+# np.arange(start=1, stop=10, step=3) --> array([1, 4, 7])
+
+# visualize the number of each observation
+sns.countplot(x=df['xx']).set_title('xxx')
+
+# check if there are any null values
+df.isnull().value().any()
+# drop tthe null values
+df.dropna()
+
+# resample price datase by month and forward fill the values
+df_price = df_price.resample('M').ffill() / bfill()
+
+# combine two columns
+df = pd.contact([df_sales,df_prices],axis=1)
+
+  
+# plots
+plt.hist()
+sns.swarmplot()
+
+
+############### distributions
+# CDF 
+x,y=ecdf(data)
+# covariance matrix
+np.cov(x,y)
+# Pearson correlation
+pearson_r(x,y)
+# correlation coefficient
+np.corrcoef(x_simple, y_simple)
+
+# percentiles
+np.percentile (data['column'],[a,b]) --> a b determine the CI
+
+ # random
+ np.random.random()
+ np.random.seed()
+ np.random.binomial(n,p,size=xx)
+ np.random.poisson(probability,size=xx)
+ np.random.normal(mean,std,size=xx)
+ np.random.exponential(mean,size=xx)
+ 
+ slop, intercept = np.polyfit(x, y, deg)    # Least squares polynomial fit, NEVER forget the degree
+ 
+ np.random.choice(list,size=None,replace=True/False)  # gets the random samples of a one-dimensional array
+ 
+ np.random.permutation() # Randomly permute a sequence, or return a permuted range.
+ # Example: arr = np.arange(9).reshape((3, 3))
+            np.random.permutation(arr)
+            array([[6, 7, 8], # random
+                   [0, 1, 2],
+                   [3, 4, 5]])
+ 
+ # calculate the p-value
+ p = np.sum(bs_replicates <= np.mean(force_b)) / 10000
+ prin('p-value=',p)
+ 
+ np.array([True] * 5 + [False] * 3) creates a Boolean array with 5 True entries and 3 False entries
+ 
+ 
+ # how to set the replications:
+ perm_replicates = draw_perm_reps(nht_dead, nht_live, diff_of_means, size=10000)
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
