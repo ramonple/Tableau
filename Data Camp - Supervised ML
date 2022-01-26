@@ -2,6 +2,48 @@
 
 
 ######################################  Course 1 : Classification ###################################### 
+--- Exploratory data analysis
+from sklearn import datasetes
+import pandas as pd
+import numpy as np
+importt matplotlib.pyplot as plt
+
+plt.stylee.use('ggplot')
+iris = datasets.load_iris()
+type(iris)
+print(iris.keys())
+iris.data.shape
+iris.target_names
+
+x = iris.data
+y = iris.target
+df = pd.DataFrame(X, columns = iris.feature_names)
+_= pd.plotting.scatter_matrix(df,c=y,figsize=[8,8],s=150,marker='o')
+
+
+------ The classification challenge
+
+-- KNN: K-Nearest Neighbors
+Training a model on the data = 'fitting' a model to the datta => .fit() method
+To predict the labels of new data => .predict() method
+
+# using sickit-learn to fit a classifier
+from sklearn.neighbors import KNeigoborsClassifier
+knn = KNeighborsClassifier(n_neighbors = 6)
+knn.fit(iris['data'],iris['target'])
+
+# Predicting on unlabelled data
+X_new = np.array( [[ 5.6,2.8,3.9,1.1],[5.3,2.5,3.6,4.5])
+prediction = knn.predict(X_new)
+
+
+
+
+
+
+
+
+
 
 
 
