@@ -67,6 +67,28 @@ np.percentile (data['column'],[a,b]) --> a b determine the CI
  perm_replicates = draw_perm_reps(nht_dead, nht_live, diff_of_means, size=10000)
  
  
+-- value_counts(): returns the frequency distribution of each value in the column
+-- index:  get the most frequent value. 
+# Impute with the most frequent value
+        cc_apps = cc_apps.fillna(cc_apps[col].value_counts().index[0]) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
  
  
