@@ -411,25 +411,127 @@ print(df.sort_values('label'))
 ####################################### Course 4: Discovering interpretable features ######################################################
 
 ---- Non-negative matrix factorization (NMF)
+- dimension reduction techinique
+- NMF are interpretable (unlike PCA)
+all sample features should be non-negative
+
+# using sklearn with NMF
+follows fit() / transform()
+
+Must specify number of components: model = NMF(n_components = 2)
+Works with NumPy arrays and with csr_matrix
+ - word frequency array, 4 words, many documents
+ - measure presence of words in each document using tf-idf
+  # tf: frequenct of word in document # idf: reduces influence of frequent words
+  
+# example of word-frequency
+from sklearn.decomposition import NMF 
+model = NMF(n_components=2)
+model.fit(samples)
+nmf_features = model.transform(samples)
+
+# NMF has components, just like PCA has principal components, Dimensions of components = dimension of samples
+print(model.components_)
+
+# NMF feature values are non-negative
+print(nmf_features)
+
+
+# reconstruction of a sample
+print(samples[i,:])
+print(nmf_features[i,"])
+
+# sample reconstruction
+- multiply components by feature values, and add up
+- can also be expressed as a product of matrices
+- This is the Matrix Factorization in NMF
+
+
+
+# Import pandas
+import pandas as pd
+
+# Create a pandas DataFrame: df
+df = pd.DataFrame(nmf_features,index=titles)
+
+# Print the row for 'Anne Hathaway'
+print(df.loc['Anne Hathaway'])
+
+# Print the row for 'Denzel Washington'
+print(df.loc['Denzel Washington'])
 
 
 
 
 
 
+---- NMF learns interpretable parts
+
+# Print result of nlargest
+print(component.nlargest())
+
+
+
+# Import pyplot
+from matplotlib import pyplot as plt
+
+# Select the 0th row: digit
+digit = samples[0,:]
+
+# Print digit
+print(digit)
+
+# Reshape digit to a 13x8 array: bitmap
+bitmap = digit.reshape((13, 8))
+
+# Print bitmap
+print(bitmap)
+
+# Use plt.imshow to display bitmap
+plt.imshow(bitmap, cmap='gray', interpolation='nearest')
+plt.colorbar()
+plt.show()
 
 
 
 
+# Import PCA
+from  sklearn.decomposition import PCA
+
+# Create a PCA instance: model
+model = PCA(n_components = 7)
+
+# Apply fit_transform to samples: features
+features = model.fit_transform(samples)
+
+# Call show_as_image on each component
+for component in model.components_:
+    show_as_image(component)
+    
+    
+    
 
 
+--- Building recommender systems using NMF
 
+# Perform the necessary imports
+from sklearn.decomposition import NMF
+from sklearn.preprocessing import Normalizer, MaxAbsScaler
+from sklearn.pipeline import make_pipeline
 
+# Create a MaxAbsScaler: scaler
+scaler = MaxAbsScaler()
 
+# Create an NMF model: nmf
+nmf = NMF(n_components=20)
 
+# Create a Normalizer: normalizer
+normalizer = Normalizer()
 
+# Create a pipeline: pipeline
+pipeline = make_pipeline(scaler, nmf, normalizer)
 
-
-
+# Apply fit_transform to artists: norm_features
+norm_features = pipeline.fit_transform(artists)
 
 
