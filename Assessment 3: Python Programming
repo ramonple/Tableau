@@ -149,3 +149,63 @@ m = Person('Michael')
 
 m.name
 
+
+
+
+
+[s.upper() for s in ['hello', 'world']]
+--> ['HELLO', 'WORLD']
+
+
+
+
+import random
+random.seed(2427)
+
+def efficient_sample(n):
+  x = [random.random() for i in range(n)]
+  return x
+
+efficient_sample(20)
+
+
+
+
+def factorial(n):
+    """returns n!"""
+    return 1 if n < 2 else n * factorial(n-1)
+
+factorial.__doc__
+--- > 'returns n!'
+
+
+def add_two(x: int)-> int: # -> marks the return function annotation.
+  return x + 2
+
+add_two(1)
+
+
+
+
+boardgames = [
+  'Pandemic Legacy: Season 1', 
+  'Terraforming Mars', 
+  'Brass: Birmingham'
+]
+
+boardgames.insert(0, 'Gloomhaven')
+print(boardgames)
+
+# Expected Output
+['Gloomhaven', 'Pandemic Legacy: Season 1', 'Terraforming Mars', 'Brass: Birmingham']
+
+
+w = 'python'
+
+w_iterator = iter(w) # the iter() function creates an object which can be iterated one element at a time.
+
+next(w_iterator)
+
+--> 'p'
+
+# The next() function returns the next item from the iterator.
