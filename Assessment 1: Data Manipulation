@@ -134,9 +134,11 @@ subset_wine = wine[['country', 'price']] --> two [[ ]]
 print(subset_wine.head())
 
 
+# output info according to values
+protein = food[(food['protein'] < 10) & (food['protein'] > 4)]
 
-
-
+# sorting accourding to index
+employee_sorted = employee.sort_index()
 
 
 
