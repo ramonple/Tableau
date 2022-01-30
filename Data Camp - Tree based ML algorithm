@@ -97,21 +97,166 @@ y_pred = vc.predict(X_test)
 print('Voting Classifier:{.3f}'.format(accuracy_score(y_test,y_pred)))
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 ######################################## Course 3: Bagging and Random Forests ########################################
+- Bagging
+Voting Classifier: same training set, different algorithms
+Bagging: one algorithm, different sub training sets
+
+Bagging: boostrap aggregation, uses a techinique known as the boostrap, reduce variance of individual models in the ensemble
+
+BaggingClassifier in scikit-learn
+BaggingRegressor in scikit-learn
+
+dt=DecisionTreeClassifier(max_depth=4,min_samples_leaf=0.16,random_state=1)
+bc = BaggingClassifier(base_estimator=dt,n_estimators=300,n_jobs=-1)
+bc.fit(X_train,y_train)
+y_pred=bc.predict(X_test)
+accuray = accuracy_score(y_test,y_pred)
+
+
+
+
+---- Out of Bag Evaluation
+some instances may be sampled more than once, while some may never be selected as sample.
+
+oob_accuracy = bc.oob_score_
+
+
+-- Random Forests (RF)
+RandomForestClassifier
+RandomForestRegressor
+
+rf = RandomForestRegressor(n_estimator = 500, min_simple_leaf=0.2, random_state= SEED)
+rf.fit
+y_pred = rf.predict
+rmse_test = MSE(y_test,y_pred) ** (1/2)
+
+# Feature importance
+# determine which features were the most predictive according to the random forests regressor
+
+tree-based methods: enable measuring the importance of each feature in prediction
+feature_importance_
+
+importance_rf = pd.Series(rf.feature_importances_,index = X.columns)
+sorted_importances_rf = importance_rf.sort_values()
+sorted_importances_rf.plot(kind='barh',color='lightgreen') plt.show() % barh: horizontal barplot 
 
 ######################################## Course 4: Boosting ########################################
+Boosting: ensemble method combing several weak learners to form a strong learner
+weak learner: mdoel doing slightly bettern thtan random guessing
+example of weak learner: decision stump  (CART whose maximum depth = 1 )
+Most popular boosting methods: AdaBoost, Gradient Boosting
+
+AdaBoost:
+Adaptive Boosting, each predictor pays more attention on the instances wrongly predicted 
+achieved by changing weights of training dataset
+Learning Rate: 0 < eta < 1
+
+- AdaBoostClassifier
+- AdaBoostRegressor
+
+adb_clf = AdaBoostClassifier(base_estimator=dt,n_estimator = 100)
+abd_clf.fit(X_train,y_train)
+y_pred_proba = abd_clf.predict_proba(X_test)[:,1]
+adb_clf_roc_auc_score = roc_auc_score(y_test,y_pred_proba)
+
+
+
+
+--- Gradient Boosting (GB)
+Sequential correction of predecessor's errors, does not tweak the weights of training instances
+
+GradientBoostingRegressor
+GradientBoostingClassifier
+
+gbt = GradientBoostingRegressor(n_estimators=300,max_depth=1,random_state=SEED)
+
+
+
+
+---- Stochastic Gradient Boosting (SGB)
+1. each tree is trained on a random subset of rows of the training data
+2. the sampled instances are sampled without replacement
+3. Features are sampled when choosing split points
+4. Result: further ensemble diversity
+5. Effect: adding further variance to the ensemble of trees
+
+sgbt = GradientBoostingRegressor(max_depth=1,subsample=0.8,max_features=0.2,n_estimators=300,random_state=SEED)
 
 ######################################## Course 5: Model Tuning ########################################
+
+parameters: learned from data
+hyperparameters: not learned from data, set prior to training
+
+why tune hyperparameters?
+- in sklearn, a model's default hyperparameters are not optimal for all parameters
+- hyperparameters should be tuned to obtain the best model performance
+
+Approaches:
+grid search, random search, bayesian optimization, genetic algorithms
+
+hyperparameter grids:
+max_depth ={2,3,4}
+min_samples_leaf ={0.05,0.1}
+hpyerparameter space ={(2,0.05),(2,0.01),(3,0.05)...}
+CV scores = {score_(2,0.05),...}
+
+optimal hyperparameters = set of hyperparameters corresponding to the best CV score
+
+# get dt's hyperparameters:
+print(dt.get_params())
+
+from sklearn.model_selection import GridSearchCV
+params_dt ={'max_depth':[3,4,5],
+            'min_samples_leaf':[0.04,0.06,0.08],
+            'max_features':[0.2,0.6,0.9]
+            }
+            
+grid_dt = GridSearchCV(estimator =dt, param_grid = params_dt, cv=10,n_jobs=-1)
+
+# best hyperparameters
+best_hyperparams = grid_dt.best_params_
+
+# best CV score
+best_CV_score = grid_dt.best_score_
+
+# best model
+best_model=grid_dt.best_estimator_
+# evaluate test set accuracy
+test_acc = best_model.score(X_test,y_test)
+
+---- exerciese
+# Import roc_auc_score from sklearn.metrics 
+from sklearn.metrics import roc_auc_score
+
+# Extract the best estimator
+best_model = grid_dt.best_estimator_
+
+# Predict the test set probabilities of the positive class
+y_pred_proba = best_model.predict_proba(X_test)[:,1] ---> important[:,1]
+
+# Compute test_roc_auc
+test_roc_auc = roc_auc_score(y_test, y_pred_proba)
+
+# Print test_roc_auc
+print('Test set ROC AUC score: {:.3f}'.format(test_roc_auc))
+
+
+
+----- Tuning a RF's Hyperparameters
+rf.get_params()
+grid_rf = GridSearchCV(estimator=rf,param_grid=params)df,cv=3,scoring='neg_mean_squared_error',verbose=1,n_jobs=-1)
+best_hyperparams = grid_rf.best_params_
+best_model = grid_rf.best_estimator_
+y_pred = best_model.predict(X_test)
+rmse=MSE(y_test,y_pred) ** (1/2)
+
+
+
+
+
+
+
+
+
+
