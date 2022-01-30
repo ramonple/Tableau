@@ -1,11 +1,77 @@
-########## Course 1: Classification and Regression Trees
+######################################## Course 1: Classification and Regression Trees ########################################
 CART classfication and regression tree
 
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
 
-########## Course 2: The Bias-Variance Tradeoff
+X_train,X_test,y_train,y_test(X,y,test_size=0.2,stratify=y,random_state=1)
+dt = DecisionTreeClassifier(max_depth=2,random_state=1)
 
-########## Course 3: Bagging and Random Forests
+dt.fit(X_train,y_train)
+y_pred = dt.predict(X_test) ==> predict not pred
+accuracy_score(y_test,y_pred)
 
-########## Course 4: Boosting
+# Decision Regions
+region in the features space where all instances are assigned to one class label
+# Decision boundary
+surface separting different decision regions
 
-########## Course 5: Model Tuning
+---- example:
+
+# Instantiate a DecisionTreeClassifier 'dt' with a maximum depth of 6
+dt = DecisionTreeClassifier(max_depth=6, random_state=SEED)
+
+# Instatiate logreg
+logreg = LogisticRegression(random_state=1)
+
+# Define a list called clfs containing the two classifiers logreg and dt
+clfs = [logreg, dt]
+
+# Review the decision regions of the two classifiers
+plot_labeled_decision_regions(X_test, y_test, clfs)
+
+
+
+-- Classification tree Learning
+if IG(node) = 0 => leaf
+
+dt = DecisionTreeClassifer(criterion = 'gini',random_seed=1) / criterion ='entropy'
+
+
+
+--- Decision tree for regression
+# the impurity of a node is measured using the mean-squared error of the targets in the node
+from sklearn.metrics import mean_squared_error as MSE
+dt = DecisionTreeClassifier(max_depth=6,min_sample_leaf0.1,random_state=1)
+
+mse_dt = MSE(y_test,y_pred)
+rmse_dt = mse_dt ** (1/2)
+
+######################################## Course 2: The Bias-Variance Tradeoff ########################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+######################################## Course 3: Bagging and Random Forests ########################################
+
+######################################## Course 4: Boosting ########################################
+
+######################################## Course 5: Model Tuning ########################################
