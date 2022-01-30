@@ -50,11 +50,51 @@ rmse_dt = mse_dt ** (1/2)
 
 ######################################## Course 2: The Bias-Variance Tradeoff ########################################
 
+---- Generalization Error
+- Overfitting 
+- Underfitting
+- bias and variance trade-off
+
+
+---- Diagnose bias and variance problems
+# Better model evaluation with Cross-Validation
+solution -> cross validation (CV) k-fold CV, hold-out CV
+
+# k-fold cv in sklear
+MSE_CV = - cross_cal_score (dt,X_train,y_train,cv=10,scoring='neg_mean_squared_error',n_jobs= -1 )
 
 
 
+-- exercise
+# Compute the array containing the 10-folds CV MSEs
+MSE_CV_scores = - cross_val_score(dt, X_train, y_train, cv=10, 
+                                  scoring='neg_mean_squared_error', 
+                                  n_jobs=-1) 
+
+# Compute the 10-folds CV RMSE
+RMSE_CV = (MSE_CV_scores.mean())**(1/2)
+
+# Print RMSE_CV
+print('CV RMSE: {:.2f}'.format(RMSE_CV))
 
 
+
+---- Ensemble Learning
+-Voting classifier in sklearn
+from sklearn.ensemble import VotingClassifier
+...
+classifier =[('logistic Regression',lr), ('K Nearest Neighbors',knn),('Classification Tree', dt) ]
+
+for clf_name, clf in classifier:
+     clf.fit(X_train,y_train)
+     y_pred = clf.predict(X_test)
+     print('{:s}:{:.3f}'.format(clf_name,accuracy_score(y_test,y_pred)))
+
+vc = VotingClassifier(estimators=classifiers)
+vc.fit(X_train,y_train)
+y_pred = vc.predict(X_test)
+
+print('Voting Classifier:{.3f}'.format(accuracy_score(y_test,y_pred)))
 
 
 
