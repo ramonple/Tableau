@@ -1,0 +1,114 @@
+
+################################################  Course 1: Introduction to Clustering ########################
+# Hierarchical clustering in SciPy
+from scipy.cluster.hierarchy import linkage, fcluster
+x_coordinates =[90,80,38,....]
+y_coordinates = [1,2,3,4,.....]
+df=pd.DataFrame({'x_coordinate':x_coordinates,
+                'y_coordinate': y_coordinates})
+                
+# Use the linkage() function to compute distances using the ward method               
+Z = linkage(df,'ward') -> the linkage method computes distances between intermediate clusters
+
+# Generate cluster labels for each data point with two clusters using the fcluster() function
+df['cluster_labels'] = fcluster(Z,3,criterion='maxcluster') -> the fcluster method generates clusters and assigns associated cluster labels to a new column in the DataFrame
+
+sns.scatterplot(x='',y='',hue='',data=)
+
+# K-Means 
+from scipy.cluster.vq import kmeans, vq
+
+random.seed((100,200))
+# The centroids of the clusters are computed using kmeans and cluster assignments for each point are done through vq.
+centroids,- = kmeans(df,3)
+df['cluster_labels'],_ = vq(df,centroids)
+
+---- exercise
+# Import linkage and fcluster functions
+from scipy.cluster.hierarchy import linkage,fcluster
+
+# Use the linkage() function to compute distance
+Z = linkage(df, 'ward')
+
+# Generate cluster labels
+df['cluster_labels'] = fcluster(Z, 2, criterion='maxclust')
+
+# Plot the points with seaborn
+sns.scatterplot(x='x', y='y', hue='cluster_labels', data=df) --> hue !!!
+plt.show()
+
+
+
+
+
+--- Data preparation for cluster analysis
+Why?
+1. incomparable units
+2. variables with some units have vastly different scales and variances
+3. data in raw form may lead to bias
+solution: Normalisation -> rescaling data to a std = 1
+x_new = x/std_dev(x)
+
+from scipy.cluster.vq import whiten
+data=[1,2,3,4,5,6]
+scaled_data = whiten(data)
+
+################################################  Course 2: Hierarchical Clustering ################################################ 
+
+# creating a distance matrix using linkage
+scipy.cluster.hierarchy.linkage(observations,method='single',metric='euclidean',optimal_ordering=False)
+# method: single,complete,average,centroid,median,ward
+
+# create cluster labels
+scipy.cluster.hierarchy.fcluster(distance_matrix,num_clusters,criterion) --> num_cluster be the num directly
+ --  distance_matrix: output of linkage() method
+ 
+ -----> exercise
+ # Import the fcluster and linkage functions
+from scipy.cluster.hierarchy import linkage,fcluster
+
+# Use the linkage() function
+distance_matrix = linkage(comic_con[['x_scaled', 'y_scaled']], method = 'ward', metric = 'euclidean')
+
+# Assign cluster labels
+comic_con['cluster_labels'] =fcluster(distance_matrix, 2, criterion='maxclust')
+
+# Plot clusters
+sns.scatterplot(x='x_scaled', y='y_scaled', 
+                hue='cluster_labels', data = comic_con)
+plt.show()
+
+
+
+
+----- Visualize clusters
+df =pd.DataFrame({'x':[],'y':[],'labels':['a','b','c']})
+colors ={'A':'red','B':'blue'}
+df.plot.scatter(x='x',y='y',
+
+sns.scatter(x='x',y='x',hue='labels',data=df)
+
+
+----- exercise
+# Import the pyplot class
+from matplotlib import pyplot as plt
+
+# Define a colors dictionary for clusters
+colors = {1:'red', 2:'blue'}
+
+# Plot a scatter plot
+comic_con.plot.scatter(x='x_scaled', 
+                	   y='y_scaled',
+                       c=comic_con['cluster_labels'].apply(lambda x: colors[x])) --> check how to set the colors
+plt.show()
+
+
+
+
+
+
+################################################  Course 3: K-Means Clustering ################################################ 
+
+
+################################################  Course 4: Clustering in Real World ################################################ 
+ 
