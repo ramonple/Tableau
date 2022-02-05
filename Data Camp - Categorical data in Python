@@ -1,0 +1,39 @@
+### the .cat accessor object
+-- Series.cat.method_name
+1. new_categories: a list of categories
+2.inplace:  True/False
+3. ordered : True/False
+
+.set_categories
+.add_categories
+.remove_categories
+
+
+STEPS:
+convert the Series using .astype("category")
+access the cat object using dogs['size'].cat
+set the categories using .set_categories(['a','b','c'])
+set the ordered parameter to True
+
+
+rename_categories
+
+Sereis.cat.rename_categories(new_categories = xx)
+Sereis.cat.rename_categories(lambda c: c.title())
+
+.replace() 
+
+
+.cat.reorder_categories()
+
+
+removing whitespace: .str.strip()
+
+
+# researching for a string
+df['xx'].str.contains("xxx",regex=False)
+
+
+
+
+
