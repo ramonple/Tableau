@@ -1,13 +1,36 @@
+Series.value_counts(normalize=False, sort=True, ascending=False, bins=None, dropna=True)  # Return a Series containing counts of unique values.
+
+--- With normalize set to True, returns the relative frequency by dividing all values by the sum of values.
+Series.value_counts(normalize=True)
+
+-- dropna: With dropna set to False we can also see NaN index values.
+
+
+-- Set xx as categorical:
+df['xx'] = df['xx'].astype("category")
+
+-- Create a categorical Series
+Series = pd.Series(my_data,dtype='category',categories =['x','y','c'],ordered = True)
+
+
+-- .groupby()
+groupby_object = df. groupby(by=['xxx'])
+
+
+
+
 ### the .cat accessor object
 -- Series.cat.method_name
 1. new_categories: a list of categories
 2.inplace:  True/False
 3. ordered : True/False
 
-.set_categories
-.add_categories
-.remove_categories
+df.cat.set_categories(new_categories = ['x','y','z'],ordered=True)
+df.cat.add_categories
+df.cat.remove_categories(removals=['xx'])
 
+--- Missing categories
+df['xx'].value_counts(dropna=False)
 
 STEPS:
 convert the Series using .astype("category")
@@ -16,7 +39,7 @@ set the categories using .set_categories(['a','b','c'])
 set the ordered parameter to True
 
 
-rename_categories
+----rename_categories
 
 Sereis.cat.rename_categories(new_categories = xx)
 Sereis.cat.rename_categories(lambda c: c.title())
@@ -24,14 +47,168 @@ Sereis.cat.rename_categories(lambda c: c.title())
 .replace() 
 
 
-.cat.reorder_categories()
+Common replacement issues
+- must use new categories names
+- collapsing categories setup
+
+df['xx']=df['xx'].astype('category')
+prit(df['xx'].cat.categories)
+
+- creatingg a category with .replace()
+update_colors = {"xxx":'sss','yyyy':'wwww'}
+df['xx'] = df['xx'].replace(update_colors)
+
+- convert back to categorical
+df['xx'] = df['xx'].astype('category')
+df['xx'].cat.categories
 
 
-removing whitespace: .str.strip()
 
 
-# researching for a string
-df['xx'].str.contains("xxx",regex=False)
+.cat.reorder_categories(new_categories =['x','y'],ordered=True)
+
+Deal with the data:
+1. removing whitespace: .str.strip()
+2. capitalisation: .title(), .upper(), .lower()
+3. .replace() -> misspelled words 
+4. # researching for a string: df['xx'].str.contains("xxx",regex=False)
+
+
+
+---- course 3: visulisation
+
+box plot example: sns.catplot(x='',y='',data=df,kind='box',hue=' ')
+
+# two quick options
+sns.set(font_scale = 1.4)
+sns.set_style("whitegrid")
+
+
+df['xx'].vallue_counts().plot.bar()
+
+
+
+
+
+# Make sure the lines and points don't overlap
+ dodge=True
+
+
+
+-- different plot kinds:
+1: a graphical form of a frequency table. --> count
+2: has the parameters, join and dodge, which can update the look of the lines in the plot. --> point
+3: can be used to see the distribution and outliers of a numeric column. --> box
+4: is similar to a point plot and can be used to see the central tendency of numerical data.  --> bar
+
+
+
+
+Using the catplot facetgrid
+-- FacetGrid() : FacetGrid class helps in visualizing distribution of one variable as well as the relationship between multiple variables separately within subsets of your dataset using multiple panels.
+
+sns.catplot(x='',col='',col_wrap=n,palette = sns.color_palette(''), data=df)
+# save your graphic as an object ax
+ax.fig.suptitle('xx'). --> sup not sub
+ax.set_axis_labels('xx','yyy')
+plt.subplots_adjust(top=0.9)  # title heights
+
+
+
+
+-------- Course 4: Pitfalls and Encoding
+
+-- Update the .loc statement so that all NaN values in "body_type" are set to "other".
+used_cars.loc[used_cars["body_type"].isna(), "body_type"] = "other"
+
+-- Convert the "body_type" column to title case.
+used_cars["body_type"] = used_cars["body_type"].str.title()
+
+
+
+Creating a code book
+codes = df['x'].cat.codes
+df['x'].map(xx)
+
+
+
+### Create a label encoding and map
+
+# Convert to categorical and print the frequency table
+used_cars["color"] = used_cars["color"].astype("category")
+print(used_cars["color"].value_counts())
+
+# Create a label encoding
+used_cars["color_code"] = used_cars["color"].cat.codes
+
+# Create codes and categories objects
+codes = used_cars["color"].cat.codes
+categories = used_cars["color"]
+color_map = dict(zip(codes, categories))
+
+# Print the map
+print(color_map)
+
+
+
+
+### Using saved mappings
+
+# Update the color column using the color_map
+used_cars_updated["color"] = used_cars_updated["color"].map(color_map)
+
+# Update the engine fuel column using the fuel_map
+used_cars_updated["engine_fuel"] = used_cars_updated["engine_fuel"].map(fuel_map)
+
+# Update the transmission column using the transmission_map
+used_cars_updated["transmission"] = used_cars_updated["transmission"].map(transmission_map)
+
+# Print the info statement
+print(used_cars_updated.info())
+
+
+
+--- Creating a Boolean encoding
+
+# Print the manufacturer name frequency table
+print(used_cars["manufacturer_name"].value_counts())
+
+# Create a Boolean column based on if the manufacturer name that contain Volkswagen
+used_cars["is_volkswagen"] = np.where(
+  used_cars["manufacturer_name"].str.contains("Volkswagen", regex=False), True, False
+)
+
+# Create a Boolean column based on if the manufacturer name that contain Volkswagen: using 0s an 1s
+used_cars["is_volkswagen"] = np.where(
+  used_cars["manufacturer_name"].str.contains("Volkswagen", regex=False), 1, 0
+)
+
+
+
+pd.get_dummies()
+
+
+
+
+--- One-hot encoding specific columns
+
+# Create one-hot encoding for just two columns
+used_cars_simple = pd.get_dummies(
+  used_cars,
+  # Specify the columns from the instructions
+  columns=["manufacturer_name", "transmission"],
+  # Set the prefix
+  prefix="dummy"
+)
+
+# Print the shape of the new dataset
+print(used_cars_simple.shape)
+
+
+
+
+
+
 
 
 
