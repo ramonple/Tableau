@@ -1,0 +1,122 @@
+1. read_csv
+
+ -- useclos: allows for reading a subset of columns 
+ df = pd.read_csv("Data/sample-sales-data.csv", 
+                 usecols=["store","product","sales_qty"])
+ -- nrows:  is used for reading the first n number of rows of the file
+ df = pd.read_csv("Data/sample-sales-data.csv", nrows=100)
+ 
+ 
+ 
+2.  value_counts
+# is great for checking the distribution of values in a categorical column
+
+df["store"].value_counts()
+
+# normalize parameter to check the distribution with percent shares
+df["store"].value_counts(normalize=True)
+
+
+
+3. astype
+
+df["sales_date"] = df["sales_date"].astype("datetime64[ns]")
+
+# We can also use a dictionary to change the data type of multiple columns in a single operation.
+df = df.astype({"store":"category","sales_qty":"float"})
+
+
+
+4. isna
+
+# use the sum function to get the number of missing values in each column or row
+customer.isna().sum() # for columns
+customer.isna().sum(axis=1) # for rows
+
+
+
+5. dropna
+- axis: 0 for rows and 1 for columns
+- how: any for dropping a row or column with any missing value and all for dropping a row or column with all missing values
+- thresh: set a threshold on the number of non-missing values for a row or column so that it is not dropped.
+
+# Let’s drop any row that does not have at least 3 non-missing values.
+customer.dropna(axis=0, thresh=3, inplace=True)
+
+
+
+6. fillna
+
+# missing value in the salary column with the average value of this column
+customer["salary"].fillna(customer["salary"].mean(), inplace=True)
+
+- bfill: Use the next value to replace missing values
+- ffill: Use the previous value to replace missing values
+
+df.bfill()
+df.ffill()
+
+
+7. groupby
+# It allows for grouping the rows based on the distinct values in a column
+
+# calculate the total sales quantity for each store
+df.groupby("store")["sales_qty"].sum()
+
+# We can also use named aggregations as follows:
+df.groupby("store").agg(
+    total_sales = ("sales_qty","sum")
+)
+
+#### Examples of using groupby: https://towardsdatascience.com/11-examples-to-master-pandas-groupby-function-86e0de574f38
+
+#example 1: check if gender makes any difference in customer churn
+df[['Gender','Exited']].groupby('Gender').mean() --> double [[ ]] for df[['xx']]
+
+#example 2: apply both mean and count as aggregate functions
+df[['Gender','Exited']].groupby('Gender').agg(['mean','count'])
+
+
+#example 3: group by multiple columns 
+df[['Gender','Geography','Exited']].groupby(['Gender','Geography']).mean()
+
+#example 4: sort the results
+df[['Gender','Geography','Exited']].groupby(['Gender','Geography']).mean().sort_values(by='Exited')
+
+#example 5: using the ascending parameter
+df[['Gender','Geography','Exited']].groupby(['Gender','Geography']).mean().sort_values(by='Exited', ascending=False)
+
+#example 6: check multiple features based on groups in another feature
+df[['Geography','Age','Tenure']].groupby(['Geography']).agg(['mean','max'])
+
+#example 7: also add the “Exited” column to example 6
+df[['Exited','Geography','Age','Tenure']].groupby(['Exited','Geography']).agg(['mean','count'])
+
+
+#example 8: We can sort the results based on any column. However, since it is a multi-index, 
+            we need to pass a tuple to the sort_values function.
+df[['Exited','Geography','Age','Tenure']].groupby(['Exited','Geography']).agg(['mean','count']).sort_values(by=[('Age','mean')])
+
+## The variables in the groupby function are returned as the index of the resulting dataframe.
+
+#example 9: We can change it by setting the as_index parameter as false.
+df[['Exited','IsActiveMember','NumOfProducts','Balance']].groupby(['Exited','IsActiveMember'], as_index=False).mean()
+
+
+# The groupby function drops the missing values by default. 
+# Our dataset does not have any missing values. Let’s add some missing values and see how the dropna parameter is used.
+#example 10
+df['Geography'][30:50] = np.nan
+df[['Geography','Exited']].groupby('Geography').mean()
+
+# Although we have missing values in the geography column, they are ignored
+# We can change it by setting the dropna parameter as false.
+#example 11
+df[['Geography','Exited']].groupby('Geography', dropna=False).agg(['mean','count'])
+# As you can see, there is another category for missing values.
+
+
+
+8. unique and nunique
+- unique returns the distinct values
+- nunique returns the number of distinct values
