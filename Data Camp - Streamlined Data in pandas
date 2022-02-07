@@ -17,8 +17,120 @@ skiprows
 Set header=None so pandas knows there are no column names
 names: assign column names, e.g., names = ['xx','yy','zz'], names=list(xxx)
 
+dtype: use a dictionary of column names and data types
+pd.read_csv("xxx',dtype={'column_a':str})
+
+na_values: set custom missing values
+pd.read_csv('xxx',na_values={'xx':0})
+
+--> # Create dict specifying that 0s in zipcode are NA values
+null_values = {"zipcode": 0}
+# Load csv using na_values keyword argument
+data = pd.read_csv("vt_tax_data_2016.csv", 
+                   na_values=null_values)
+                   
+set error_bad_lines = False: to skip upparseable records
+set warn_bad_lines = True: to see message when records are skipped
+
+pd.read_csv('xxx',error_bad_lines=False,warn_bad_lines=True)
+
+
+
+
+
+
 
 
 course 2: Importing Data From Excel Files
+spreadsheets: also known as Excel files
+- pd.read_excel()
+
+# Create a single string, col_string, specifying that pandas should load column AD and the range AW through BA
+col_string = "AD, AW:BA"
+
+#  Getting data from mulitple worksheets
+sheet_name() keyword argument to load other sheets
+pd.read_excel('xxx.xlsx',sheet_name = 1 / 'xxx') ---> 1 means second sheet
+
+# loading all sheets
+pd.read_excel('xxx.xlsx',sheet_name = None)
+
+for key,value in df.items():
+    print(key,type(value))
+    
+    
+# Create an empty dataframe
+all_responses = pd.DataFrame()
+
+# Set up for loop to iterate through values in responses
+for df in responses.values():
+  # Print the number of rows being added
+  print("Adding {} rows".format(df.shape[0]))
+  # Append df to all_responses, assign result
+  all_responses = all_responses.append(df)
+
+# Graph employment statuses in sample
+counts = all_responses.groupby("EmploymentStatus").EmploymentStatus.count()
+counts.plot.barh()
+plt.show()
+# Create an empty dataframe
+all_responses = pd.DataFrame()
+
+# Set up for loop to iterate through values in responses
+for df in responses.values():
+  # Print the number of rows being added
+  print("Adding {} rows".format(df.shape[0]))
+  # Append df to all_responses, assign result
+  all_responses = all_responses.append(df)
+
+# Graph employment statuses in sample
+counts = all_responses.groupby("EmploymentStatus").EmploymentStatus.count()
+counts.plot.barh()
+plt.show()
+
+
+
+
+pd.read_excel('xxx.xlsx',dtype={"xxx":sss,"yyyy":ddfs,"sdfg":sdf})
+-- use true_values and false_values to set custom True/False values
+for example: pd.read_excel('xxx.xlsx',dtype={},true_values =['Yes'],false_values=['No'])
+
+
+# Set dtype to load appropriate column(s) as Boolean data
+survey_data = pd.read_excel("fcc_survey_subset.xlsx",
+                            dtype={"HasDebt": bool})
+# View financial burdens by Boolean group
+print(survey_data.groupby("HasDebt").sum())
+
+
+pd.to_datetime() 
+parse_dates
+
+# Load file, with Part1StartTime parsed as datetime data
+survey_data = pd.read_excel("fcc_survey.xlsx",
+                            parse_dates=["Part1StartTime"])
+                             
+for example: format_string = '%m%d%Y %H:%M:%S'
+df['xx'] = pd.to_datetime(df['xx'],format=format_string)
+
+
+# Create dict of columns to combine into new datetime column
+datetime_cols = {"Part2Start": ["Part2StartDate", 
+                                "Part2StartTime"]}
+
+# Load file, supplying the dict to parse_dates
+survey_data = pd.read_excel("fcc_survey_dts.xlsx",
+                            parse_dates=datetime_cols)
+
+# View summary statistics about Part2Start
+print(survey_data.Part2Start.describe())
+
+
+# Parse datetimes and assign result back to Part2EndTime
+survey_data["Part2EndTime"] = pd.to_datetime(survey_data["Part2EndTime"], 
+                                             format="%m%d%Y %H:%M:%S")
+
+
+
 course 3: Importing Data from Databases
 course 4: Importing JSON Data and Working with APIs
