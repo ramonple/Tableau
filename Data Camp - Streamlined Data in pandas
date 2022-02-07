@@ -133,4 +133,131 @@ survey_data["Part2EndTime"] = pd.to_datetime(survey_data["Part2EndTime"],
 
 
 course 3: Importing Data from Databases
+
+connectting to database
+1. create way to connect to database
+2. query database
+
+- sqlalchemy's create_engine() makes an engine to handle databse connections
+- querying database: pd.read_sql(query,engine)
+
+
+# getting data from a database
+import pandas as pd
+from sqlalchemy import create_engine
+
+# create database engine to manage connections
+engine = create_engine("sqlite:///data.db")
+
+# load entire weather table by table name
+weather = pd.read_sql("weather",engine)
+
+# create database engine to manage connections
+engine = create_engine("sqlite:///data.db")
+
+# load entire weather table with SQL
+weather = pd.read_sql("Select * From weathehr", engine)
+
+
+enginie = create_engine('sqlite:///xxxx')
+query =" " " Select * From * where *  " " "
+
+-->  pd.read_sql(query, engine)
+
+
+
+
+
+
+
 course 4: Importing JSON Data and Working with APIs
+pd.read_json(" xxx ",orient="split")
+
+
+api_url = "https://api.yelp.com/v3/businesses/search"
+
+# Get data about NYC cafes from the Yelp API
+response = requests.get(api_url, 
+                        headers=headers, 
+                        params=params)
+
+# Extract JSON data from the response
+data = response.json()
+
+# Load data to a dataframe
+cafes = pd.DataFrame(data["businesses"])
+
+# View the data's dtypes
+print(cafes.dtypes)
+
+
+# Create dictionary to query API for cafes in NYC
+parameters = {"term": "cafe",
+          	  "location": "NYC"}
+
+# Query the Yelp API with headers and params set
+response = requests.get(api_url, 
+                        headers=headers, 
+                        params=parameters)
+
+# Extract JSON data from response
+data = response.json()
+
+# Load "businesses" values to a dataframe and print head
+cafes = pd.DataFrame(data["businesses"])
+print(cafes.head())
+
+
+# Create dictionary that passes Authorization and key string
+headers = {"Authorization": "Bearer {}".format(api_key)} --> format method is used to embed variable values, like api_key in  a string
+
+# Query the Yelp API with headers and params set
+response = requests.get(api_url, 
+                        headers=headers, 
+                        params=params)
+
+# Extract JSON data from response
+data = response.json()
+
+# Load "businesses" values to a dataframe and print names
+cafes = pd.DataFrame(data["businesses"])
+print(cafes.name)
+
+
+# Load json_normalize()
+from pandas.io.json import json_normalize
+
+# Isolate the JSON data from the API response
+data = response.json()
+
+# Flatten business data into a dataframe, replace separator
+cafes = json_normalize(data["businesses"],
+                       sep="_")
+
+# View data
+print(cafes.head())
+
+
+# Load other business attributes and set meta prefix
+flat_cafes = json_normalize(data["businesses"],
+                            sep="_",
+                    		record_path="categories",
+                    		meta=["name", 
+                                  "alias",  
+                                  "rating",
+                          		  ["coordinates", "latitude"], 
+                          		  ["coordinates", "longitude"]],
+                    		meta_prefix="biz_")
+
+# View the data
+print(flat_cafes.head())
+
+
+
+
+
+
+
+
+
+
