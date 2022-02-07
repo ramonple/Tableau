@@ -1,0 +1,24 @@
+Course Description
+Before you can analyze data, you first have to acquire it. This course teaches you how to build pipelines to import data kept in common storage formats. 
+You’ll use pandas, a major Python library for analytics, to get data from a variety of sources, from spreadsheets of survey responses, 
+to a database of public service requests, to an API for a popular review site. 
+Along the way, you’ll learn how to fine-tune imports to get only what you need and to address issues like incorrect data types. 
+Finally, you’ll assemble a custom dataset from a mix of sources.
+
+
+course 1: Importing Data from Flat Files
+
+pd.read_csv('',sep=)
+# sep to pass in the correct delimiter when reading the file
+
+usecols: select particular columns, can either be column names  or column numbers
+nrows: limit the number of rows 
+skiprows
+Set header=None so pandas knows there are no column names
+names: assign column names, e.g., names = ['xx','yy','zz'], names=list(xxx)
+
+
+
+course 2: Importing Data From Excel Files
+course 3: Importing Data from Databases
+course 4: Importing JSON Data and Working with APIs
