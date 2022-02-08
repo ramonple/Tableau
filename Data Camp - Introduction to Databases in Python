@@ -1,0 +1,82 @@
+### connecting to a database
+
+from sqlalchemy import create_engine
+
+engine = create_engine('sqlite:///xxx.sqlite')
+connection = engine.connet()
+prinit(engine.table_names())
+
+-- replection
+from sqlalchemy import MetaData, Table
+metadata = MetaData()
+census=Table('census',metadata,autoload=True,autoload_with = engine))
+print(repr(census))
+
+
+-- Basis SQL querying
+from sqlalchemy improt create_engine
+engine = create_engine('sqlite:///xxx.sqlite')
+connect=engine.connect()
+stmt='Select * From table_name'       % select([my_table])
+result_proxy = connection.execute(stmt)
+results = result_proxy.fetcall()
+
+
+
+
+
+
+
+
+from sqlalchemy import create_engine, MetaData, Table
+
+engine = create_engine('sqlite:///census.sqlite')
+
+metadata = MetaData()
+
+# Reflect the census table from the engine: census
+census = Table('census', metadata, autoload=True, autoload_with=engine)
+
+# Print the column names
+print(census.columns.keys())
+
+# Print full metadata of census
+print(repr(metadata.tables['census']))
+
+
+
+
+
+
+from sqlalchemy import create_engine
+engine = create_engine('sqlite:///census.sqlite')
+
+# Create a connection on engine
+connection = engine.connect()
+
+# Build select statement for census table: stmt
+stmt = 'SELECT * FROM census'
+
+# Execute the statement and fetch the results: results
+results = connection.execute(stmt).fetchall()
+
+# Print results
+print(results)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
