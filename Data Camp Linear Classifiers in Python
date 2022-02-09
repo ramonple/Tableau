@@ -1,0 +1,86 @@
+############################# Course 1: Applying logistic regression and SVM  #############################
+
+- fitting and predicting
+
+import sklearn.datasets
+
+newsgroups = sklearn.datasets.fetch_20newsgroups_vectorized()
+
+X, y = newsgroups.data, newsgroups.target
+
+
+-- Fitting and Predicting
+
+from sklearn.neighbors import KNeighborsClassifier
+
+knn = KNeighborsClassifier(n_neighbors = 1 )
+
+knn.fit(X,y)
+y_pred = knn.predict(X)
+
+-- Model evaluation
+
+knn.score(X,y)
+
+from sklearn.model_selection import train_test_split
+
+X_train,X_test,y_train,y_test = train_test_split(X,y,testsize=0.x)
+
+################################################################################################################################################################
+
+-----   KNN
+from sklearn.neighbors import KNeighborsClassifier
+
+knn = KNeighborsClassifier(n_neighbors = 1 )
+knn.fit(X_train,y_train)
+knn.predict(X_test)
+knn.score(X_test,y_test)
+
+
+
+----- Applying logistic regression and SVM
+
+from sklearn.linear_model import LogisticRegression
+
+lr = LogisticRegression()
+lr.fit(X_train,y_train)
+lr.predict(X_test)
+lr.score(X_test,y_test)
+
+
+----- Using  SVC C-Support Vector Classification.
+from sklearn.svm import SVC
+svm = SVC()
+
+
+
+----- Visualizing decision boundaries
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC, LinearSVC
+from sklearn.neighbors import KNeighborsClassifier
+
+# Define the classifiers
+classifiers = [LogisticRegression(),LinearSVC(),SVC(),KNeighborsClassifier()] ---> Never forget the ()
+
+# Fit the classifiers
+for c in classifiers:
+    c.fit(X,y)
+
+# Plot the classifiers
+plot_4_classifiers(X, y, classifiers)
+plt.show()
+
+
+
+############################################ Course 2: Loss function ##########################################
+
+
+
+
+
+
+
+
+
+
