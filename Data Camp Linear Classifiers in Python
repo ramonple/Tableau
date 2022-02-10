@@ -74,6 +74,174 @@ plt.show()
 
 
 ############################################ Course 2: Loss function ##########################################
+x@y is called the dot product of x and y, and is written x . y
+
+lr.coef_@X[10] + lr.inttercept_ #  raw model
+
+Which classifiers make predictions based on the sign (positive or negative) of the raw model output?
+Both Logistic regression and Linear SVM
+
+
+What is a loss function?
+linear regression minimise a loss: the least square sum(real-predicted)^2
+model.score() is not necessarly for loss function
+
+classficaion errors: he 0-1 loss
+0 for correct, 1 for incorrect prediction
+this loss is hard to minimise
+
+--- 
+from scipy.optimize import minimize
+minimize(np.square,0).x
+--> array([0.]) minmised when x = 0
+
+minimize(np.square,2).x
+-> array([-1.88848e_08])
+
+
+# Mathematical functions for logistic and hinge losses
+def log_loss(raw_model_output):
+   return np.log(1+np.exp(-raw_model_output))
+def hinge_loss(raw_model_output):
+   return np.maximum(0,1-raw_model_output)
+   
+# Create a grid of values and plot
+grid = np.linspace(-2,2,1000)
+plt.plot(grid, log_loss(grid), label='logistic')
+plt.plot(grid, hinge_loss(grid), label='hinge')
+plt.legend()
+plt.show()
+
+
+# The logistic loss, summed over training examples
+def my_loss(w):
+    s = 0
+    for i in range(y.size):
+        raw_model_output = w@X[i]
+        s = s + log_loss(raw_model_output * y[i])
+    return s
+
+# Returns the w that makes my_loss(w) smallest
+w_fit = minimize(my_loss, X[0]).x
+print(w_fit)
+
+# Compare with scikit-learn's LogisticRegression
+lr = LogisticRegression(fit_intercept=False, C=1000000).fit(X,y)
+print(lr.coef_)
+
+
+
+##################### Course 3: 3  Logistic regression  ####################
+
+In scikit-learn, the hyperparameter "C" is the inverse of the regularization strength. 
+In other words, larger C means less regularization and smaller C means more regularization. Let's test this out.
+
+ 
+ 
+ How does regularization affect test accuracy?
+
+lr_weak_reg = LogisticRegression(C=100)
+lr_strong_reg = LogisticRegressiioin(C=0.01)
+
+lr_weak_reg.fit(X_train,y_train)
+lr_strong_reg.fit(X_train,y_train)
+
+lr_weak_score(X_train,y_train)
+lr_strong_score(X_train,y_train)
+
+==> regularized loss = original loss + large coefficient penalty
+more regularization: lower training accuaracy
+more regularization: (almost always) higher test accuaracy
+
+
+
+L1 vs L2 regularizaion
+Lasso = linear regression with L1 regularization
+Ridge = linear regression with L2 regularization
+
+lr_L1= LogisticRegression(penalty ='l1')
+lr_L2 =LogisticRegression() # penalty='l2' by default
+
+lr_L1.fit(X_train,y_train)
+lr_L2.fit(X_train,y_train)
+
+plt.plot(lr_L1.coef_.flatten())
+plt.plot(lr_L2.coef_.flatten())
+
+
+
+# Train and validaton errors initialized as empty list
+train_errs = list()
+valid_errs = list()
+
+# Loop over values of C_value
+for C_value in [0.001, 0.01, 0.1, 1, 10, 100, 1000]:
+    # Create LogisticRegression object and fit
+    lr = LogisticRegression(C=C_value) -->  (C = value)
+    lr.fit(X_train, y_train)
+    
+    # Evaluate error rates and append to lists
+    train_errs.append( 1.0 - lr.score(X_train, y_train) )
+    valid_errs.append( 1.0 - lr.score(X_valid, y_valid) )
+    
+# Plot results
+plt.semilogx(C_values, train_errs, C_values, valid_errs)
+plt.legend(("train", "validation"))
+plt.show()
+
+
+
+# Specify L1 regularization
+lr = LogisticRegression(penalty='l1')
+
+# Instantiate the GridSearchCV object and run the search
+searcher = GridSearchCV(lr, {'C':[0.001, 0.01, 0.1, 1, 10]})
+searcher.fit(X_train, y_train)
+
+# Report the best parameters
+print("Best CV params", searcher.best_params_)
+
+# Find the number of nonzero coefficients (selected features)
+best_lr = searcher.best_estimator_
+coefs = best_lr.coef_
+print("Total number of features:", coefs.size)
+print("Number of selected features:", np.count_nonzero(coefs))
+
+
+
+
+# Get the indices of the sorted cofficients
+inds_ascending = np.argsort(lr.coef_.flatten()) 
+inds_descending = inds_ascending[::-1]
+
+# Print the most positive words
+print("Most positive words: ", end="")
+for i in range(5):
+    print(vocab[inds_descending[i]], end=", ")
+print("\n")
+
+# Print most negative words
+print("Most negative words: ", end="")
+for i in range(5):
+    print(vocab[inds_ascending[i]], end=", ")
+print("\n")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
