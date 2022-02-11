@@ -228,6 +228,172 @@ print("\n")
 
 
 
+---- Logistic regression and probabilities
+
+logistic regression predictions: sign of raw model output
+logistic regression probabilities: 'squashed raw model output
+
+-- In this exercise, you will observe the effects of changing the regularization strength on the predicted probabilities.
+-- different strengths: different C values, eg, C = 1, C = 0.1, C = 10
+
+# Set the regularization strength
+model = LogisticRegression(C=0.1)
+
+# Fit and plot
+model.fit(X,y)
+plot_classifier(X,y,model,proba=True)
+
+# Predict probabilities on training points
+prob = model.predict_proba(X)
+print("Maximum predicted probability", np.max(prob)) --> maximum np.max()
+
+
+-- In this exercise, you'll visualize the examples that the logistic regression model 
+is most and least confident about by looking at the largest and smallest predicted probabilities.
+
+lr = LogisticRegression()
+lr.fit(X,y)
+
+# Get predicted probabilities
+proba = lr.predict_proba(X)
+
+# Sort the example indices by their maximum probability
+proba_inds = np.argsort(np.max(proba,axis=1))
+
+# Show the most confident (least ambiguous) digit
+show_digit(proba_inds[-1], lr)
+
+# Show the least confident (most ambiguous) digit
+show_digit(proba_inds[0], lr)
+
+
+
+
+
+--- Multi-class logistic regression
+Multi-class classification means having more than 2 classes.
+
+
+-- One-vs-rest vs. multinomial/softmax
+lr0.fit(X,y==0)
+lr1.fit(X,y==1)
+lr2.fit(X,y==2)
+# get raw model output
+lr0.decision_function(X)[0]
+lr1.decision_function(X)[0]
+lr2.decision_function(X)[0]
+
+
+-- Model coefficient for multi-class
+# one -vs - rest by default
+lr_ovr = LogisticRegression()
+lr_ovr.fit(X,y)
+lr_ovr.coef_.shape
+lr_ovr.intercept_.shape
+
+lr_mn = LogisticRegression(multi_class = 'multinomial', solver = 'lbfgs')
+lr_mn.fit(X,y)
+lr_mn.coef_.shape
+lr_mn.intercept_.shape
+
+
+
+
+# We'll use SVC instead of LinearSVC from now on
+from sklearn.svm import SVC
+
+# Create/plot the binary classifier (class 1 vs. rest)
+svm_class_1 = SVC()
+svm_class_1.fit(X_train, y_train==1)
+plot_classifier(X_train, y_train==1, svm_class_1)
+
+
+
+
+
+
+############################ Course 4: Support Vector Machines   ############################
+
+# Train a linear SVM
+svm = SVC(kernel="linear")
+svm.fit(X,y)
+plot_classifier(X, y, svm, lims=(11,15,0,6))
+
+# Make a new data set keeping only the support vectors
+print("Number of original examples", len(X))
+print("Number of support vectors", len(svm.support_))
+X_small = X[svm.support_]
+y_small = y[svm.support_]
+
+# Train a new SVM using only the support vectors
+svm_small = SVC(kernel="linear")
+svm_small.fit(X_small, y_small)
+plot_classifier(X_small, y_small, svm_small, lims=(11,15,0,6))
+
+
+
+
+----- Kernel SVMs
+
+from sklearn.svm import SVC
+svm=SVC(gamma=1) # default is kernal = 'rbf'
+---> larger gamma leads to more complex boundaries
+
+# Instantiate an RBF SVM
+svm = SVC()
+
+# Instantiate the GridSearchCV object and run the search
+parameters = {'gamma':[0.00001, 0.0001, 0.001, 0.01, 0.1]}
+searcher = GridSearchCV(svm, parameters)
+searcher.fit(X, y)
+
+# Report the best parameters and the corresponding score
+print("Best CV params", searcher.best_params_)
+print("Best CV accuracy", searcher.best_score_)
+
+# Report the test accuracy using these best parameters
+print("Test accuracy of best grid search hypers:", searcher.score(X_test, y_test))
+
+
+
+
+
+
+
+------ Comparing logistic regression and SVM (and beyond)
+
+# We set random_state=0 for reproducibility 
+linear_classifier = SGDClassifier(random_state=0)
+
+# Instantiate the GridSearchCV object and run the search
+parameters = {'alpha':[0.00001, 0.0001, 0.001, 0.01, 0.1, 1], 
+             'loss':['hinge', 'log'], 'penalty':['l1','l2']}
+searcher = GridSearchCV(linear_classifier, parameters, cv=10)
+searcher.fit(X_train, y_train)
+
+# Report the best parameters and the corresponding score
+print("Best CV params", searcher.best_params_)
+print("Best CV accuracy", searcher.best_score_)
+print("Test accuracy of best grid search hypers:", searcher.score(X_test, y_test))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
