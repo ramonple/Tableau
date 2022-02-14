@@ -1,3 +1,8 @@
+RMSE root mean squared error  sqrt(sum(yi-y_pred)^2 / n)
+MAE  mean absolute error     |(yi-y_pred)| / n
+
+
+
 .iloc[:,:-1]  select all columns without last
 .iloc[:,-1]  select the last column
 
@@ -266,10 +271,24 @@ plt.show()
   
   
   
-  
-  
-  
+########################### Course 3: Fine-tuning your XGBoost model ########################################
+When is tuning your model a bad idea?
+You are very short on time before you must push an initial model to production and have little data to train your model on.
 
+
+
+
+
+  X,y = housing_data[housing_data.columns.tolist()["-1]], housing_data[housing_data.columns.tolist()[-1]]
+   # ()[:-1] It slices the string to omit the last character, this works even on empty strings, it's a pretty safe way of removing that last character
+  housing_dmatrix=xgb.DMatrix(data=X,label=y)
+  untuned_params = {"objective":"reg:linear"}
+  untuned_cv_results_rmse = xgb.cv(dtrain = housing_dmatrix,params=untuned_params,nfold=4,metrics="rmse",as_pandas=True,seed=123)
+  print("Untuned rmse: %f" %(untuned_cv_results_rmse["test-rmse-mean"]).tail(1)))
+  
+  tuned_params = {"objective":"reg:linear",'colsample_bytree':0.3,'learning_rate':0.1,'max_depth':5}
+  tuned_cv_results_rmse = xgb.cv(dtrain = housing_dmatrix,params=tuned_params,nfold=4,num_boost_round=200,metrics="rmse",as_pandas=True,seed=123)
+  print("Untuned rmse: %f" %(tuned_cv_results_rmse["test-rmse-mean"]).tail(1)))
 
 
   
