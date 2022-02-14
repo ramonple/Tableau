@@ -1,3 +1,8 @@
+.iloc[:,:-1]  select all columns without last
+.iloc[:,-1]  select the last column
+
+
+
 #################################### Course 1: Classification with XGBoost  ####################################
 - supervised learning
   AUC: metric for binary classification models
