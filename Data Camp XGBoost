@@ -96,24 +96,174 @@ number of training samples < number of features
 
 
 
+#################################### Course 2: Regression with XGBoost  ####################################
+
+Objective (loss) functions and base learners
+
+
+# Convert the training and testing sets into DMatrixes: DM_train, DM_test
+DM_train = xgb.DMatrix(data=X_train, label=y_train)
+DM_test =  xgb.DMatrix(data=X_test, label=y_test)
+
+# Create the parameter dictionary: params
+params = {"booster":"gblinear", "objective":"reg:linear"}
+
+# Train the model: xg_reg
+xg_reg = xgb.train(params = params, dtrain=DM_train, num_boost_round=5)
+
+# Predict the labels of the test set: preds
+preds = xg_reg.predict(DM_test)
+
+# Compute and print the RMSE
+rmse = np.sqrt(mean_squared_error(y_test,preds))
+print("RMSE: %f" % (rmse))
 
 
 
 
 
 
+# Create the DMatrix: housing_dmatrix
+housing_dmatrix = xgb.DMatrix(data=X,label=y)
+
+# Create the parameter dictionary: params
+params = {"objective":"reg:linear", "max_depth":4}
+
+
+
+1. 
+# Perform cross-validation: cv_results and "rmse"
+cv_results = xgb.cv(dtrain=housing_dmatrix, params=params, nfold=4, num_boost_round=5, metrics="rmse", as_pandas=True, seed=123)
+
+# Print cv_results
+print(cv_results)
+
+# Extract and print final boosting round metric
+print((cv_results["test-rmse-mean"]).tail(1))
+
+2.
+# Perform cross-validation: cv_results and  "mae"
+cv_results = xgb.cv(dtrain=housing_dmatrix, params=params, nfold=4, num_boost_round=5, metrics="mae", as_pandas=True, seed=123)
+
+# Print cv_results
+print(cv_results)
+
+# Extract and print final round boosting round metric
+print((cv_results["test-mae-mean"]).tail(1))
 
 
 
 
 
+----- Regularization and base learners in XGBoost
 
+regularization paramaters in XGBoost
+ gamma
+ alpha - l1 regularization
+ lambda - l2 regularization
+ 
+ 
+Base learners in XGBoost
+linear base learner:
+ sum of linear terms
+ boosted model is weighted sum of linear models (thus is linear itself)
+ rarely used
+ 
+Tree base learner
+  decision tree
+  Boosted model is weighted sum of decision trees (nonlinear)
+  Almost exclusively used in XGBoost
+  
+  
+  
+  Creating DataFrames from multiple equal-length lists
+  
+  pd.DataFrame(list(zip(list1,lists2)),columns=["list1","list2"])
+   -- zip creates a generator of parallel values: zip([1,2,3],["a","b","c"]) = [1,"a"],[2,"b"],[3,"c"]
+  
+  
+----- Using regularization in XGBoost  
+  
+  # Create the DMatrix: housing_dmatrix
+housing_dmatrix = xgb.DMatrix(data=X, label=y)
 
+reg_params = [1, 10, 100]
 
+# Create the initial parameter dictionary for varying l2 strength: params
+params = {"objective":"reg:linear","max_depth":3}
 
+# Create an empty list for storing rmses as a function of l2 complexity
+rmses_l2 = []
 
+# Iterate over reg_params
+for reg in reg_params:
 
+    # Update l2 strength
+    params["lambda"] = reg
+    
+    # Pass this updated param dictionary into cv
+    cv_results_rmse = xgb.cv(dtrain=housing_dmatrix , params=params, nfold=2, num_boost_round=5, metrics="rmse", as_pandas=True, seed=123)
+    
+    # Append best rmse (final round) to rmses_l2
+    rmses_l2.append(cv_results_rmse["test-rmse-mean"].tail(1).values[0])
 
+# Look at best rmse per l2 param
+print("Best rmse as a function of l2:")
+print(pd.DataFrame(list(zip(reg_params, rmses_l2)), columns=["l2", "rmse"]))
+  
+  
+  
+  
+  -------- Visualizing individual XGBoost trees
+  
+  # Create the DMatrix: housing_dmatrix
+housing_dmatrix = xgb.DMatrix(data=X, label=y)
+
+# Create the parameter dictionary: params
+params = {"objective":"reg:linear", "max_depth":2}
+
+# Train the model: xg_reg
+xg_reg = xgb.train(params=params, dtrain=housing_dmatrix, num_boost_round=10)
+
+# Plot the first tree
+xgb.plot_tree(xg_reg, num_trees=0)
+plt.show()
+
+# Plot the fifth tree
+xgb.plot_tree(xg_reg, num_trees=4)
+plt.show()
+
+# Plot the last tree sideways
+# Plot the last (tenth) tree sideways. To do this, specify the additional keyword argument rankdir="LR"
+xgb.plot_tree(xg_reg, num_trees=9, rankdir='LR')
+plt.show()
+  
+  
+  
+-- Visualizing feature importances: What features are most important in my dataset
+
+  # Create the DMatrix: housing_dmatrix
+housing_dmatrix = xgb.DMatrix(data=X,label=y)
+
+# Create the parameter dictionary: params
+params = {"objective":"reg:linear","max_depth":4}
+
+# Train the model: xg_reg
+xg_reg = xgb.train(params=params,dtrain=housing_dmatrix,num_boost_round=10)
+
+# Plot the feature importances
+xgb.plot_importance(xg_reg)
+plt.show()
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
 
 
