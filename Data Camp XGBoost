@@ -34,6 +34,87 @@
   
   
 XGBoost is usually used with trees as base learners
+ ( tree is combinations of several binary questions)
+individual tree tends to overfit
+
+
  
+
+--------  What is Boosting?
+At bottom, boosting isn't really a specific machine learning algorithm, but a concept that can be applied to a set of machine learning models. 
+So, its really a meta-algorithm. 
+Specifically, it is an ensemble meta-algorithm primarily used to reduce any given single learner's variance and to convert many weak learners into an 
+arbitrarily strong learner.
+
+
+Approaches:
+ - iteratively learning a set of weak models on subsets of the data
+ - weighing each weak prediction according to each weak learner's perfromance
+ - combine all weighted predicted to obtain a single weighted prediction
+
+
+Model evaluation through cross-validation
+Cross validation is a robust method for estimating the performance of a model on unseen data
+
+Example:
+
+import xgboost as xgb
+import pandas as pd
+churn_data = pd.read_csv('xx')
+churn_dmatrix = xgb.DMatrix(data=churn_data.iloc[:,:-1],label=churn_data.month_5_still_here)
+params = {"objective":"binary:logistic","max_depth":4}
+cv_results = xgb.cv(dtrain=churn_dmatrix, params = params, nfold =4, num_boost_round=10,metrics="error",as_pandas = True)
+print("Accuracy:%f"%((1-cv_results["test-error-mean"]).iloc[-1]))
+
+## 
+Perform n-fold cross-validation by calling xgb.cv(). 
+params is your parameter dictionary, 
+nfold is the number of cross-validation folds , 
+num_boost_round is the number of trees we want to build , 
+metrics is the metric you want to compute (this will be "error", which we will convert to an accuracy).
+
+
+
+-- When should we use XGBoost
+- you have a large number of training samples
+    a. Greater than 1000 training samples and less 100 features
+    b. the number of features < number of training samples
+- you have a mixture of categories and numeric features
+    or just numeric features
+    
+
+NOT USE:
+imagine recognition
+computer vision
+natural language processing and understanding problems
+number of training samples < number of features
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
