@@ -1,0 +1,39 @@
+#################################### Course 1: Classification with XGBoost  ####################################
+- supervised learning
+  AUC: metric for binary classification models
+  (area under the ROC curve (x: false positive rate y: true positive rate)
+  large AUC  = better model
+  
+  confusion matrix
+  accuracy: tp + tn / (tp + tn + fp + fn)
+  
+  
+  What is XGBoost/
+  optimised  gradient-boostting machine learning library
+  speed and performance
+  core algorithm is parallelizable
+  consistently outperforms single-algorithm methods
+  
+  
+  
+  import xgbosst as xgb
+  import pandas as pd
+  import numpy as np
+  from  sklearn.model_selection import train_test_split
+  
+  class_data= pd.read_csv("xxxx")
+  X,y=class_data.iloc[:,:-1],class_data.iloc[:,-1]
+  X_train,y_train=
+  xg_cl= xgb.XGBClassifier(objective ='binary:logistic',n_estimator= 10, seed = 123)
+  xg_cl.fit(X_train,y_train)
+  preds= xg_cl.predict(X_test)
+  
+  accuracy = float(np.sum(preds ==y_test))/y_test.shape[0]
+  print("accuracy: %f" %(accuracy) )
+  
+  
+  
+XGBoost is usually used with trees as base learners
+ 
+
+  
