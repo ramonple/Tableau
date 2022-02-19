@@ -21,7 +21,8 @@ plt.show()
 
 
 
-t-SNE visualization of high-dimensional data
+t-SNE visualization of high-dimensional data --> t-distributed stochastic neighbor embedding 
+#  is a statistical method for visualizing high-dimensional data by giving each datapoint a location in a two or three-dimensional map
 
 What is a good use case to use t-SNE?
 When you want to visually explore the patterns in a high dimensional dataset.
@@ -45,6 +46,11 @@ print(tsne_features.shape)
 ################################## Couse 2: Feature selection I, selecting for feature information ##################################
 
 The curse of dimensionality
+
+
+Support Vector Classifier (SVC) ->  The objective of a Linear SVC (Support Vector Classifier) is to fit to the data you provide, 
+                                    returning a "best fit" hyperplane that divides, or categorizes, your data.
+
 
 # Import SVC from sklearn.svm and accuracy_score from sklearn.metrics
 from sklearn.svm import SVC
@@ -73,6 +79,9 @@ normalized_df = head_df / head_df.mean()
 # Print the variances of the normalized data
 print(normalized_df.var())
 
+
+Variance threshold:
+The variance threshold is a simple baseline approach to feature selection. It removes all features which variance doesn't meet some threshold.
 
 
 from sklearn.feature_selection import VarianceThreshold
@@ -110,7 +119,6 @@ Upper triangle of an array.
 
 Pairwise correlation
 
-
 # Create the correlation matrix
 corr = ansur_df.corr()
 
@@ -129,6 +137,8 @@ corr = ansur_df.corr()
 
 # Generate a mask for the upper triangle 
 mask = np.triu(np.ones_like(corr, dtype=bool))
+             # np.ones_like (array_like, dtype = xxx, order =xxx): Return an array of ones with the same shape and type as a given array.
+
 
 # Add the mask to the heatmap
 sns.heatmap(corr, mask=mask, cmap=cmap, center=0, linewidths=1, annot=True, fmt=".2f")
@@ -136,13 +146,7 @@ plt.show()
 
 
 
-
-
-
-
-
 Removing highly correlated features
-
 
 # Calculate the correlation matrix and take the absolute value
 corr_matrix = ansur_df.corr().abs()
@@ -168,6 +172,58 @@ plt.show()
 
 
 ################################## Couse 3: Feature selection II, selecting for model accuracy ##################################
+-- Building a diabetes classifier
+
+# Fit the scaler on the training features and transform these in one go
+X_train_std = scaler.fit_transform(X_train)
+
+# Fit the logistic regression model on the scaled training data
+lr.fit(X_train_std, y_train)
+
+# Scale the test features
+X_test_std = scaler.transform(X_test)
+
+# Predict diabetes presence on the scaled test set
+y_pred = lr.predict(X_test_std)
+
+# Prints accuracy metrics and feature coefficients
+print("{0:.1%} accuracy on test set.".format(accuracy_score(y_test, y_pred))) 
+print(dict(zip(X.columns, abs(lr.coef_[0]).round(2))))
+
+
+-- Automatic Recursive Feature Elimination
+
+RFE: recursive feature elimination
+
+# Create the RFE with a LogisticRegression estimator and 3 features to select
+rfe = RFE(estimator=LogisticRegression(), n_features_to_select=3, verbose=1)
+
+# Fits the eliminator to the data
+rfe.fit(X_train, y_train)
+
+# Print the features and their ranking (high = dropped early on)
+print(dict(zip(X.columns, rfe.ranking_)))
+
+# Print the features that are not eliminated
+print(X.columns[rfe.support_])
+
+# Calculates the test set accuracy
+acc = accuracy_score(y_test, rfe.predict(X_test))
+print("{0:.1%} accuracy on test set.".format(acc)) 
+
+
+
+
+
+
+Tree-based feature selection
+
+
+
+
+
+
+
 
 
 
