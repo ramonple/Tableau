@@ -218,6 +218,122 @@ print("{0:.1%} accuracy on test set.".format(acc))
 
 Tree-based feature selection
 
+# Perform a 75% training and 25% test data split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=0)
+
+# Fit the random forest model to the training data
+rf = RandomForestClassifier(random_state=0)
+rf.fit(X_train, y_train)
+
+# Calculate the accuracy
+acc = accuracy_score(y_test, rf.predict(X_test))
+
+# Print the importances per feature
+print(dict(zip(X.columns, rf.feature_importances_.round(2))))
+
+# Print accuracy
+print("{0:.1%} accuracy on test set.".format(acc))
+
+
+# Create a mask for features importances above the threshold
+mask = rf.feature_importances_ > 0.15
+
+# Apply the mask to the feature dataset X -->important
+reduced_X = X.loc[:,mask]
+
+# prints out the selected column names
+print(reduced_X.columns)
+
+
+
+
+Recursive Feature Elimination with random forests
+
+# Set the feature eliminator to remove 2 features on each step
+rfe = RFE(estimator=RandomForestClassifier(), n_features_to_select=2, step=2, verbose=1) # step =2: each step eliminate two 
+
+# Fit the model to the training data
+rfe.fit(X_train, y_train)
+
+# Create a mask
+mask = rfe.support_
+
+# Apply the mask to the feature dataset X and print the result
+reduced_X = X.loc[:, mask]
+print(reduced_X.columns)
+
+
+
+
+
+
+Regularized linear regression
+
+-> Creating a LASSO regressor
+
+# Set the test size to 30% to get a 70-30% train test split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+
+# Fit the scaler on the training features and transform these in one go
+X_train_std = scaler.fit_transform(X_train)
+
+# Create the Lasso model
+la = Lasso()
+
+# Fit it to the standardized training data
+la.fit(X_train_std,y_train)
+
+-> Lasso model results
+
+# Transform the test set with the pre-fitted scaler
+X_test_std = scaler.transform(X_test)
+
+# Calculate the coefficient of determination (R squared) on X_test_std
+r_squared = la.score(X_test_std, y_test)
+print("The model can predict {0:.1%} of the variance in the test set.".format(r_squared))
+
+# Create a list that has True values when coefficients equal 0
+zero_coef = la.coef_ == 0
+
+# Calculate how many features have a zero coefficient
+n_ignored = sum(zero_coef)
+print("The model has ignored {} out of {} features.".format(n_ignored, len(la.coef_)))
+
+
+
+# Find the highest alpha value with R-squared above 98%
+la = Lasso(alpha=0.1, random_state=0)
+
+# Fits the model and calculates performance stats
+la.fit(X_train_std, y_train)
+r_squared = la.score(X_test_std, y_test)
+n_ignored_features = sum(la.coef_ == 0)
+
+# Print peformance stats 
+print("The model can predict {0:.1%} of the variance in the test set.".format(r_squared))
+print("{} out of {} features were ignored.".format(n_ignored_features, len(la.coef_)))
+
+
+
+
+
+
+
+
+Combining feature selectors
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
