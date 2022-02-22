@@ -403,6 +403,112 @@ print(reduced_df.head())
 
 Principal component analysis
 
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+
+# Create the scaler and standardize the data
+scaler = StandardScaler()
+ansur_std = scaler.fit_transform(ansur_df)
+
+# Create the PCA instance and fit and transform the data with pca
+pca = PCA()
+pc = pca.fit_transform(ansur_std)
+
+# This changes the numpy array output back to a dataframe
+pc_df = pd.DataFrame(pc, columns=['PC 1', 'PC 2', 'PC 3', 'PC 4'])
+
+# Create a pairplot of the principal component dataframe
+sns.pairplot(pc_df)
+plt.show()
+
+
+
+--- PCA on a larger dataset
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+
+# Scale the data
+scaler = StandardScaler()
+ansur_std = scaler.fit_transform(ansur_df)
+
+# Apply PCA
+pca = PCA()
+pca.fit(ansur_std)
+
+
+
+--- PCA explained variance
+# Inspect the explained variance ratio per component
+print(pca.explained_variance_ratio_)
+
+# Print the cumulative sum of the explained variance ratio
+print(pca.explained_variance_ratio_.cumsum())
+
+
+
+
+
+
+one downside of PCA is that the remaining components can be hard to interpret.
+
+print(pca.components_)
+
+
+--- Understanding the components
+
+# Build the pipeline
+pipe = Pipeline([('scaler', StandardScaler()),
+        		 ('reducer', PCA(n_components=2))])
+
+# Fit it to the dataset and extract the component vectors
+pipe.fit(poke_df)
+vectors = pipe.steps[1][1].components_.round(2)
+
+# Print feature effects
+print('PC 1 effects = ' + str(dict(zip(poke_df.columns, vectors[0]))))
+print('PC 2 effects = ' + str(dict(zip(poke_df.columns, vectors[1]))))
+
+
+
+# Build the pipeline
+pipe = Pipeline([('scaler', StandardScaler()),
+        		 ('reducer', PCA(n_components=2))])
+
+# Fit it to the dataset and extract the component vectors
+pipe.fit(poke_df)
+vectors = pipe.steps[1][1].components_.round(2)
+
+# Print feature effects
+print('PC 1 effects = ' + str(dict(zip(poke_df.columns, vectors[0]))))
+print('PC 2 effects = ' + str(dict(zip(poke_df.columns, vectors[1]))))
+
+
+
+
+
+-- PCA  in a modelpipeline
+
+# Build the pipeline
+pipe = Pipeline([
+        ('scaler', StandardScaler()),
+        ('reducer', PCA(n_components=3)),
+        ('classifier', RandomForestClassifier(random_state=0))])
+
+# Fit the pipeline to the training data
+pipe.fit(X_train, y_train)
+
+# Score the accuracy on the test set
+accuracy = pipe.score(X_test, y_test)
+
+# Prints the explained variance ratio and accuracy
+print(pipe.steps[1][1].explained_variance_ratio_)
+print('{0:.1%} test set accuracy'.format(accuracy))
+
+
+
+        
+        
+        
 
 
 
@@ -410,6 +516,64 @@ Principal component analysis
 
 
 
+Principal Component selection
+
+-> telling PCA the minimal proportion of variance we want to keep and let the algorithm decide on the number of components it needs to achieve that
+
+
+
+x -->  pca.fit(x)  -->   fitted  pca  --> pca.trasform(X)--> pc
+x -->  pca.fit_transfrom(X) --> pc
+
+pc --> pca.inverse_transform(pc) --> X
+
+
+
+# Let PCA select 90% of the variance
+pipe = Pipeline([('scaler', StandardScaler()),
+        		 ('reducer', PCA(n_components=0.9))])
+
+# Fit the pipe to the data
+pipe.fit(ansur_df)
+
+print('{} components selected'.format(len(pipe.steps[1][1].components_)))
+
+
+
+
+
+
+# Pipeline a scaler and pca selecting 10 components
+pipe = Pipeline([('scaler', StandardScaler()),
+        		 ('reducer', PCA(n_components=10))])
+
+# Fit the pipe to the data
+pipe.fit(ansur_df)
+
+# Plot the explained variance ratio
+plt.plot(pipe.steps[1][1].explained_variance_ratio_)
+
+plt.xlabel('Principal component index')
+plt.ylabel('Explained variance ratio')
+plt.show()
+
+
+
+
+
+
+# Plot the MNIST sample data
+plot_digits(X_test)
+
+
+# Transform the input data to principal components
+pc = pipe.transform(X_test)
+
+# Inverse transform the components to original feature space
+X_rebuilt = pipe.inverse_transform(pc)
+
+# Prints the number of features
+print("X_rebuilt has {} features".format(X_rebuilt.shape[1]))
 
 
 
