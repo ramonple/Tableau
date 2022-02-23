@@ -7,6 +7,20 @@ Once you understand your dataset, you'll probably have some idea about how you w
 Machine learning models in Python require numerical input, so if your dataset has categorical variables, you'll need to transform them.
 Think of data preprocessing as a prerequisite for modeling.
 
+STEP:
+1. check the information of the dataset:
+   xx.shape, xxx.isnull().sum(), xxx.notnull(), xxx.astype(),xxx['xx'].value_counts()
+   
+2. Standardisation:
+np.log()  xxx.fit_transform()
+
+
+3. Feature  Engineering:
+      add new features
+      
+4. Selecting features for modeling
+
+                  
 ############################## Course 1: Introduction to Data Preprocessing   ##############################
 
 Missing data - rows
@@ -85,6 +99,130 @@ data['new_column'] = np.log(data['old_column'])
 
 
 Scaling data for feature comparison
+# Import StandardScaler from scikit-learn
+from sklearn.preprocessing import StandardScaler
+
+# Create the scaler
+ss = StandardScaler()
+
+# Take a subset of the DataFrame you want to scale 
+wine_subset = wine[["Ash", "Alcalinity of ash", "Magnesium"]]
+
+# Apply the scaler to the DataFrame subset
+wine_subset_scaled = ss.fit_transform(wine_subset)
+
+
+
+############################## Course 3: Feature Engineering  ##############################
+Feature engineering is the creation of new features based on existing features, and it adds information to your dataset that is useful in some way: 
+it adds features useful for your prediction or clustering task, or it sheds insight into relationships between features. 
+ 
+
+Encoding categorical variables
+
+# Set up the LabelEncoder object
+enc = LabelEncoder()
+
+# Apply the encoding to the "Accessible" column
+hiking['Accessible_enc'] = enc.fit_transform(hiking['Accessible'])
+
+# Compare the two columns
+print(hiking[['Accessible', 'Accessible_enc']].head())
+
+
+# Transform the category_desc column
+category_enc = pd.get_dummies(volunteer["category_desc"])
+
+# Take a look at the encoded columns
+print(category_enc.head())
+
+
+
+Engineering numerical features
+
+# Create a list of the columns to average
+run_columns = ["run1", "run2", "run3", "run4", "run5"]
+
+# Use apply to create a mean column
+running_times_5k["mean"] = running_times_5k.apply(lambda row: row[run_columns].mean(), axis=1)
+
+# Take a look at the results
+print(running_times_5k)
+
+
+
+
+
+# First, convert string column to date column
+volunteer["start_date_converted"] = pd.to_datetime(volunteer["start_date_date"])
+
+# Extract just the month from the converted column
+volunteer["start_date_month"] = volunteer["start_date_converted"].apply(lambda row: row.month)
+
+# Take a look at the converted and new month columns
+print(volunteer[["start_date_converted", "start_date_month"]].head())
+
+
+
+
+Text classification
+
+re — Regular expression operations
+
+pattern = re.compile("\d+ \. \d+")
+  # break down the pattern in re.compile
+  
+\d+: backslash d" means that we want to grab digits, and the "plus" means we want to grab as many as possible. 
+\. : "backslash period" means we want to grab the decimal point
+\d+: another "backslash d plus" at the end to grab the digits on the right-hand side of the decimal.
+
+
+Vectoring  text
+
+# Write a pattern to extract numbers and decimals
+def return_mileage(length):
+    pattern = re.compile(r"\d+\.\d+")
+    
+    # Search the text for matches
+    mile = re.match(pattern, length)
+    
+    # If a value is returned, use group(0) to return the found value
+    if mile is not None:
+        return float(mile.group(0))
+        
+# Apply the function to the Length column and take a look at both columns
+hiking["Length_num"] = hiking["Length"].apply(lambda row: return_mileage(row))
+print(hiking[["Length", "Length_num"]].head())
+
+
+
+
+
+Engineering features from strings - tf/idf
+
+# Take the title text
+title_text = volunteer["title"]
+
+# Create the vectorizer method
+tfidf_vec = TfidfVectorizer()
+
+# Transform the text into tf-idf vectors
+text_tfidf = tfidf_vec.fit_transform(title_text)
+
+
+# Split the dataset according to the class distribution of category_desc
+y = volunteer["category_desc"]
+X_train, X_test, y_train, y_test = train_test_split(text_tfidf.toarray(), y, stratify=y)
+
+# Fit the model to the training data
+nb.fit(X_train, y_train)
+
+# Print out the model's accuracy
+print(nb.score(X_test,y_test))
+
+
+
+############################## Course 4:  Selecting features for modeling
 
 
 
@@ -92,9 +230,6 @@ Scaling data for feature comparison
 
 
 
-############################## Course 3:
 
 
-
-
-############################## Course 4: 
+############################## Course 5: 
