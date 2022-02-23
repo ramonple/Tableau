@@ -1,0 +1,100 @@
+Preprocessing for Machine Learning in Python
+
+What is data preprocessing?
+
+Data preprocessing comes after you've cleaned up your data and after you've done some exploratory analysis to understand your dataset.
+Once you understand your dataset, you'll probably have some idea about how you want to model your data. 
+Machine learning models in Python require numerical input, so if your dataset has categorical variables, you'll need to transform them.
+Think of data preprocessing as a prerequisite for modeling.
+
+############################## Course 1: Introduction to Data Preprocessing   ##############################
+
+Missing data - rows
+# Check how many values are missing in the category_desc column
+print(volunteer['category_desc'].isnull().sum())
+
+# Subset the volunteer dataset
+volunteer_subset = volunteer[volunteer['category_desc'].notnull()]
+
+# Print out the shape of the subset
+print(volunteer_subset.shape)
+
+
+
+Working with data types
+# Print the head of the hits column
+print(volunteer["hits"].head())
+
+# Convert the hits column to type int
+volunteer["hits"] = volunteer["hits"].astype(int)
+
+# Look at the dtypes of the dataset
+print(volunteer.dtypes)
+
+
+
+
+
+Class distribution
+
+Stratefied  sampling: y['labels'].value_counts()
+--> check the number of each category
+
+# Create a data with all columns except category_desc
+volunteer_X = volunteer.drop("category_desc", axis=1)
+
+# Create a category_desc labels dataset
+volunteer_y = volunteer[["category_desc"]]
+
+# Use stratified sampling to split up the dataset according to the volunteer_y dataset
+X_train, X_test, y_train, y_test = train_test_split(volunteer_X, volunteer_y, stratify=volunteer_y)   # stratify
+
+# Print out the category_desc counts on the training y labels
+print(y_train["category_desc"].value_counts())
+
+
+
+
+
+
+
+############################## Course 2: Standardizing Data  #############################
+When to standardise?
+a. model in linear space
+b. dataset features have high variance
+c. datase features  are continuous and on different  scales
+d. linearly assumption
+
+
+# Split the dataset and labels into training and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y)
+
+# Fit the k-nearest neighbors model to the training data
+knn.fit(X_train,y_train)
+
+# Score the model on the test data
+print(knn.score(X_test,y_test))
+
+
+
+------ Log normalization
+
+data['new_column'] = np.log(data['old_column'])
+
+
+
+
+Scaling data for feature comparison
+
+
+
+
+
+
+
+############################## Course 3:
+
+
+
+
+############################## Course 4: 
