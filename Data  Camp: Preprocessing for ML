@@ -224,6 +224,151 @@ print(nb.score(X_test,y_test))
 
 ############################## Course 4:  Selecting features for modeling
 
+Feature selection is a method of selecting features from your feature set to be used for modeling. 
+
+
+
+---- Removing redundant features (noisy features, correlated  features)
+
+# Create a list of redundant column names to drop
+to_drop = ["category_desc", "created_date", "locality", "region", "vol_requests"]
+
+# Drop those columns from the dataset
+volunteer_subset = volunteer.drop(to_drop, axis=1)
+
+# Print out the head of the new dataset
+print(volunteer_subset.head())
+
+
+
+
+
+----- Selecting features using text vectors
+
+# Add in the rest of the parameters
+def return_weights(vocab, original_vocab, vector, vector_index, top_n):
+    zipped = dict(zip(vector[vector_index].indices, vector[vector_index].data))
+    
+    # Let's transform that zipped dict into a series
+    zipped_series = pd.Series({vocab[i]:zipped[i] for i in vector[vector_index].indices})
+    
+    # Let's sort the series to pull out the top n weighted words
+    zipped_index = zipped_series.sort_values(ascending=False)[:top_n].index
+    return [original_vocab[i] for i in zipped_index]
+
+# Print out the weighted words
+print(return_weights(vocab, tfidf_vec.vocabulary_, text_tfidf, 8, 3))
+
+def words_to_filter(vocab, original_vocab, vector, top_n):
+    filter_list = []
+    for i in range(0, vector.shape[0]):
+    
+        # Here we'll call the function from the previous exercise, and extend the list we're creating
+        filtered = return_weights(vocab, original_vocab, vector, i, top_n)
+        filter_list.extend(filtered)
+    # Return the list in a set, so we don't get duplicate word indices
+    return set(filter_list)
+
+# Call the function to get the list of word indices
+filtered_words = words_to_filter(vocab, tfidf_vec.vocabulary_, text_tfidf, 3)
+
+# By converting filtered_words back to a list, we can use it to filter the columns in the text vector
+filtered_text = text_tfidf[:, list(filtered_words)]
+
+
+
+
+
+# Split the dataset according to the class distribution of category_desc
+train_X, test_X, train_y, test_y = train_test_split(filtered_text.toarray(), y, stratify=y)
+
+# Fit the model to the training data
+nb.fit(train_X, train_y)
+
+# Print out the model's accuracy
+print(nb.score(test_X, test_y))
+
+
+
+
+
+
+------   Dimensionality reduction
+Dimensionality reduction is a form of unsupervised learning that transforms your data in a way that shrinks the number of features in your feature space.
+
+PCA
+Linear transformation to uncorrelated space
+Capture as much variance as possible in each component
+
+
+
+-- pca
+
+from sklearn.decomposition import PCA
+
+# Set up PCA and the X vector for diminsionality reduction
+pca = PCA()
+wine_X = wine.drop("Type", axis=1)
+
+# Apply PCA to the wine dataset X vector
+transformed_X = pca.fit_transform(wine_X)
+
+# Look at the percentage of variance explained by the different components
+print(pca.explained_variance_ratio_)
+
+
+
+############################## Course 5: Putting it all together  ##############################
+
+
+# Check the column types
+print(ufo.dtypes)
+
+# Change the type of seconds to float
+ufo["seconds"] = ufo["seconds"].astype(float)
+
+# Change the date column to type datetime
+ufo["date"] = pd.to_datetime(ufo["date"])
+
+# Check the column types
+print(ufo[["seconds", "date"]].dtypes)
+
+
+
+# Check how many values are missing in the length_of_time, state, and type columns
+print(ufo[["length_of_time", "state", "type"]].isnull().sum())
+
+# Keep only rows where length_of_time, state, and type are not null
+ufo_no_missing = ufo[ufo["length_of_time"].notnull() & 
+          ufo["state"].notnull() & 
+          ufo["type"].notnull()]
+
+# Print out the shape of the new dataset
+print(ufo_no_missing.shape)
+
+
+
+
+
+
+---> Categorical variables and standardization
+def return_minutes(time_string):
+
+    # Use \d+ to grab digits
+    pattern = re.compile(r"\d+")
+    
+    # Use match on the pattern and column
+    num = re.match(pattern, time_string)
+    if num is not None:
+        return int(num.group(0))
+        
+# Apply the extraction to the length_of_time column
+ufo["minutes"] = ufo["length_of_time"].apply(lambda row: return_minutes(row))
+-- To apply a function to a DataFrame, you can use 
+--- df["column"].apply(lambda row: function_here(row)).
+
+# Take a look at the head of both of the columns
+print(ufo[['length_of_time','minutes']].head())
 
 
 
@@ -232,4 +377,4 @@ print(nb.score(X_test,y_test))
 
 
 
-############################## Course 5: 
+
