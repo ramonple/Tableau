@@ -1,0 +1,137 @@
+---- course 1: 
+Time Series and Machine Learning Primer
+
+
+# Plot the time series in each dataset
+fig, axs = plt.subplots(2, 1, figsize=(5, 10))
+data.iloc[:1000].plot(x='time', y='data_values', ax=axs[0])
+data2.iloc[:1000].plot(x='time', y='data_values', ax=axs[1])
+plt.show()
+
+
+# Create input array
+X_predict = targets[['petal length (cm)', 'petal width (cm)']]
+
+# Predict with the model
+predictions = model.predict(X_predict)
+print(predictions)
+
+# Visualize predictions and actual values
+plt.scatter(X_predict['petal length (cm)'], X_predict['petal width (cm)'],
+            c=predictions, cmap=plt.cm.coolwarm)
+plt.title("Predicted class values")
+plt.show()
+
+
+
+from sklearn import linear_model
+
+# Prepare input and output DataFrames
+X = boston[['AGE']]  --> double [[ ]] 
+y = boston[['RM']]
+
+# Fit the model
+model = linear_model.LinearRegression()
+model.fit(X, y)
+
+
+
+# Generate predictions with the model using those inputs
+predictions = model.predict(new_inputs.reshape(-1, 1))
+ -- To reshape the data, use data.reshape(-1, 1)
+      reshape(-1, 1) if your data has a single feature or array. reshape(1, -1) if it contains a single sample. We could change our Series into a NumPy array and then reshape it to have two dimensions.
+ -- Generate predictions with model.predict
+ 
+# Visualize the inputs and predicted values
+plt.scatter(new_inputs, predictions, color='r', s=3)
+plt.xlabel('inputs')
+plt.ylabel('predictions')
+plt.show()
+
+
+
+import librosa as lr
+from glob import glob
+
+# List all the wav files in the folder
+audio_files = glob(data_dir + '/*.wav')
+
+# Read in the first audio file, create the time array
+audio, sfreq = lr.load(audio_files[0])
+time = np.arange(0, len(audio)) / sfreq
+----> The easiest way to create a time array is to divide the index of each datapoint by the sampling frequency
+
+# Plot audio over time
+fig, ax = plt.subplots()
+ax.plot(time, audio)
+ax.set(xlabel='Time (s)', ylabel='Sound Amplitude')
+plt.show()
+
+
+# Read in the data
+data = pd.read_csv('prices.csv', index_col=0)
+
+# Convert the index of the DataFrame to datetime
+data.index = pd.to_datetime(data.index)
+print(data.head())
+
+# Loop through each column, plot its values over time
+fig, ax = plt.subplots()
+for column in data:
+    data[column].plot(ax=ax, label=column)
+ax.legend()
+plt.show()
+
+
+
+
+------ Couse 2: time Series as inputs to a model
+
+np.column_stack
+   Stack 1-D arrays as columns into a 2-D array.
+Examples
+
+a = np.array((1,2,3))
+b = np.array((2,3,4))
+np.column_stack((a,b))
+    array([[1, 2],
+           [2, 3],
+           [3, 4]])
+
+
+
+Two DataFrames, normal and abnormal, each with the shape of (n_times_points, n_audio_files) containing the audio for several heartbeats are available in your workspace. 
+Also, the sampling frequency is loaded into a variable called sfreq. A convenience plotting function show_plot_and_make_titles() is also available in your workspace.
+
+
+fig, axs = plt.subplots(3, 2, figsize=(15, 7), sharex=True, sharey=True)
+
+# Calculate the time array
+time = np.arange(normal.shape[0]) / sfreq
+
+# Stack the normal/abnormal audio so you can loop and plot
+stacked_audio = np.hstack([normal, abnormal]).T
+
+# Loop through each audio file / ax object and plot
+# .T.ravel() transposes the array, then unravels it into a 1-D vector for looping
+for iaudio, ax in zip(stacked_audio, axs.T.ravel()):
+    ax.plot(time, iaudio)
+show_plot_and_make_titles()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+------ Couse 3: Predicting time seriies data
+
+
+------ Couse 4: Validating and Inspecting Time Series Models
