@@ -29,10 +29,30 @@ print(so_numeric_df.columns)
 
 ----- Dealing with categorical features
 
+one hot vs dummies
+one hot encoding: explainable features
+dummy encoding: necessary information without duplication
 
 
+Limiting your columns : avoding too many columns for dummy variables
+
+counts=df['xx'].value_counts()
+mask = df['xx'].isin(counts[counts < 5].index)
+df['xx'][mask] = 'other'
 
 
+# Convert the Country column to a one hot encoded Data Frame
+one_hot_encoded = pd.get_dummies(so_survey_df, columns=['Country'], prefix='OH')
+
+# Print the columns names
+print(one_hot_encoded.columns)
+
+
+# Create dummy variables for the Country column
+dummy = pd.get_dummies(so_survey_df, columns=['Country'], drop_first=True, prefix='DM')
+
+# Print the columns names
+print(dummy.columns)
 
 
 
