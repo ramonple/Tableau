@@ -113,7 +113,20 @@ so_survey_df['boundary_binned'] = pd.cut(so_survey_df['ConvertedSalary'],
 # Print the first 5 rows of the boundary_binned column
 print(so_survey_df[['boundary_binned', 'ConvertedSalary']].head())
 
+
+
 ##########################################  Course 2:  Dealing with Messy Data ########################################## 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
