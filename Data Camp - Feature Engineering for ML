@@ -117,17 +117,89 @@ print(so_survey_df[['boundary_binned', 'ConvertedSalary']].head())
 
 ##########################################  Course 2:  Dealing with Messy Data ########################################## 
 
+missing value discovery: df.info()
+
+finding missing value: df.isnull()
+
+missing value numbers:  df['xx'].isnull().sum()
+
+non-missing value: df.notnull()
+
+
+
+# Print the locations of the non-missing values
+print(sub_df.head(10).notnull())
+
+
+
+--- Dealing with missing values:
+df.dropna(how='any') # all rows with missing value
+df.dropna(subset=['xxx'])
+
+df['xx'].fillna(value='xx',inplace=True)
+
+# record where the values are not miissing
+df['xx'] = df['yy'].notnull()
+
+
+# Create a new DataFrame dropping all columns with incomplete rows
+no_missing_values_cols = so_survey_df.dropna(how='any', axis=1)
+
+Use df.dropna(how='any'), with an additional argument, axis set to 1 to drop columns with missing values.
+
+
+# Replace missing values
+so_survey_df['Gender'].fillna(value='Not Given', inplace=True)
+
+# Print the count of each value
+print(so_survey_df['Gender'].value_counts())
+
+
+
+
+df['xx'] = df['xx'].fillna(df['xxx'].mean())
+df['xx']=df['xx'].astype('int64')
 
 
 
 
 
+-- other data issues
+
+df['xxx'].dtype
+
+df['xx']=df['xx'].str.replace(',','')
+
+df['xx']=df['xx'].astype()
+
+-- chaning methods
+df['xx'] = df['xx'].method1()
+df['xx'] = df['xx'].method2()
+df['xx'] = df['xx'].method3()
+
+df['xx'] = df['xx']\
+           .method1().method2().method3()
+           
+           
+# Attempt to convert the column to numeric values
+numeric_vals = pd.to_numeric(so_survey_df['RawSalary'], errors='coerce')
+
+# Find the indexes of missing values
+idx = numeric_vals.isna()
+
+# Print the relevant rows
+print(so_survey_df['RawSalary'][idx])
 
 
-
-
-
-
+# Use method chaining
+so_survey_df['RawSalary'] = so_survey_df['RawSalary']\
+                              .str.replace(',', '')\
+                              .str.replace('$', '')\
+                              .str.replace('£', '')\
+                              .astype('float')
+ 
+# Print the RawSalary column
+print(so_survey_df['RawSalary'])
 
 
 
