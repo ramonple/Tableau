@@ -205,6 +205,107 @@ print(so_survey_df['RawSalary'])
 
 ##########################################  Course 3: Conforming to Statistical Assumptions ########################################## 
 
+-- Data Distributions
+
+import matplot as plt
+df.hist()
+plt.show()
+
+
+-- Paring distributions
+how different features in your DataFrame interact with each other.
+it is useful to see if multiple columns are correlated with each other or whether they have any association at all
+
+import seaborn as sns
+sns.pairplot(df)
+
+
+
+
+-- Scaling and transformations
+
+
+min-max scaling [0,1]
+
+from sklearn.preprocessing import MinMaxScaler
+scaler=MinMaxScaler()
+scaler.fit(df[['xxx']])
+df['xx'] = scaler.transform(df[['xx']])
+
+
+
+Standardisation
+
+from sklearn.preprocessing import StandardScaler
+scaler=StandardScaler()
+scaler.fit(df[['xx']])
+df['xx'] = scaler\
+           .transform(df[['xxx']])
+           
+           
+
+
+
+Log Transformation
+
+from sklearn.preprocessing import PowerTransformer
+log = PowerTransformer()
+log.fit (df[['xxx']])
+df['xx'] = log.transform(df[['xxx']])
+
+
+
+
+---- Removing outliers
+
+- Quantiles in Python
+q_cutoff = df['xx'].quantile(0.95)
+mask = df['xxx'] < q_cutoff
+trimmed_df = df[mask]
+
+
+
+- standard deviation detection in Python
+mean = df['xxx'].mean()
+std=df['xx'].std()
+
+cut_off = std*3
+
+lower,upper = mean-cut_off,mean+cut_off
+
+new_df = df[ (df['xxx'] < upper)  & (df['xxx'] >lower) ]
+
+
+
+
+-- Scaling and transforming new data
+
+
+# Import StandardScaler
+from sklearn.preprocessing import StandardScaler
+
+# Apply a standard scaler to the data
+SS_scaler = StandardScaler()
+
+# Fit the standard scaler to the data
+SS_scaler.fit(so_train_numeric[['Age']])
+
+# Transform the test data using the fitted scaler
+so_test_numeric['Age_ss'] = SS_scaler.transform(so_test_numeric[['Age']])
+print(so_test_numeric[['Age', 'Age_ss']].head())
+
+
+
+train_std = so_train_numeric['ConvertedSalary'].std()
+train_mean = so_train_numeric['ConvertedSalary'].mean()
+
+cut_off = train_std * 3
+train_lower, train_upper = train_mean - cut_off, train_mean + cut_off
+
+# Trim the test DataFrame
+trimmed_df = so_test_numeric[(so_test_numeric['ConvertedSalary'] < train_upper) \
+                             & (so_test_numeric['ConvertedSalary'] > train_lower)]
+
 
 
 
