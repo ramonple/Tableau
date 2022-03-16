@@ -1,0 +1,56 @@
+####################################Course 1:  Basic Modeling in scikit-learn ####################################
+Before we can validate models, we need an understanding of how to create and work with them. 
+This chapter provides an introduction to running regression and classification models in scikit-learn. 
+We will use this model building foundation throughout the remaining chapters.
+
+-- What is model validation?
+1. ensuring your model performs as expected on new data
+2. testing model performance on holdout datasets
+3. selecting the best model, parameters, and accuracy metrics
+4. achieving the best accuracy for the data given
+
+
+
+# The model is fit using X_train and y_train
+model.fit(X_train, y_train)
+
+# Create vectors of predictions
+train_predictions = model.predict(X_train)
+test_predictions = model.predict(X_test)
+
+# Train/Test Errors
+train_error = mae(y_true=y_train, y_pred=train_predictions)
+test_error = mae(y_true=y_test, y_pred=test_predictions)
+
+# Print the accuracy for seen and unseen data
+print("Model error on seen data: {0:.2f}.".format(train_error))
+print("Model error on unseen data: {0:.2f}.".format(test_error))
+
+
+
+
+
+
+
+
+#################################### Course 2: Validation Basics ####################################
+This chapter focuses on the basics of model validation. From splitting data into training, validation, and testing datasets, 
+to creating an understanding of the bias-variance tradeoff, we build the foundation for the techniques of K-Fold and Leave-One-Out validation practiced in chapter three.
+
+
+
+
+
+#################################### Course 3: Cross Validation ####################################
+Holdout sets are a great start to model validation. However, using a single train and test set if often not enough. 
+Cross-validation is considered the gold standard when it comes to validating model performance and is almost always used when tuning model hyper-parameters. 
+This chapter focuses on performing cross-validation to validate model performance.
+
+
+
+
+
+
+#################################### Course 4: Selecting the best model with Hyperparameter tuning. ####################################
+The first three chapters focused on model validation techniques. 
+In chapter 4 we apply these techniques, specifically cross-validation, while learning about hyperparameter tuning. After all, model validation makes tuning possible and helps us select the overall best model.
