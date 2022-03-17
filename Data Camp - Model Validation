@@ -29,13 +29,71 @@ print("Model error on unseen data: {0:.2f}.".format(test_error))
 
 
 
+regression model
 
+# Set the number of trees
+rfr.n_estimators = 100
+
+# Add a maximum depth
+rfr.max_depth = 6
+
+# Set the random state
+rfr.random_state = 1111
+
+# Fit the model
+rfr.fit(X_train, y_train)
+
+# Fit the model using X and y
+rfr.fit(X_train, y_train)
+
+# Print how important each column is to the model
+for i, item in enumerate(rfr.feature_importances_):
+    # Use i and item to print out the feature importance of each column
+    print("{0:s}: {1:.2f}".format(X_train.columns[i], item))
+
+
+
+
+
+classfication models
+
+
+# Fit the rfc model. 
+rfc.fit(X_train, y_train)
+
+# Create arrays of predictions
+classification_predictions = rfc.predict(X_test)
+probability_predictions = rfc.predict_proba(X_test)
+
+# Print out count of binary predictions
+print(pd.Series(classification_predictions).value_counts())
+
+# Print the first value from probability_predictions
+print('The first predicted probabilities are: {}'.format(probability_predictions[0]))
+
+
+
+rfc = RandomForestClassifier(n_estimators=50, max_depth=6, random_state=1111)
+
+# Print the classification model
+print(rfc)
+
+# Print the classification model's random state parameter
+print('The random state is: {}'.format(rfc.random_state))
+
+# Print all parameters
+print('Printing the parameters dictionary: {}'.format(rfc.get_params()))
 
 
 
 #################################### Course 2: Validation Basics ####################################
 This chapter focuses on the basics of model validation. From splitting data into training, validation, and testing datasets, 
 to creating an understanding of the bias-variance tradeoff, we build the foundation for the techniques of K-Fold and Leave-One-Out validation practiced in chapter three.
+
+
+--- Creating train, test, and validation datasets
+
+
 
 
 
