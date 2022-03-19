@@ -148,15 +148,157 @@ print('The MAE for West conference is {}'.format(west_error))
 
 
 
+Classification metrics
+
+precision, recall (sensitivity), specificity, f1-score and its variations
+
+
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_test,test_predictions)
+
+
+from sklearn.metrics import confusion_matrix
+
+# Create predictions
+test_predictions = rfc.predict(X_test)
+
+# Create and print the confusion matrix
+cm = confusion_matrix(y_test, test_predictions)
+print(cm)
+
+# Print the true positives (actual 1s that were predicted 1s)
+print("The number of true positives is: {}".format(cm[1, 1]))
 
 
 
+from sklearn.metrics import precision_score
+
+test_predictions = rfc.predict(X_test)
+
+# Create precision or recall score based on the metric you imported
+score = precision_score(y_test, test_predictions)
+
+# Print the final result
+print("The precision value is {0:.2f}".format(score))
+
+
+
+
+-- The bias-variance tradeoff
+
+# Update the rfr model
+rfr = RandomForestRegressor(n_estimators=25,
+                            random_state=1111,
+                            max_features=4)
+rfr.fit(X_train, y_train)
+
+# Print the training and testing accuracies 
+print('The training error is {0:.2f}'.format(
+  mae(y_train, rfr.predict(X_train))))
+print('The testing error is {0:.2f}'.format(
+  mae(y_test, rfr.predict(X_test))))
+  
+  
+  
+  from sklearn.metrics import accuracy_score
+
+test_scores, train_scores = [], []
+for i in [1, 2, 3, 4, 5, 10, 20, 50]:
+    rfc = RandomForestClassifier(n_estimators=i, random_state=1111)
+    rfc.fit(X_train, y_train)
+    # Create predictions for the X_train and X_test datasets.
+    train_predictions = rfc.predict(X_train)
+    test_predictions = rfc.predict(X_test)
+    # Append the accuracy score for the test and train predictions.
+    train_scores.append(round(accuracy_score(y_train,  train_predictions), 2))
+    test_scores.append(round(accuracy_score(y_test, test_predictions), 2))
+# Print the train and test scores.
+print("The training scores were: {}".format(train_scores))
+print("The testing scores were: {}".format(test_scores))
+
+
+  
 #################################### Course 3: Cross Validation ####################################
 Holdout sets are a great start to model validation. However, using a single train and test set if often not enough. 
 Cross-validation is considered the gold standard when it comes to validating model performance and is almost always used when tuning model hyper-parameters. 
 This chapter focuses on performing cross-validation to validate model performance.
 
 
+-- The problems with holdout sets
+# Create two different samples of 200 observations 
+sample1 = tic_tac_toe.sample(200, random_state=1111)
+sample2 = tic_tac_toe.sample(200, random_state=1171)
+
+# Print the number of common observations 
+print(len([index for index in sample1.index if index in sample2.index]))
+
+# Print the number of observations in the Class column
+print(sample1['Class'].value_counts())
+print(sample2['Class'].value_counts())
+
+
+
+-- Cross-validation
+
+n_split: number of cross-validation splits
+shuffle: boolean indicating to shuffle data before splitting
+random_state: random seed
+
+from sklean.model_selection import KFold
+
+X = np.array(range(40))
+y=np.array([0]*20+[1]*20)
+
+kf=KFold(n_split=5)
+splits = kf.split(X)
+
+for train_index, test_index in splits:
+          print(len(train_index), len(test_index))
+
+
+
+
+
+from sklearn.model_selection import KFold
+
+# Use KFold
+kf = KFold(n_splits=5, shuffle=True, random_state=1111)
+
+# Create splits
+splits = kf.split(X)
+
+# Print the number of indices
+for train_index, val_index in splits:
+    print("Number of training indices: %s" % len(train_index))
+    print("Number of validation indices: %s" % len(val_index))
+    
+    
+    
+    
+
+
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error
+
+rfc = RandomForestRegressor(n_estimators=25, random_state=1111)
+
+# Access the training and validation indices of splits
+for train_index, val_index in splits:
+    # Setup the training and validation data
+    X_train, y_train = X[train_index], y[train_index]
+    X_val, y_val = X[val_index], y[val_index]
+    # Fit the random forest model
+    rfc.fit(X_train,y_train)
+    # Make predictions, and print the accuracy
+    predictions = rfc.predict(X_val)
+    print("Split accuracy: " + str(mean_squared_error(y_val, predictions)))
+    
+    
+    
+
+
+
+-- sklearn's cross_val_score()
 
 
 
