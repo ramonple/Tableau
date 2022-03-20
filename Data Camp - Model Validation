@@ -300,9 +300,169 @@ for train_index, val_index in splits:
 
 -- sklearn's cross_val_score()
 
+# Instruction 1: Load the cross-validation method
+from sklearn.model_selection import cross_val_score
+
+# Instruction 2: Load the random forest regression model
+from sklearn.ensemble import RandomForestRegressor
+
+# Instruction 3: Load the mean squared error method
+# Instruction 4: Load the function for creating a scorer
+from sklearn.metrics import mean_squared_error, make_scorer‘
+
+
+
+rfc = RandomForestRegressor(n_estimators=25, random_state=1111)
+mse = make_scorer(mean_squared_error)
+
+# Set up cross_val_score
+cv = cross_val_score(estimator=rfc,
+                     X=X_train,
+                     y=y_train,
+                     cv=10,
+                     scoring=make_scorer(mean_squared_error))
+
+# Print the mean error
+print(cv.mean())
+
+
+
+
+-- leave one out cross validation LOOCV
+
+use when:
+the amount of training data is limited
+you want the absolute best error estimate for new data
+
+be careful:
+computational resources are limited
+you have a lot of data
+a lot of parameters to test
+
+
+
+
+
+from sklearn.metrics import mean_absolute_error, make_scorer
+
+# Create scorer
+mae_scorer = make_scorer(mean_absolute_error)
+
+rfr = RandomForestRegressor(n_estimators=15, random_state=1111)
+
+# Implement LOOCV
+scores = cross_val_score(rfr, X=X, y=y, cv=85, scoring=mae_scorer)
+
+# Print the mean and standard deviation
+print("The mean of the errors is: %s." % np.mean(scores))
+print("The standard deviation of the errors is: %s." % np.std(scores))
 
 
 
 #################################### Course 4: Selecting the best model with Hyperparameter tuning. ####################################
 The first three chapters focused on model validation techniques. 
 In chapter 4 we apply these techniques, specifically cross-validation, while learning about hyperparameter tuning. After all, model validation makes tuning possible and helps us select the overall best model.
+
+
+
+hyper parameters:
+manually set before the training occurs
+specify how the training is supported to happen
+
+
+for example, for random forest hyperparameters:
+n_estimator, max_depth, max_features, min_samples_split
+
+
+hyper parameter tuning:
+select hyperparameters
+run a single model type at different value sets
+create ranges of possible values to select from
+
+
+
+# Review the parameters of rfr
+print(rfr.get_params())
+
+
+from sklearn.ensemble import RandomForestRegressor
+
+# Fill in rfr using your variables
+rfr = RandomForestRegressor(
+    n_estimators=100,
+    max_depth=random.choice(max_depth),
+    min_samples_split=random.choice(min_samples_split),
+    max_features=random.choice(max_features))
+
+# Print out the parameters
+print(rfr.get_params())
+
+
+
+
+
+
+RandomizedSearchCV
+
+better methods:
+random searching
+bayesian optimisation
+
+
+
+
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import make_scorer, mean_squared_error
+
+# Finish the dictionary by adding the max_depth parameter
+param_dist = {"max_depth": [2, 4, 6, 8],
+              "max_features": [2, 4, 6, 8, 10],
+              "min_samples_split": [2, 4, 8, 16]}
+
+# Create a random forest regression model
+rfr = RandomForestRegressor(n_estimators=10, random_state=1111)
+
+# Create a scorer to use (use the mean squared error)
+scorer = make_scorer(mean_squared_error)
+
+
+
+# Import the method for random search
+from sklearn.model_selection import RandomizedSearchCV
+
+# Build a random search using param_dist, rfr, and scorer
+random_search =\
+    RandomizedSearchCV(
+        estimator=rfr,
+        param_distributions=param_dist,
+        n_iter=10,
+        cv=5,
+        scoring=scorer)
+        
+        
+        
+
+
+
+from sklearn.metrics import precision_score, make_scorer
+
+# Create a precision scorer
+precision = make_scorer(precision_score)
+# Finalize the random search
+rs = RandomizedSearchCV(
+  estimator=rfc, param_distributions=param_dist,
+  scoring = precision,
+  cv=5, n_iter=10, random_state=1111)
+rs.fit(X, y)
+
+# print the mean test scores:
+print('The accuracy for each run was: {}.'.format(rs.cv_results_['mean_test_score']))
+# print the best model score:
+print('The best accuracy for a single model was: {}'.format(rs.best_score_))
+
+
+
+
+
+
+
