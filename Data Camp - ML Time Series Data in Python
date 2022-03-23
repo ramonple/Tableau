@@ -137,16 +137,253 @@ print(sum(predictions == y_test.squeeze()) / len(y_test))
 
 --- Improving features for classification
 
+# Smooth by applying a rolling mean
+audio_rectified_smooth = audio_rectified.rolling(50).mean()
+
+# Plot the result
+audio_rectified_smooth.plot(figsize=(10, 5))
+plt.show()
+
+
+
+# Calculate stats
+means = np.mean(audio_rectified_smooth, axis=0)
+stds = np.std(audio_rectified_smooth, axis=0)
+maxs = np.max(audio_rectified_smooth, axis=0)
+
+# Create the X and y arrays
+X = np.column_stack([means, stds, maxs])
+y = labels.reshape([-1, 1])
+
+# Fit the model and score on testing data
+from sklearn.model_selection import cross_val_score
+percent_score = cross_val_score(model, X, y, cv=5)
+print(np.mean(percent_score))
+
+
+
+
+
+# Calculate the tempo of the sounds
+tempos = []
+for col, i_audio in audio.items():
+    tempos.append(lr.beat.tempo(i_audio.values, sr=sfreq, hop_length=2**6, aggregate=None))
+
+# Convert the list to an array so you can manipulate it more easily
+tempos = np.array(tempos)
+
+# Calculate statistics of each tempo
+tempos_mean = tempos.mean(axis=-1)
+tempos_std = tempos.std(axis=-1)
+tempos_max = tempos.max(axis=-1)
+
+
+
+
+
+The spectrogram
+
+calculate the STFT with librosa
+
+specshow()
+
+
+
+from librosa.core import amplitude_to_db
+from librosa.display import specshow
+
+# Convert into decibels
+spec_db = amplitude_to_db(spec)
+
+# Compare the raw audio to the spectrogram of the audio
+fig, axs = plt.subplots(2, 1, figsize=(10, 10), sharex=True)
+axs[0].plot(time, audio)
+specshow(spec_db, sr=sfreq, x_axis='time', y_axis='hz', hop_length=HOP_LENGTH)
+plt.show()
 
 
 
 
 
 
+import librosa as lr
 
+# Calculate the spectral centroid and bandwidth for the spectrogram
+bandwidths = lr.feature.spectral_bandwidth(S=spec)[0]
+centroids = lr.feature.spectral_centroid(S=spec)[0]
+
+
+
+
+from librosa.core import amplitude_to_db
+from librosa.display import specshow
+
+# Convert spectrogram to decibels for visualization
+spec_db = amplitude_to_db(spec)
+
+# Display these features on top of the spectrogram
+fig, ax = plt.subplots(figsize=(10, 5))
+ax = specshow(spec_db, x_axis='time', y_axis='hz', hop_length=HOP_LENGTH)
+ax.plot(times_spec, centroids)
+ax.fill_between(times_spec, centroids - bandwidths / 2, centroids + bandwidths / 2, alpha=.5)
+ax.set(ylim=[None, 6000])
+plt.show()
+
+
+
+# Loop through each spectrogram
+bandwidths = []
+centroids = []
+
+for spec in spectrograms:
+    # Calculate the mean spectral bandwidth
+    this_mean_bandwidth = np.mean(lr.feature.spectral_bandwidth(S=spec))
+    # Calculate the mean spectral centroid
+    this_mean_centroid = np.mean(lr.feature.spectral_centroid(S=spec))
+    # Collect the values
+    bandwidths.append(this_mean_bandwidth)  
+    centroids.append(this_mean_centroid)
+    
+    
+    
+# Create X and y arrays
+X = np.column_stack([means, stds, maxs, tempo_mean, tempo_max, tempo_std, bandwidths, centroids])
+y = labels.reshape([-1, 1])
+
+# Fit the model and score on testing data
+percent_score = cross_val_score(model, X, y, cv=5)
+print(np.mean(percent_score))
 
 
 ------ Couse 3: Predicting time seriies data
+
+# Scatterplot with color relating to time
+prices.plot.scatter('EBAY', 'YHOO', c=prices.index, 
+                    cmap=plt.cm.viridis, colorbar=False)
+plt.show()
+
+
+
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score
+
+# Split our data into training and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, 
+                                                    train_size=.8, shuffle=False, random_state=1)
+
+# Fit our model and generate predictions
+model = Ridge()
+model.fit(X_train, y_train)
+predictions = model.predict(X_test)
+score = r2_score(y_test, predictions)
+print(score)
+
+
+
+
+--> Advanced time series prediction
+
+
+a. plot raw data
+fig,axs = plt.subplots(1,2,figsize(10,5)
+ax=prices.plot(ax=axs[0])
+
+b. calculate the % change 
+ax=prices.rolling(window=20).aggregate(percent_change).plot(ax=axs[1])
+ax.legend_.set_visible(False)
+
+
+
+
+# Create a function we'll use to interpolate and plot
+def interpolate_and_plot(prices, interpolation):
+
+    # Create a boolean mask for missing values
+    missing_values = prices.isna()
+
+    # Interpolate the missing values
+    prices_interp = prices.interpolate(interpolation)
+    # Plot the results, highlighting the interpolated values in black
+    fig, ax = plt.subplots(figsize=(10, 5))
+    prices_interp.plot(color='k', alpha=.6, ax=ax, legend=False)
+    
+    # Now plot the interpolated values on top in red
+    prices_interp[missing_values].plot(ax=ax, color='r', lw=3, legend=False)
+    plt.show()
+    
+    
+    
+    
+    
+# Interpolate using the latest non-missing value
+interpolation_type = 'zero'
+interpolate_and_plot(prices, interpolation_type)
+
+
+
+# Interpolate linearly
+interpolation_type = 'linear'
+interpolate_and_plot(prices, interpolation_type)
+
+
+# Interpolate with a quadratic function
+interpolation_type = 'quadratic'
+interpolate_and_plot(prices, interpolation_type)
+
+
+
+
+
+
+
+# Your custom function
+def percent_change(series):
+    # Collect all *but* the last value of this window, then the final value
+    previous_values = series[:-1]
+    last_value = series[-1]
+
+    # Calculate the % difference between the last value and the mean of earlier values
+    percent_change = (last_value - np.mean(previous_values)) / np.mean(previous_values)
+    return percent_change
+
+# Apply your custom function and plot
+prices_perc = prices.rolling(20).apply(percent_change)
+prices_perc.loc["2014":"2015"].plot()
+plt.show()
+
+
+
+# Your custom function
+def percent_change(series):
+    # Collect all *but* the last value of this window, then the final value
+    previous_values = series[:-1]
+    last_value = series[-1]
+
+    # Calculate the % difference between the last value and the mean of earlier values
+    percent_change = (last_value - np.mean(previous_values)) / np.mean(previous_values)
+    return percent_change
+
+# Apply your custom function and plot
+prices_perc = prices.rolling(20).apply(percent_change)
+prices_perc.loc["2014":"2015"].plot()
+plt.show()
+
+
+
+
+-> create features over time
+
+# Extract date features from the data, add them as columns
+prices_perc['day_of_week'] = prices_perc.index.dayofweek
+prices_perc['week_of_year'] = prices_perc.index.weekofyear
+prices_perc['month_of_year'] = prices_perc.index.month
+
+# Print prices_perc
+print(prices_perc)
+
+
+
+
 
 
 ------ Couse 4: Validating and Inspecting Time Series Models
