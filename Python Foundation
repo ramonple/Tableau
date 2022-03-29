@@ -1,3 +1,114 @@
 From python 123
 
-1. 人机交互
+
+__name__:
+A double underscore prefix causes the Python interpreter to rewrite the attribute name in order to avoid naming conflicts in subclasses. 
+
+
+-------  1. 人机交互
+
+  
+f = open('test.txt','w',encoding = 'utf-8')       
+# 以写模式打开当前路径下的文件test.txt（文件不存在时创建文件），创建文件对象，命名为： f
+
+print( object, sep ='', end='')
+
+# end='\n'：输出语句的结束符号，默认每个输出语句结束时都用换行符 '\n' 结尾，使光标换到下一行。
+
+print(*[1,2,3,4,5])          # 输出：1 2 3 4 5，输出时对列表对象（序列类型）进行解包
+print(*'12345')              # 输出：1 2 3 4 5，输出时对字符串对象（序列类型）进行解包
+
+
+range(n) （n > 0）可产生一个包含0-(n-1)的整数序列
+
+n = int(input())  # 输入一个正整数 n
+
+for i in range(5):           # 产生整数序列：0,1,2,3,4，依次赋值给i
+	print(i)                 # 输出后换行，竖向输出0 1 2 3 4
+
+# 加参数end = ','，输出后不换行，每个输出后跟一个逗号0,1,2,3,4,
+for i in range(5):
+	print(i,end = ',')   
+
+for i in range(10):     # 从 0-9 循环10次，每次i依次取其中一个值
+    print(i,end = ',')  # 每个输出后面跟一个逗号做为结束标记
+# 0,1,2,3,4,5,6,7,8,9,
+
+for i in range(1,11):   # 从 1-10 循环10次，每次i依次取其中一个值
+    print(i,end = ',')
+# 1,2,3,4,5,6,7,8,9,10,
+
+
+
+
+
+‪‬‪‬‪‬‪‬‪‬‮‬‭‬‪‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‭‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‪‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‫‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‮‬‪‬‪‬‪‬‪‬用户输入一个浮点数，用str.format格式化输出，保留3位小数。‪‬‪‬‪‬‪‬‪‬‮‬‭‬‪‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‭‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‪‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‫‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‮‬‪‬‪‬‪‬‪‬‪‬‮‬‭‬‫‬
+
+n = float(input())
+print('{:.3f'}'.format(n))
+
+
+我的名字是***，来自**，我的爱好是***！
+name = input()
+city = input()
+hobby = input()
+print(f'我的名字是{name}，来自{city}，我的爱好是{hobby}!')
+
+
+
+输入一个正整数 n，在一行中输出从 1到 n，中间无空格。
+method 1:
+n = int(input())
+for i in range(1,n+1):
+    print(i,end='')
+    
+method 2:
+def s_num(n):
+    for i in range(1,n+1):
+        print(i,end='')
+        
+method 3:
+if __name__  == '__main__':
+   n = int(input())
+   s_num(n)
+   
+ 
+ 
+ 竖着输出
+ Python中字符串可以按单个字符进行索引，第一个字符序号为0，正向递增，编写一个程序，用户输入一个字符串，按每行一个字符的形式进行输出。
+ 
+ 示例‪‬‪‬‪‬‪‬‪‬‮‬‭‬‪‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‭‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‪‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‫‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‮‬‪‬‪‬‪‬‪‬‪‬‮‬‭‬‫‬
+
+输入	
+Hello
+输出
+H
+e
+l
+l
+o
+
+my_string = input()
+for i in my_string:
+        print(i)
+        
+        
+
+ 简单循环       
+ 输入一个整数 n，输出所有小于 n 的非负整数 i 的平方( 0 <= i < n )。
+ 
+ def loop(n):
+      for i in range(n)
+          print(i**2)
+          
+ if __name__ =='__main__':
+     n = int(input())
+     loop(n)
+     
+     
+
+
+
+--- 2. 数值计算
+
+
