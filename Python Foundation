@@ -466,10 +466,20 @@ else:
    
    
    
+
+计算整数 n 的阶乘
+输入一个数值，如果输入的数据为浮点数或者负数，输出”ERROR“，否则计算输入的数的阶乘并输出。
+import math
+n = eval(input())
+if n >= 0 and type(n) == int:
+   print(math.factorial(n))
+else:
+   print('Error')
+   
+   `
    
    
-   
-   
+  
 
 
 
