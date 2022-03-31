@@ -263,6 +263,129 @@ print(sum_fact(n))
 
 
     
+数列求和
+
+用户输入一个小于10的正整数，求1 + 12 + 123 + 1234 + …… 的前n项的和
+
+n = int(input())
+my_sum=0
+temp = 0
+
+if n <10 :
+  for i in range (1, n+1):
+      temp = temp * 10 + i
+      my_sum= my_sum + temp
+  print(my_sum)
+  
+  
+  
+  
+
+
+奇数数列求和
+输入一个正整数 n，求数列1，3，5，……，（2n-1）的前n项的和。
+
+n = int(input())
+sum = 0
+
+for i in range(1, n+1):
+    sum = sum + (2*i -1)
+print(sum)
+
+
+
+
+
+
+分数序列求和
+有一分数序列：2/1，3/2，5/3，8/5，13/8，21/13...求出这个数列的前 n 项之和, n 由用户输入。
+
+n = int(input())
+
+my_sum = 0
+current = 2
+previous = 1
+
+for i range(1, n+1):
+   my_sum = my_sum + current / previous
+   prevous, current = current, previous + current
+print(my_sum)
+
+
+
+
+
+
+
+正负交错数列前n项和
+1-1/2+2/3-3/5+4/8-5/13+...的前n项和，n由用户输入（n>0），结果用str.format()方法保留小数点后6位数字输出。
+
+n = int(input())
+result = 1
+sign = -1
+previous, current = 1, 1
+
+for i range(1,n):
+   previous, current = current, previous + current
+   result = result + sign * i / current
+   sign = - sign
+print('{:.6f}'.format(result))
+
+
+
+
+
+十进制整数转二进制
+十进制整数转二进制的方法是：除以2，取出余数，商继续除以2，直到得到0为止，将取出的余数逆序即可得到对应的二进制数的各位。 
+
+例如：22转二进制的计算过程：
+22 / 2 11  余0
+11/2    5   余 1
+5 /2     2   余 1
+2 /2     1   余 0
+1 /2     0   余 1
+得到22的二进制是10110
+
+
+num = int(input())
+s=''
+
+if num == 0 :
+   s = '0'
+while num! =0:
+   s = s + str(num % 2) # 将num对2取余的结果转字符串拼接到s
+   num = num // 2
+print( s[::-1])
+
+
+
+
+
+
+
+统计学生平均成绩与及格人数
+编写程序，计算学生们的平均成绩，并统计及格（成绩不低于60分）的人数。题目保证输入与输出均在整型范围内。
+
+# Python’s map() is a built-in function that allows you to process and transform all the items in an iterable without using an explicit for loop, a technique commonly known as mapping.
+#  map(function, iterable, ...)
+#     Return an iterator that applies function to every item of iterable, yielding the results.
+
+score = list(map(int,input().split()))
+average = sum(score / len(score) )
+count = len (list(x for x in score if x > = 60))
+print('average ={}.format(average))
+print('count={}.format(count))
+
+
+
+
+
+
+   
+
+
+
+
 
 
 
