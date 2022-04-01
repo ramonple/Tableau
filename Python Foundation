@@ -480,16 +480,137 @@ else:
    
    
   
+实现用户输入用户名和密码，当用户名为 admin且密码为123456时，显示“登录成功”，否则显示“登录失败”。
+username = input()
+password=()
+
+if username = 'admin' and password ='123456':
+   print('Success')
+else:
+   print('Error')
+   
+   
+   
 
 
+简单模拟用户登陆过程，输入账户与密码，验证成功输出“Success”，失败则输出“Fail”‪‬‪‬‪‬‪‬‪‬‮‬‭‬‪‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‭‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‪‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‫‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‮‬‪‬‪‬‪‬‪‬‪‬‮‬‭‬‫‬
+初始系统账号密码为：‪‬‪‬‪‬‪‬‪‬‮‬‭‬‪‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‭‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‪‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‫‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‮‬‪‬‪‬‪‬‪‬‪‬‮‬‭‬‫‬
+user="whut001" pwd="999999"
 
+a = input()
+b = input()
 
+if a == user and b = pwd :
+  print('Success')
+else:
+  print('Fail')
+  
+  
+  
+  
 
+判断是否直角三角形
+输入三个数a,b,c, 判断能否以它们为三个边长构成直角三角形。若能，输出YES，否则输出NO。
 
+a = eval(input())
+b = eval(input())
+c = eval(input())
 
-
+if a * a + b* b = c * c or a * a + c * c == b * b or c * c + b * b == a * a:
+ print('Yes')
+else:
+ print('No')
+ 
+ 
+ 
+ 
+ 
+ 
+ 判断三角形并计算面积
+ a = float(input())
+ b = float(input())
+ c = float(input())
+ 
+ if a+b>c and a+c>b and b+c>a:
+    print('Yes')
+    p=(a+b+c)/2
+    area = (p * (p - a) * (p - b) * (p - c)) ** (1/2) 
+    print('{:.2f}'.format(area))
+ else:
+    print('Not a triangle')
+    
+    
       
 
+
+
+百分制成绩转换五分制
+
+n = int(input())
+
+if n >= 90:
+    print("A")
+elif n>=80 and n<90:
+    print("B")
+elif n>= 70 and n<80:
+    print("C")
+elif n>=60 and n<70:
+    print("D")
+else:
+    print("E")
+    
+    
+    
+    
+    
+百分制成绩转换五分制E   
+
+score = int(input())
+degree = 'AABCDEEEEE'
+
+if score > 100 or score < 0:
+    print("data error!")
+else:
+    print(degree[10 - score // 10])
+    
+    
+    
+    
+    
+    
+ 出租车计费   
+（1）起步里程为3公里(含3公里)，起步费13元；
+（2）载客里程3~15公里范围的，除起步费外，超过3公里的部分按基本单价2.3元/公里计算；
+（3）载客里程超过15公里的，15公里内的按照（2）计算，超过15公里的基本单价加收50%的费用；
+（4）时速低于12公里/小时的慢速行驶时间计入等待时间，每等待1分钟加收1元；
+
+distance, wait = map(int,input().split(','))
+
+if distance < =3:
+   fee = 13 + wait * 1
+elif distance < =15:
+   fee = 13 + (distance -3) * 2.3 + wait * 1
+else:
+   fee = 13 + (15-13) * 2.3 + (distance - 15) * 2.3 * (1+0.5) + wait * 1
+
+print('{:.0f}'.format(fee))
+
+
+### map(int,input().split(''))
+input() will query the user for input, and read one line of user input;
+.split() will split that input into a list of “words”;
+map(int, ...) will call int on each word, it will to that lazily (although that is not important here); and
+x, y = ... will unpack the expression into two elements, and assign the first one to n and the second one to S
+
+input:
+x, y = map(int, input("Enter 2 number with space: ").split())
+print("First Number: ", x)
+print("Second Number: ", y)
+
+output:
+Enter 2 number with space: 50 100
+First Number: 50
+Second Number: 100
 
 
 
