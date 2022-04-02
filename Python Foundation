@@ -934,3 +934,102 @@ if __name__ = '__main__':
  
  
  
+
+
+
+高次方程求根
+已知f(1.5)>0,f(2.4)<0，且在[1.5,2.4]区间只且只有一个根，求该根（假定多项式值小于10^-6时可近似为0）。要求四舍五入到小数点后6位
+
+def f(x):
+    # 这个函数用来计算这个多项式
+    return x ** 5 - 15 * x ** 4 + 85 * x ** 3 - 225 * x ** 2 + 274 * x - 121
+    
+x1, x2 = 1.5, 2.4
+while abs(f((x1 + x2) / 2)) > 1e-6:
+    # 二分法，如果大于0调整下界，反之调整上界
+    if f((x1 + x2) / 2) > 0:
+        x1 = (x1 + x2) / 2
+    else:
+        x2 = (x1 + x2) / 2
+print("{:.6f}".format((x1 + x2) / 2))    
+
+
+
+
+
+
+计算函数曲线与x轴包围的面积
+
+计算函数曲线在区间(a,b)与x轴包围的面积，可将这个区域平行于y轴切分成相等宽度的小梯形，每个梯形的面积可近似求出，所有梯形面积的和就是函数曲线与x轴包围的面积，
+也就是函数在给定区间的积分值，dx越小，梯形近似度越高，计算结果越精确，也就是说区间切分段的越多，结果越精确。‪‬‪‬‪‬‪‬‪‬‮‬‭‬‪‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‭‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‪‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‫‬‪‬‪‬‪‬‪‬‪‬‮‬‫‬‮‬‪‬‪‬‪‬‪‬‪‬‮‬‭‬‫‬
+
+
+import math
+
+a, b = map(float, input().split())  # 输入区间起点和终点
+n = int(input())                    # 输入区间切分数量
+area = 0                            # 面积初值
+x = a                               # 设定起点x值
+dx = abs(a - b) / n                 # 计算每个小区间的高度，即每个小梯形的高度
+
+for i in range(n):
+    # 遍历n个区间，计算每个小梯形面积并累加到一起
+    area = area + dx * (abs(math.sin(x+i*dx)) + abs(math.sin(x+i*dx+dx)))/2
+print('{:.2f}'.format(area))
+
+
+
+
+
+
+
+
+与7无关的数
+一个正整数，如果它能被7整除，或者它的十进制表示法中某一位的数字为7，则称其为与7相关的数、 求所有小于n(n < 100)的与7无关的正整数以及他们的平方和。
+
+n = int(input())
+total = 0
+ls = []
+for i in range(n):
+    if not (i % 7 == 0 or i % 10 == 7 or i // 10 == 7):
+        total = total + i * i  # 计算平方和
+        ls.append(i)  # 往列表里塞满足条件的数
+print(ls)
+print(total)
+
+
+
+
+
+鸡兔同笼B
+一个笼子里面关了若干只鸡和兔子（鸡有2只脚，兔子有4只脚，没有例外），已经知道了笼子里面脚的总数feet，则笼子里至少有多少只动物，至多有多少只动物？
+
+n = int(input())
+for i in range(n):
+    feets = int(input())
+    if feets % 4 == 0:  # 如果鸡的数量是偶数
+        least, most = feets // 4, feets // 2
+    elif feets % 2 == 0:  # 如果输入没错
+        least, most = (feets - 2) // 4 + 1, feets // 2
+    else:  # 如果没有满足答案
+        least, most = 0, 0
+    print(least, most)
+    
+    
+    
+    
+    
+黑色星期五
+
+import datetime
+year = int(input())  #输入任意年份
+days = [datetime.date(year, i, 13) for i in range(1, 13)]  #产生该年每个月13日 的列表
+for i in days:
+    if i.isoweekday()==5:  # the function isoweekday() returns an integer value  corresponding to the day of the week.
+        print(i)   
+	
+	
+	
+	
+	
+
