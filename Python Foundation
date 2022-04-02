@@ -894,10 +894,43 @@ import math
 threshold = float(input())
 e = 1
 i = 1
-while True:
-      if 1/ math.factorial(i) < threshold:
-         break
+while True:                                # while True means loop forever.
+      if 1 / math.factorial(i) < threshold:
+         break                             # The break statement terminates the loop containing it.
+else:
+       e=e+1/math.factorial(i)
+       i=i+1
+print('{:.8f}'.format(e))
+
+
+
+
+
+
+
+二分法求函数的零点
+现有方程：f(x) = x5-15x4+85x3-225x2+274x-121, 已知f(x)在[1.5,2.4]区间有且只有一个根，用二分法求解该根。
+
+def f(x):
+  return x ** 5 - 15 * x ** 4 + 85 * x ** 3 - 225 * x ** 2 + 274 * x - 121
+# The return keyword is to exit a function and return a value.
+ 
+def bisection_method(low,high):
+    while True:
+       mid = (low + high) / 2
+       if abs(f(mid)) < 1 * 10 ** -n:
+          return '{:.6f}'.format(mid)
+       elif f(mid) < 0:
+          high = mid
+       else:
+          low = mid
 	 
-
-
-
+if __name__ = '__main__':
+  n = int(input())
+  Low, High = 1.5, 2.4 
+  print(bisection_method(Low,High))
+  
+ 
+ 
+ 
+ 
