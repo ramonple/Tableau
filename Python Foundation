@@ -1031,5 +1031,36 @@ for i in days:
 	
 	
 	
+
+
+
+
+
+
+输出三角形字符阵列
+
+编写程序，输出n行由大写字母A开始构成的三角形字符阵列。
+
+n = int(input())
+s = 'A'
+if 1<=n<7:
+    for i in range(n):
+        for j in range(n-i):
+            print(s,end = ' ')
+            s=chr(ord(s)+1)
+        print()
 	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
 
