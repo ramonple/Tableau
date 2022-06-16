@@ -1,0 +1,64 @@
+输入整数: n = int(input())
+输入浮点数： m = float(input())
+确定保留几位小数： print('{:.3f}.format(m))
+
+-----> 把数据类型设置在input外侧
+
+
+
+input()内不能是空的，得写东西。例如 name = input("My name is: ")
+两种设置print方法
+方法一： print("My name is {}, my postcode is {}.".format(name,postcode))
+方法二： print(f'My name is {name}, my postcode is {postcode}')
+
+
+range(start,stop,step).     stop is not included
+
+print(range(1,5,1))   --> range(1, 5)
+
+for i in range(1,5,1):
+    print(i)
+--->    
+1
+2
+3
+4    
+
+
+n = 5
+for i in range(1,n+1):
+    print(i,end='')
+--->
+12345
+
+n = 5
+for i in range(1,n+1):
+print(i,end=' ')
+--->
+1 2 3 4 5 
+
+
+END:
+by default python's print() function ends with a new line.
+for ends the output with a space: print(xx,end=' ')
+for ends the output without a space: print(xx,end='')
+
+
+print a word, one character per line:
+word = 'Wednesday'
+for i in word:
+    print(i)
+-->
+W
+e
+d
+n
+e
+s
+d
+a
+y
+
+
+
+
