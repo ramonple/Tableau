@@ -19,3 +19,8 @@ formatting: command + option + L
 
 move line up/down: option + shift + up/down
 
+
+
+
+Recent files:
+command + e
