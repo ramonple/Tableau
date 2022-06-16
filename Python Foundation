@@ -6,9 +6,17 @@ From python 123
 __name__:
 A double underscore prefix causes the Python interpreter to rewrite the attribute name in order to avoid naming conflicts in subclasses. 
 
+if __name__ == "__main__"
+
+# Python file one module
+
+print("File one __name__ is set to: {}" .format(__name__))
+--> File one __name__ is set to: __main__
+
+
 
 2. 
-String .format()  Method
+####### The String format() Method
 
 Replacement fields are enclosed in curly braces ({}). 
 Anything not contained in curly braces is literal text that’s copied directly from the template to the output.
@@ -36,6 +44,43 @@ example:
 A format of . 2f (note the f ) means to display the number with two digits after the decimal point.
 
 example: print('{:.2f}'.format(area)) 
+
+
+
+usage of the str.format() method looks like this:
+
+>>> print('We are the {} who say "{}!"'.format('knights', 'Ni'))
+We are the knights who say "Ni!"
+
+The brackets and characters within them (called format fields) are replaced with the objects passed into the str.format() method. 
+
+A number in the brackets can be used to refer to the position of the object passed into the str.format() method.
+
+>>> print('{0} and {1}'.format('spam', 'eggs'))
+spam and eggs
+>>> print('{1} and {0}'.format('spam', 'eggs'))
+eggs and spam
+
+
+
+If keyword arguments are used in the str.format() method, their values are referred to by using the name of the argument.
+
+>>> print('This {food} is {adjective}.'.format(
+...       food='spam', adjective='absolutely horrible'))
+This spam is absolutely horrible.
+
+
+
+
+>>> print('The story of {0}, {1}, and {other}.'.format('Bill', 'Manfred',
+                                                       other='Georg'))
+The story of Bill, Manfred, and Georg.
+
+
+
+
+
+
 
 3.
 # __name__是Python中一个隐含的变量它代表了模块的名字
