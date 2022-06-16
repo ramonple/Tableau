@@ -206,6 +206,11 @@ for i in my_string:
  简单循环       
  输入一个整数 n，输出所有小于 n 的非负整数 i 的平方( 0 <= i < n )。
  
+n = int(input(" interger n = ")
+for i in range(1, n + 1):
+    print(i ** 2)
+    
+    
  def loop(n):
       for i in range(n)
           print(i**2)
