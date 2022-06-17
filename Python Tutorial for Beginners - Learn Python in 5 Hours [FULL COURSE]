@@ -95,5 +95,160 @@ else:  # includes text and float numbers
 
 
 
+----- Error Handling with Try/ Except 
+
+Try / Except
+The try block: lets you 'test' a block of code for errors
+The except block: catches the error and lets you handle it
+
+try:
+  print(x)
+except:
+  print("An exception occurred")
+  
+  
 
 
+def days_to_units(n):
+    return f"{n} days are {n*24} hours"
+
+def validate_and_execute():
+    try:
+        user_input_number = int(user_input)
+        if user_input_number > 0:
+           calculated_value = days_to_units(user_input_number)
+           print(calculated_value)
+        elif user_input_number == 0:
+            print("you need to input a positive number")
+    except ValueError:
+        print("Your input is not a valid number, please input again")
+
+user_input = input("Hey user, please input the value of n you want to use: \n")
+validate_and_execute()
+
+
+Hey user, please input the value of n you want to use: 
+dst
+Your input is not a valid number, please input again
+
+
+
+
+
+
+
+
+
+----- While Loops
+
+def days_to_units(n):
+    return f"{n} days are {n*24} hours"
+
+def validate_and_execute():
+    try:
+        user_input_number = int(user_input)
+        if user_input_number > 0:
+           calculated_value = days_to_units(user_input_number)
+           print(calculated_value)
+        elif user_input_number == 0:
+            print("you need to input a positive number")
+    except ValueError:
+        print("Your input is not a valid number, please input again")
+>>>>>>>>>>>>>>>>>>>
+while True:
+   user_input = input("Hey user, please input the value of n you want to use: \n")
+   validate_and_execute()
+>>>>>>>>>>>>>>>>>>>
+
+user_input = 1 # just give a value to the user_input, it does not matter what the value is here, just let the following while loop works
+while user_input != "exit":
+   user_input = input("Hey user, please input the value of n you want to use: \n")
+   validate_and_execute()
+>>>>>>>>>>>>>>>>>>> This time, we can use input 'exit' to stop the loop
+
+
+
+
+
+
+
+
+------ List and For loops
+
+List: To store multiple items in a single variable
+[]
+
+the syntax of for is a little bit different. 
+for xx in yy:
+
+
+string   ---> List
+'10,20,30' ---> [10,20,30]
+
+xxx.split()
+
+
+
+
+
+
+def days_to_units(n):
+    return f"{n} days are {n*24} hours"
+
+def validate_and_execute():
+    try:
+        user_input_number = int(n_element)  --->1. change the name used here. from user_input to n_element. Because this time, user_input will be a string
+        if user_input_number > 0:
+           calculated_value = days_to_units(user_input_number)
+           print(calculated_value)
+        elif user_input_number == 0:
+            print("you need to input a positive number")
+    except ValueError:
+        print("Your input is not a valid number, please input again")
+
+user_input = "" ----> 2. 
+while user_input != "exit":
+   user_input = input("Hey user, please input the value of n you want to use: \n")
+   for n_element in  user_input.split():  ----> 3. split()
+       validate_and_execute()
+
+Hey user, please input the value of n you want to use: 
+10 20 30             ---> NOTICE: the format we input is string not list. And use blankspace not comma , because the default one is blankspace.
+                    if you want to input something like 10,20,30   we need to use xxx.split(',')
+                                                        10/20/30.                 xxx.split('/')
+10 days are 240 hours
+20 days are 480 hours
+30 days are 720 hours
+
+
+
+
+my_list.append()
+
+
+
+
+
+
+----- Set
+
+Sets are used to store multiple items in a single variable.
+Unique values inside. Does not allow duplicated values.
+
+
+
+Nested Function Execution
+
+print(type(set(list_of_days)))
+
+1. set(list_of_days)
+==> input: the user input array
+==> output: Returns the converted Set
+
+2. type(set(list_of_days))
+==> input: the converted Set
+==> output: Returns the data type of the Set
+
+3. print(type(set(list_of_days)))
+==> input: the data type
+==> output: Prints the value to console
