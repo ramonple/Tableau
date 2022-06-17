@@ -1,0 +1,99 @@
+https://www.youtube.com/watch?v=t8pPdKYpowI&t=1221s
+
+print("Examples of plus sign" + str(100) + " Haha",split=' ')
+
+
+
+---> define and call the function:
+def days_to_units(n):
+    print(f"{n} days are {n * 24} hours")
+    print("Done!")
+
+days_to_units(23)---> this is how we call the function!!!
+
+
+
+Scope:
+A variable is only avaiable from inside the region it is created.
+-- Global scope = variables available from within any scope
+-- Local scope = variables created inside function can only be used inside that function
+
+
+n=int(input())
+print(n+1)
+
+--> waiting for the user's input. After giving the input value of n, python will calculate it
+
+
+----------------- When should we use 'return' in a function:
+------ for example:
+
+def days_to_units(n):
+    return f"{n} days are {n * 24} hours"
+
+my_var = days_to_units(20)
+
+print(my_var)
+
+----------- when we want to define a variable according to the one outputted from the function, we should use 'return'
+
+
+def days_to_units(n):
+     return f"{n} days are {n * 24} hours"
+
+user_input = input("Hey user, please input the value of n you want to use: \n")
+print(days_to_units(user_input))
+
+>>> 1
+1 days are 111111111111111111111111 hours
+
+the input '1' is considered as a text or a number.
+----> how should we deal with this ?
+
+def days_to_units(n):
+     return f"{n} days are {n * 24} hours"
+
+user_input = input("Hey user, please input the value of n you want to use: \n")
+
+user_input_number = int(user_input)  -----> ADD THIS!!
+
+print(days_to_units(user_input_number))
+
+>>> 2
+2 days are 48 hours
+
+
+
+
+
+--- Valide user Input
+
+[ Conditions ]
+
+def days_to_units(n):
+     if n > 0:
+        return f"{n} days are {n * 24} hours"
+     else:
+        return "Wrong inputs"
+
+user_input = input("Hey user, please input the value of n you want to use: \n")
+user_input_number = int(user_input)
+print(days_to_units(user_input_number))
+
+
+------  Filter input variables:
+
+if user_input.isdigit():   ----> .isdigit()
+   user_input_number = int(user_input)
+   print(days_to_units(user_input_number))
+else:  # includes text and float numbers
+   print("Your input is not a valid number, please input again")
+
+
+
+
+
+
+
+
+
