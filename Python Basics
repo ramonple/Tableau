@@ -1,6 +1,11 @@
+python 123 为基础
+
+
+----------------------------------------------- 01. 人机交互 ----------------------------------------------- 
+
 输入整数: n = int(input())
 输入浮点数： m = float(input())
-确定保留几位小数： print('{:.3f}.format(m))
+确定保留几位小数：print("{:.3f}".format(n)) --->这个格式一定记住 ！！！！ 
 
 -----> 把数据类型设置在input外侧
 
@@ -60,5 +65,137 @@ a
 y
 
 
+print()格式设置
+
+------- The end parameter -------
+By default, the print method ends with a newline. This means there is no need to explicitly specify the parameter end as '\n'.
+-> 说的是不同print之间，每一个print输出的都是另起一行。所以要是想下一行的print不重新起一行，我们可以设置end
+print("Studytonight",)
+print("is awesome")
+Studytonight
+is awesome
+
+print("Studytonight", end=' ')
+print("is awesome")Studytonight is awesome
 
 
+Studytonight is awesome
+
+
+
+------- The sep parameter -------
+sep适用于同一个print里的东西
+print(1,2,3,4,sep='&') -> 1&2&3&4
+print(123,456,sep='&') -> 123&456
+
+
+The sep parameter, used in conjunction with the end parameter is generally used in production code to print data in a readable fashion.
+
+print("Studytonight","is", sep = " _ ",end=' ')
+print("Great","Right",sep='&')
+Studytonight _ is Great&Right
+
+sep=' '：用于分隔多个输出之间的分隔
+end='\n'：输出语句的结束符号，默认每个输出语句结束时都用换行符 '\n' 结尾，使光标换到下一行。
+
+在一行内输出1-5，用空格分隔:  print(1,2,3,4,5)
+在一行内输出1-5，用逗号分隔:  print(1,2,3,4,5,sep=',')
+分5行输出 1-5，每行一个数字:  for i in range(1,6):
+                               print(i,end='\n')
+
+
+if __name__ == '__main__': 和 def 函数的联合应同：
+先定义函数，然后用‘if __name__ == '__main__': 去call之前定义的function
+
+例子：
+def fa(a,b):
+    print("the sum of a and b is {}".format(a+b))
+def fb(a,b):
+    print("the multiplication of a and b is {}".format(a*b))
+if __name__ == '__main__':
+    a = int(input("a= "))
+    b = int(input("b= "))
+    fa(a,b)
+    fb(a,b)
+    
+或者
+
+def fa(a,b):
+    print(f"the sum of a and b is {a+b}")
+def fb(a,b):
+    print(f"the multiplication of a and b is {a*b}")
+if __name__ == '__main__':
+    a = int(input("a= "))
+    b = int(input("b= "))
+    fa(a,b)
+    fb(a,b)
+
+
+output:
+a= 2
+b= 3
+the sum of a and b is 5
+the multiplication of a and b is 6
+
+
+
+
+----------------------------------------------- 02 数值运算 ----------------------------------------------- 
+
+a = eval(input())   #输入整数字符串，转换为整数；输入浮点数字符串，转换为浮点数
+
+print(type(eval("5"))) <class 'int'>
+print(type(eval("4.3"))) <class 'float'>
+
+
+
+pow function
+The pow() function returns the value of x to the power of y (x^y).
+
+pow(x, y)
+
+
+
+
+换披萨
+试问一个m英寸的大披萨至少要更换几个n英寸的小披萨，顾客才不吃亏？
+
+import math  # 导入math模块
+
+m = int(input())  # 输入大披萨直径 m英寸
+n = int(input())  # 输入小披萨直径 n英寸
+
+# 一英寸约等于2.54厘米
+radius_of_m = int(m * 2.54) / 2  # 计算大披萨直径，厘米，取整，再计算半径
+radius_of_n = int(n * 2.54) / 2  # 计算小披萨直径，厘米，取整，再计算半径
+
+num = (radius_of_m * radius_of_m) / (radius_of_n * radius_of_n)  # 计算大小披萨面积比值
+print(math.ceil(num))  # 格式化输出向上取整
+
+
+三角函数
+180度 = math.pi
+sin -> math.sin
+cos -> math.cos
+
+sin(60) -> sin(math.pi/3)
+
+-----------------------------------------------  03 简单循环 ----------------------------------------------- 
+
+
+
+
+-----------------------------------------------  04 简单分枝 ----------------------------------------------- 
+
+
+
+
+
+
+-----------------------------------------------  05 流程控制 ----------------------------------------------- 
+
+
+
+
+
+-----------------------------------------------  06 函数 ----------------------------------------------- 
