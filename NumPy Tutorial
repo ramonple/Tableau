@@ -1,0 +1,886 @@
+https://www.w3schools.com/python/numpy/default.asp
+
+NumPy is used for working with arrays.
+
+NumPy is short for "Numerical Python".
+
+---------------------------- Tutorial  ------------------------------------------------------------------------------------------------------------------------------
+import numpy as np
+b = np.array([1, 2, 3, 4, 5])
+c = np.array([[1, 2, 3], [4, 5, 6]]) -->*** focus on the [] used
+
+# check the number of dimensions: ndim
+print(b.ndim)
+print(c.ndim)
+
+ndmin
+When array is created, you can define the number of dimensions by using the 'ndmin' argument
+arr = np.array([1, 2, 3, 4], ndmin=5)
+
+
+-----  Index:
+
+1. 2D
+arr = np.array([[1,2,3,4,5], [6,7,8,9,10]])
+print('2nd element on 1st row: ', arr[0, 1])
+
+2. Negative Indexing
+Use negative indexing to access an array from the end.
+
+arr = np.array([[1,2,3,4,5], [6,7,8,9,10]])
+print('Last element from 2nd dim: ', arr[1, -1])
+
+
+-----  Slicing
+
+print(arr[4:]) # Slice elements from index 4 to the end of the array
+print(arr[:4]) # Slice elements from the beginning to index 4 (not included)
+
+Negative Slicing 
+print(arr[-3:-1])  Slice from the index 3 from the end to index 1 from the end
+
+STEP
+print(arr[1:5:2]) # Return every other element from index 1 to index 5
+print(arr[::2]) # Return every other element from the entire array
+
+# From the second element, slice elements from index 1 to index 4 (not included):
+arr = np.array([[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]])
+print(arr[1, 1:4])
+
+# From both elements, return index 2
+arr = np.array([[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]])
+print(arr[0:2, 2])
+
+
+
+----- Data type
+
+check the data type: print(arr.dtype)
+
+arr = np.array([1, 2, 3, 4], dtype='S')
+
+astype('x')
+newarr = arr.astype('i')
+
+
+i - integer
+b - boolean
+u - unsigned integer
+f - float
+c - complex float
+m - timedelta
+M - datetime
+O - object
+S - string
+U - unicode string
+V - fixed chunk of memory for other type ( void )
+
+
+--- NumPy Array Copy vs View
+
+The main difference between a copy and a view of an array is that 
+the copy is a new array, and the view is just a view of the original array.
+
+The copy owns the data and any changes made to the copy will not affect original array, and any changes made to the original array will not affect the copy.
+The view does not own the data and any changes made to the view will affect the original array, and any changes made to the original array will affect the view.
+
+x = arr.copy()
+x = arr.view()
+
+
+Check if Array Owns its Data
+Every NumPy array has the attribute base that returns None if the array owns the data.
+
+x = arr.copy()
+print(x.base) >> None
+
+y = arr.view()
+print(y.base) >> [1 2 3 4 5]
+
+# The copy returns None.
+# The view returns the original array.
+
+
+
+---- NumPy Array Shape
+
+shape(m,n) # m arrays, each with n elements
+
+print(arr.shape) --> does not need ()
+newarr = arr.reshape(n,m)
+
+Reshape From 1-D to 3-D
+# The outermost dimension will have 2 arrays that contains 3 arrays, each with 2 elements
+newarr = arr.reshape(2, 3, 2)
+
+Use a correct NumPy method to change the shape of an array from 2-D to 1-D:
+arr.reshape(-1)
+Pass -1 as the value, and NumPy will calculate this number for you.
+
+Convert 1D array with 8 elements to 3D array with 2x2 elements:
+newarr = arr.reshape(2, 2, -1)
+
+
+Flattening the arrays: converting a multidimensional array into a 1D array.
+newarr = arr.reshape(-1)
+
+
+
+
+
+------- NumPy Array Iterating
+1. 1D
+# If we iterate on a 1-D array it will go through each element one by one.
+arr = np.array([1, 2, 3])
+for x in arr:
+  print(x) 
+>>> 
+1
+2
+3
+
+
+2.1  2D: each row
+# In a 2-D array it will go through all the rows.
+arr = np.array([[1, 2, 3], [4, 5, 6]])
+for x in arr:
+  print(x)  
+>>>
+[1 2 3]
+[4 5 6]
+
+2.2 2D: each element
+Iterate on each scalar element of the 2-D array:
+arr = np.array([[1, 2], [4, 5]])
+
+for x in arr:
+  for y in x:
+    print(y)
+>>>
+1
+2
+3
+4
+
+
+
+Iterating Arrays Using np.nditer()
+
+arr = np.array([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])
+
+for x in np.nditer(arr):
+  print(x)
+  
+>>> 
+1
+2
+3
+4
+5
+6
+7
+8
+
+
+Iterating With Different Step Size
+Iterate through every scalar element of the 2D array skipping 1 element:
+for x in np.nditer(arr[:, ::2]):
+  print(x)
+  
+
+
+
+ndenumerate()
+# Sometimes we require corresponding index of the element while iterating, the ndenumerate() method can be used for those usecases.
+
+arr = np.array([[1, 2, 3, 4], [5, 6, 7, 8]])
+
+for idx, x in np.ndenumerate(arr):
+  print(idx, x)
+
+>>>
+(0, 0) 1
+(0, 1) 2
+(0, 2) 3
+(0, 3) 4
+(1, 0) 5
+(1, 1) 6
+(1, 2) 7
+(1, 3) 8
+
+
+
+
+
+---- Join
+concatenate()
+arr = np.concatenate((arr1, arr2)) --> double (( ))
+
+Join two 2-D arrays along rows (axis=1):
+arr = np.concatenate((arr1, arr2), axis=1)
+
+
+
+Joining Arrays Using Stack Functions
+Stacking is same as concatenation, the only difference is that stacking is done along a new axis.
+arr = np.stack((arr1, arr2), axis=1)
+
+dstack()
+NumPy provides a helper function: dstack() to stack along height, which is the same as depth.
+
+vstack() 
+arr = np.vstack((arr1, arr2))
+
+
+
+
+
+---- Split
+array_split(arr,n) for splitting arrays
+
+newarr = np.array_split(arr, 3)
+
+split(arr,n) available but it will not adjust the elements when elements are less in source array for splitting like in example above, 
+array_split() worked properly but split() would fail.
+
+
+
+----- Searching Arrays
+1. np.where()
+for example: x = np.where(arr==4)
+find the indexes where the values are even: np.where(arr%2 == 0)
+find the indexes where the values are odd: np.where(arr%2 == 1)
+
+2. searchsorted()
+# performs a binary search in the array, and returns the index where the specified value would be inserted to maintain the search order.
+
+3. search from the right side: side='right'
+x = np.searchsorted(arr, 7, side='right'). # 7 is the value of the searching target
+
+
+4.Multiple values
+arr = np.array([1, 3, 5, 7])
+x = np.searchsorted(arr, [2, 4, 6])
+
+>>> The return value is an array: [1 2 3] containing the three indexes where 2, 4, 6 would be inserted in the original array to maintain the order.
+
+
+
+---- Sorting Array
+
+print(np.sort(arr))
+
+
+---- Filter Array
+In NumPy, you filter an array using a boolean index list.
+
+arr = np.array([41, 42, 43, 44])
+x = [True, False, True, False]
+newarr = arr[x]
+print(newarr)
+
+>>> [41, 43]
+
+
+# Create a filter array that will return only even elements from the original array:
+arr = np.array([1, 2, 3, 4, 5, 6, 7])
+filter_arr = arr % 2 == 0 ***
+newarr = arr[filter_arr]
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------- Random ------------------------------------------------------------------------------------------------------------------------
+from numpy import random
+
+1. random.randint()
+# Generate a random integer from 0 to 100:
+x = random.randint(100)
+
+# Generate random array
+   The randint() method takes a size parameter where you can specify the shape of an array.
+x = random.randint(100,size=5)
+
+# Generate a 2-D array
+x = random.randint(100,size=(3,5))
+
+
+2. random.rand()
+
+# Generate a random float from 0 to 1:
+x = random.rand()
+
+# Generate a 1-D array containing 5 random floats:
+x = random.rand(5)
+
+# Generate a 2-D array with 3 rows, each row containing 5 random numbers:
+x = random.rand(3,5)
+
+
+3. choice() 
+      choice() method takes an array as a parameter and randomly returns one of the values.
+ x = random.choice([3,4,5,6])
+ x = random.choice([3, 5, 7, 9], size=(3, 5))
+
+
+
+
+----- Data Distribution
+
+The choice() method allows us to specify the probability for each value.
+
+
+Example:
+Q:
+Generate a 1-D array containing 100 values, where each value has to be 3, 5, 7 or 9.
+The probability for the value to be 3 is set to be 0.1
+The probability for the value to be 5 is set to be 0.3
+The probability for the value to be 7 is set to be 0.6
+The probability for the value to be 9 is set to be 0
+
+A:
+x = random.choice([3, 5, 7, 9], p=[0.1, 0.3, 0.6, 0.0], size=(100))
+
+x = random.choice([3, 5, 7, 9], p=[0.1, 0.3, 0.6, 0.0], size=(3, 5))
+
+
+
+---- permutation n. [数] 排列；[数] 置换
+A permutation refers to an arrangement of elements. e.g. [3, 2, 1] is a permutation of [1, 2, 3] and vice-versa.
+
+The NumPy Random module provides two methods for this: shuffle() and permutation().
+
+-- Shuffling Arrays
+Shuffle means changing arrangement of elements in-place. i.e. in the array itself.
+
+arr = np([1,2,3,4,5])
+random.shuffle(arr)
+print(arr) >> [1 5 4 2 3]
+# The shuffle() method makes changes to the original array.
+
+
+--- Generating Permutation of Arrays
+
+arr = np([1,2,3,4,5])
+print(random.permutation(arr))
+>>> [4 5 3 1 2]
+# The permutation() method returns a re-arranged array (and leaves the original array un-changed).
+
+
+
+
+------------- Seaborn
+Visualize Distributions With Seaborn
+
+Seaborn is a library that uses Matplotlib underneath to plot graphs. It will be used to visualize random distributions.
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+1. plot a displot
+sns.distplot([0, 1, 2, 3, 4, 5])
+plt.show()
+
+2. plot a displot without histogram
+sns.distplot([0, 1, 2, 3, 4, 5],hist=False)
+plt.show()
+
+
+
+---- Normal Distribution
+
+random.normal()
+
+loc - mean
+scale - standard deviation
+size - shape of the returned array
+
+
+# Generate a random normal distribution of size 2x3:
+x = random.normal(size=(2,3))
+
+# Generate a random normal distribution of size 2x3 with mean at 1 and standard deviation of 2:
+x = random.normal(loc = 1, scale=2, size=(2,3) )
+
+#### Visualisation 
+
+sns.distplot(random.normal(size = 1000,hist=False)
+
+
+---- Binomial Distribution
+
+n - number of trials
+p - probability of occurence of each trial
+size - the size of the returned array
+
+x = random.binomial(n=10, p=0.5, size=10)
+
+sns.distplot(random.binomial(n=10, p=0.5, size=1000), hist=True, kde=False)
+
+
+
+>> The main difference is that normal distribution is continous whereas binomial is discrete, 
+but if there are enough data points it will be quite similar to normal distribution with certain loc and scale.
+
+
+sns.distplot(random.normal(loc=50, scale=5, size=1000), hist=False, label='normal')
+sns.distplot(random.binomial(n=100, p=0.5, size=1000), hist=False, label='binomial')
+
+plt.show()
+
+
+
+---- Poisson Distribution
+
+# It estimates how many times an event can happen in a specified time.
+
+lam - rate or known number of occurrences 
+size - the shape of the returned array
+
+x = random.poisson(lam=2,size=1000)
+
+sns.distplot(random.poisson(lam=2, size=1000), kde=False)
+
+
+# Normal distribution is continous whereas poisson is discrete.
+# binomial distribution is for discrete trials, whereas poisson distribution is for continuous trials.
+
+
+
+
+
+------ Uniform Distribution
+
+a - lower bound (default 0)
+b - upper bound ( default 1)
+size - the shape of the returned array
+
+random.uniform(size=(2,3))
+sns.distplot(random.uniform(size=1000), hist=False)
+
+
+
+
+
+
+---- Logistic Distribution
+Logistic regression estimates the probability of an event occurring, such as voted or didn't vote, based on a given dataset of independent variables
+Logistic Distribution is used to describe growth.
+
+Used extensively in machine learning in logistic regression, neural networks etc.
+
+
+loc - mean
+scale - standard deviation
+size - the shape of returned array
+
+random.logistic(loc=1,scale=2,size=(2,3))
+sns.distplot(random.logistic(size=1000), hist=False)
+
+# Compared with Normal distribution,
+logistic distribution has more area under the tails, meaning it represents more possibility of occurrence of an event further away from mean.
+
+
+
+---- Exponential Distribution
+# used for describing time till next event e.g. failure/success etc
+
+scale - inverse of rate ( see lam in poisson distribution ) defaults to 1.0.
+size - The shape of the returned array.
+
+x = random.exponential(scale=2, size=(2, 3))
+sns.distplot(random.exponential(size=1000), hist=False)
+
+Poisson distribution deals with number of occurences of an event in a time period 
+whereas exponential distribution deals with the time between these events.
+
+
+
+
+
+----- Chi-Squared Distribution
+Chi Square distribution is used as a basis to verify the hypothesis.
+
+df - degree of freedom
+size - The shape of the returned array.
+
+x = random.chisquare(df=2, size=(2, 3))
+sns.distplot(random.chisquare(df=1, size=1000), hist=False)
+
+
+
+
+
+
+--------------------------------NumPy ufuncs ----------------------------------------------------------------------------------------------------
+
+ufuncs stands for "Universal Functions" and they are NumPy functions that operates on the ndarray object.
+
+ufuncs are used to implement vectorization in NumPy which is way faster than iterating over elements
+
+What is Vectorization?
+Converting iterative statements into a vector based operation is called vectorization.
+
+
+import numpy as np
+
+x = [1, 2, 3, 4]
+y = [4, 5, 6, 7]
+z = np.add(x, y)
+
+print(z)
+>>> [ 5  7  9 11]
+
+
+To create you own ufunc, you have to define a function, like you do with normal functions in Python, 
+then you add it to your NumPy ufunc library with the frompyfunc() method.
+
+The frompyfunc() method takes the following arguments:
+
+function - the name of the function.
+inputs - the number of input arguments (arrays).
+outputs - the number of output arrays.
+
+
+def my_func(x,y):
+    return x+y
+
+my_func = np.frompyfunc(my_func,2,1)
+print(my_func([1, 2, 3, 4], [5, 6, 7, 8]))
+
+>> [6 8 10 12]
+
+
+
+--- Arithmetic
+np.add()
+np.subtract()
+np.multiply()
+np.divide()
+np.power()
+
+# Both the mod() and the remainder() functions return the remainder of the values 
+np.mod()
+np.remainder()
+
+# The divmod() function return both the quotient 商 and the the mod.
+np.divmod()
+
+np.absolute()
+
+
+
+--- Rounding decimals
+
+There are primarily five ways of rounding off decimals in NumPy:
+
+truncation
+fix
+rounding
+floor
+ceil
+
+
+
+Remove the decimals, and return the float number closest to zero. Use the trunc() and fix() functions.
+arr = np.trunc([-3.1666, 3.6667]) 
+>>> [-3.  3.]
+arr = np.fix([-3.1666, 3.6667])
+>>> [-3.  3.]
+
+
+The around() function increments preceding digit or decimal by 1 if >=5 else do nothing.
+arr = np.around([3.2,2.6],2) # np.around([xxx],n_decimals)
+>>> [3.2 2.6]
+
+
+The floor() function rounds off decimal to nearest lower integer.
+arr = np.floor([-3.1666, 3.6667])
+>>> [-4.  3.]
+
+
+The ceil() function rounds off decimal to nearest upper integer.
+arr = np.ceil([-3.1666, 3.6667])
+>>> [-3.  4.]
+
+
+
+
+---- Logs
+
+np.log2()
+np.log10()
+np.log() ---> at the base e
+
+arr = np.arrange(1,10) ---> range() or np.arrange()
+print(np.log2(arr))
+print(np.log(arr))
+print(np.log10(arr))
+
+
+
+
+
+------ NumPy Summations
+
+What is the difference between summation and addition?
+Addition is done between two arguments whereas summation happens over n elements.
+
+1. np.add()
+
+import numpy as np
+
+arr1 = np.array([1, 2, 3])
+arr2 = np.array([1, 2, 3])
+newarr = np.add(arr1, arr2)
+print(newarr)
+
+Returns: [2 4 6]
+
+
+
+
+2. np.sum()
+
+import numpy as np
+arr1 = np.array([1, 2, 3])
+arr2 = np.array([1, 2, 3])
+newarr = np.sum([arr1, arr2])
+
+print(newarr)
+
+Returns: 12
+
+
+
+-- Summation Over an Axis
+
+If you specify axis=1, NumPy will sum the numbers in each array.
+
+import numpy as np
+arr1 = np.array([1, 2, 3])
+arr2 = np.array([1, 2, 3])
+newarr = np.sum([arr1, arr2], axis=1)
+print(newarr)
+
+
+Returns: [6 6]
+
+
+
+
+--- cumsum(): Cummulative Sum
+Cummulative sum means partially adding the elements in array.
+
+E.g. The partial sum of [1, 2, 3, 4] would be [1, 1+2, 1+2+3, 1+2+3+4] = [1, 3, 6, 10].
+
+
+import numpy as np
+arr = np.array([1, 2, 3])
+newarr = np.cumsum(arr)
+print(newarr)
+
+Returns: [1 3 6]
+
+
+
+
+----- NumPy Products
+
+To find the product of the elements in an array, use the prod() function.
+
+import numpy as np
+arr = np.array([1, 2, 3, 4])
+x = np.prod(arr)
+print(x)
+
+Returns: 24 because 1*2*3*4 = 24
+
+
+# Find the product of the elements of two arrays:
+import numpy as np
+arr1 = np.array([1, 2, 3, 4])
+arr2 = np.array([5, 6, 7, 8])
+x = np.prod([arr1, arr2])
+print(x)
+
+Returns: 40320 because 1*2*3*4*5*6*7*8 = 40320
+
+
+
+--- Product Over an Axis
+If you specify axis=1, NumPy will return the product of each array.
+
+import numpy as np
+arr1 = np.array([1, 2, 3, 4])
+arr2 = np.array([5, 6, 7, 8])
+newarr = np.prod([arr1, arr2], axis=1)
+print(newarr)
+
+Returns: [24 1680]
+
+
+
+---- cumprod(): Cummulative Product
+Cummulative product means taking the product partially.
+E.g. The partial product of [1, 2, 3, 4] is [1, 1*2, 1*2*3, 1*2*3*4] = [1, 2, 6, 24]
+
+import numpy as np
+arr = np.array([5, 6, 7, 8])
+newarr = np.cumprod(arr)
+print(newarr)
+
+[5 30 210 1680]
+
+
+
+--- NumPy Differences
+A discrete difference means subtracting two successive elements.
+E.g. for [1, 2, 3, 4], the discrete difference would be [2-1, 3-2, 4-3] = [1, 1, 1]
+
+import numpy as np
+arr = np.array([10, 15, 25, 5])
+newarr = np.diff(arr)
+print(newarr)
+
+Returns: [5 10 -20] because 15-10=5, 25-15=10, and 5-25=-20
+
+
+
+
+We can perform this operation repeatedly by giving parameter n.
+
+E.g. for [1, 2, 3, 4], the discrete difference with n = 2 would be [2-1, 3-2, 4-3] = [1, 1, 1] ,
+then, since n=2, we will do it once more, with the new result: [1-1, 1-1] = [0, 0]
+
+import numpy as np
+arr = np.array([10, 15, 25, 5])
+newarr = np.diff(arr, n=2)
+print(newarr)
+
+Returns: [5 -30] because: 15-10=5, 25-15=10, and 5-25=-20 AND 10-5=5 and -20-10=-30
+
+
+
+--- Finding LCM (Lowest Common Multiple)
+
+num1 = 4
+num2 = 6
+x = np.lcm(num1, num2)
+
+Returns: 12 because that is the lowest common multiple of both numbers (4*3=12 and 6*2=12).
+
+
+
+Finding LCM in Arrays
+
+The reduce() method will use the ufunc, in this case the lcm() function, on each element, and reduce the array by one dimension.
+
+arr = np.array([3, 6, 9])
+x = np.lcm.reduce(arr)
+
+Returns: 18 because that is the lowest common multiple of all three numbers (3*6=18, 6*3=18 and 9*2=18).
+
+
+arr = np.arange(1, 11)
+x = np.lcm.reduce(arr)
+
+>>> 2520
+
+
+
+--- Finding GCD (Greatest Common Denominator)
+
+x = np.gcd(num1, num2)
+x = np.gcd.reduce(arr)
+
+
+---- Trigonometric
+np.sin(np.pi/2)
+arr = np.array([np.pi/2, np.pi/3, np.pi/4, np.pi/5])
+
+-- Convert Degrees Into Radians
+arr = np.array([90, 180, 270, 360])
+x = np.deg2rad(arr)
+>>> [1.57079633 3.14159265 4.71238898 6.28318531]
+
+-- Radians to Degrees
+arr = np.array([np.pi/2, np.pi, 1.5*np.pi, 2*np.pi])
+x = np.rad2deg(arr)
+>>> [ 90. 180. 270. 360.]
+
+
+---- Finding Angles
+np.arcsin(), np.arccos(), np.arctan()
+
+x = np.arcsin(1.0)
+x = np.arcsin(arr)
+
+
+
+
+----------- NumPy Set Operations
+
+What is a Set
+A set in mathematics is a collection of [unique] elements.
+Sets are used for operations involving frequent intersection, union and difference operations.
+
+
+arr = np.array([1, 1, 1, 2, 3, 4, 5, 5, 6, 7])
+x = np.unique(arr)
+
+
+
+
+-- Finding Union: union1d()
+
+To find the unique values of two arrays, use the union1d() method.
+
+arr1 = np.array([1, 2, 3, 4])
+arr2 = np.array([3, 4, 5, 6])
+
+newarr = np.union1d(arr1, arr2)
+
+>>> [1 2 3 4 5 6]
+
+
+
+
+--- Finding Intersection: intersect1d()
+
+arr1 = np.array([1, 2, 3, 4])
+arr2 = np.array([3, 4, 5, 6])
+
+newarr = np.intersect1d(arr1, arr2, assume_unique=True)
+
+>>> [3 4]
+
+
+
+---- Finding Difference: setdiff1d()
+
+To find only the values in the first set that is NOT present in the seconds set, use the setdiff1d() method.
+
+set1 = np.array([1, 2, 3, 4])
+set2 = np.array([3, 4, 5, 6])
+
+newarr = np.setdiff1d(set1, set2, assume_unique=True)
+
+>>> [1 2]
+
+
+
+
+---- Finding Symmetric Difference: setxor1d()
+
+To find only the values that are NOT present in BOTH sets, use the setxor1d() method.
+
+set1 = np.array([1, 2, 3, 4])
+set2 = np.array([3, 4, 5, 6])
+
+newarr = np.setxor1d(set1, set2, assume_unique=True)
+
+>>> 
+[1 2 5 6]
+
+
+
