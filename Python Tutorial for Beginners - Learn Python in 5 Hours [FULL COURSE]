@@ -1,5 +1,9 @@
 https://www.youtube.com/watch?v=t8pPdKYpowI&t=1221s
 
+
+
+
+
 print("Examples of plus sign" + str(100) + " Haha",split=' ')
 
 
@@ -221,21 +225,154 @@ Hey user, please input the value of n you want to use:
 30 days are 720 hours
 
 
+--------------------------------------------------------------------------------------------------------------------------------
+Python Collections (Arrays)
+There are four collection data types in the Python programming language:
 
+List is a collection which is ordered and changeable. Allows duplicate members.
+Tuple is a collection which is ordered and unchangeable. Allows duplicate members.
+Set is a collection which is unordered, unchangeable*, and unindexed. No duplicate members.
+Dictionary is a collection which is ordered** and changeable. No duplicate members.
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+----------------------------- List [] -------------------------------------
+[Ordered]
+[Changeable]
+[Allow Duplicates]
 
 my_list.append()
+len(my_list)
+type(my_list)
+
+my_list=['sdf','sdfsf2d','sdfsdf']
+print(my_list)
+
+my_list.append('gds')
+print(my_list)
+
+===> 无需和matlab一样重新定义my_list(my_list = my_list.append(xx))，直接append就更新了
+还有就是，要用()。 而不是[].
+
+
+Negative Indexing
+-1 refers to the last item, -2 refers to the second last item etc.
+print(my_list[-1]) ---> index 用 []
+
+Range of Indexes
+print(my_list[2:5])  -----> 同样的,用[]选定范围
+from the beginning: print(my_list[:4])
+To the end: print(my_list[3:])
+
+
+Change Items in a list
+my_list[1:3]=['xx','yy','zz']
+
+Insert Items ---> insert()
+my_list.insert(2,'xxx') --->注意这个syntax !!!!!
+
+Remove specified Item --> remove()
+my_list.remove('xxx')
+>>>>>>>>>>>>> Remove specified Index ---> pop()
+my_list.pop(1)     ----> 使用(),特别的用 pop()
+
+Clear List
+my_list.clear()
+
+Loop List:
+
+for x in my_list:
+    print(x)
+
+for x in range(len(my_list)):
+   print(my_list[i])
+   
+i = 0
+for i < len(my_list):
+    print(my_list[i])
+    i = i + 1
+
+A short hand 'for' loop:
+[print(x) for x in my_list]
+
+List Comprehension: you can do all that with only one line of code: 
+
+The Syntax:
+newlist = [expression for item in iterable if condition == True]
+
+newlist = [x for x in fruits if x != "apple"]
+newlist = [x for x in fruits]
+newlist = [x for x in range(10)]
+newlist = [x for x in range(10) if x < 5]
+newlist = [x.upper() for x in fruits]
+
+>> 1.   Replace all items in previous list:
+fruits = ["apple", "banana", "cherry", "kiwi", "mango"]
+newlist = ['hello' for x in fruits]
+print(newlist)
+>>>> ['hello', 'hello', 'hello', 'hello', 'hello']
+
+>> 2. Replace Particular item in previous list:
+Replace all 'bananan' to 'orange':
+newlist = [ x if x!='banana' else 'orange' for x in fruits]
+print(newlist)
+
+------ Sort List: sort()
+--alphabetically / numerically
+
+thislist = ["orange", "mango", "kiwi", "pineapple", "banana"]
+thislist = [100, 50, 65, 82, 23]
+thislist.sort()
+print(thislist)
+
+Sort Descending: my_list.sort(reverse=True)
+
+
+Copy a list: 
+1. copy()  method: newlist = my_list.copy()
+2. list() method:  newlist = list(my_list)
+
+
+Join List: '+', .append(), .extend()
+list3 = list1 + list2 ---> in one single row
+
+1. +
+list1 = ["a", "b", "c"]
+list2 = [1, 2, 3]
+list3 = list1 + list2
+print(list3)
+>>>> ['a', 'b', 'c', 1, 2, 3]
+
+2. .append()
+for x in list2:
+    list1.append(x)
+print(list1)
+
+3. .extend()
+list1.extend(list2)
 
 
 
-
-
-
------ Set
+------------ Summary List Methods ------------
+Method	    Description
+append()	Adds an element at the end of the list
+clear() 	Removes all the elements from the list
+copy()	    Returns a copy of the list
+count()	    ****** Returns the number of elements with the specified value ********
+extend()	Add the elements of a list (or any iterable), to the end of the current list
+index()	    Returns the index of the first element with the specified value
+insert()	Adds an element at the specified position
+pop()	    Removes the element at the specified position
+remove()	Removes the item with the specified value
+reverse()	Reverses the order of the list
+sort()	    Sorts the list
+------------------------------------- Set {} ----------------------------------------
+[Unordered] 
+[Unchangeable]
+[Duplicates Not Allowed]
 
 Sets are used to store multiple items in a single variable.
 Unique values inside. Does not allow duplicated values.
-
-
 
 Nested Function Execution
 
@@ -252,3 +389,208 @@ print(type(set(list_of_days)))
 3. print(type(set(list_of_days)))
 ==> input: the data type
 ==> output: Prints the value to console
+
+Get the length of a Set: len(). -----> for list it should be count
+(To determine how many items a set has, use the len() function.)
+
+
+
+
+
+set.add()
+
+thisset = {"apple", "banana", "cherry"}
+thisset.add("orange") ------> NOTICE this Syntax !!!!
+print(thisset)
+
+
+
+Add set: To add items from another set into the current set, use the update() method.
+
+thisset = {"apple", "banana", "cherry"}
+tropical = {"pineapple", "mango", "papaya"}
+thisset.update(tropical). ---> 直接update,无需再定义一次
+print(thisset)
+
+也可以直接加list
+thisset = {"apple", "banana", "cherry"}
+mylist = ["kiwi", "orange"]
+thisset.update(mylist)
+print(thisset)
+print(type(thisset)) <class 'set'>
+
+
+remove:
+.remove()
+.discard()
+.pop() -->remove the last item. Remember that sets are unordered, so you will not know what item that gets removed.
+
+.clear() --> set()
+dell my_set --->  print(my_set) #this will raise an error because the set no longer exists
+
+
+Join Two sets (union) (update())
+# Both union() and update() will exclude any duplicate items.
+
+1. Union
+set1 = {"a", "b" , "c"}
+set2 = {1, 2, 3}
+set3 = set1.union(set2)
+print(set3)
+>> {1, 2, 'c', 3, 'a', 'b'}
+
+2. update()
+set1 = {"a", "b" , "c"}
+set2 = {1, 2, 3}
+set1.update(set2)
+print(set1)
+>> {1, 'c', 2, 3, 'b', 'a'}
+
+
+
+Find the duplications:
+1. x.intersection_update(y)
+2. z = x.intersetction(y)
+
+
+Keep All, But NOT the Duplicates
+x.symmetric_difference_update(y)
+z = x.symmetric_difference(y)
+
+
+
+
+------ Summary   Set Methods ------------------------
+Method	              Description
+add()	        Adds an element to the set
+clear()	        Removes all the elements from the set
+copy()	        Returns a copy of the set
+difference()	Returns a set containing the difference between two or more sets
+difference_update()	     Removes the items in this set that are also included in another, specified set
+discard()	    Remove the specified item
+intersection()	Returns a set, that is the intersection of two other sets
+intersection_update()	     Removes the items in this set that are not present in other, specified set(s)
+isdisjoint()	Returns whether two sets have a intersection or not
+issubset()	    Returns whether another set contains this set or not
+issuperset()	Returns whether this set contains another set or not
+pop()	        Removes an element from the set
+remove()	    Removes the specified element
+symmetric_difference()	        Returns a set with the symmetric differences of two sets
+symmetric_difference_update()	inserts the symmetric differences from this set and another
+union()	        Return a set containing the union of sets
+update()	    Update the set with the union of this set and others
+
+
+
+
+-----------------  Dictionaries {} -----------------------
+Dictionaries store data values in [ key:value ] pairs
+[ Duplicates Not Allowed ]
+[ Changeable ]
+[  items does not have a defined order, you cannot refer to an item by using an index ]
+--> can be accessed by the 'key', for example: my_dictionary["key1"] OR my_dictionary.get('key1')
+
+thisdict = {
+  "brand": "Ford",
+  "model": "Mustang",
+  "year": 1964
+}
+print(thisdict["brand"])
+>>>> Ford
+
+
+
+Access Dictionary Items
+x = thisdict["model"]
+x = thisdict.get("model")
+
+Get keys
+x = thisdict.keys()
+
+Get Values:
+x = thisdict.values()
+
+Get items:
+x = thisdict.items()
+>>> dict_items([('brand', 'Ford'), ('model', 'Mustang'), ('year', 1964)])
+
+Update Dictionary:
+thisdict.update({"year": 2020})
+
+Adding Items
+thisdict["color"] = "red"
+
+Removing Items
+1.pop():
+The pop() method removes the item with the specified key name:
+thisdict.pop("model")
+
+2. popitem():
+The popitem() method removes the last inserted item
+thisdict.popitem()
+
+3. del 
+The del keyword removes the item with the specified key name:
+del thisdict["model"]
+print(thisdict) #this will cause an error because "thisdict" no longer exists.
+
+4. clear()
+clear() method empties the dictionary:
+thisdict.clear()
+
+
+
+Loop through a dictionary
+
+Print all key names in the dictionary, one by one:
+for x in thisdict:
+  print(x)
+  
+  
+Print all values in the dictionary, one by one:
+for x in thisdict:
+  print(thisdict[x])
+
+You can also use the values() method to return values of a dictionary:
+for x in thisdict.values():
+  print(x)
+
+
+
+Loop through both keys and values, by using the items() method:
+for x, y in thisdict.items():
+  print(x, y)
+
+
+Copy
+mydict = thisdict.copy()
+mydict = dict(thisdict)
+
+
+-------- Summary Dictionary Methods --------
+
+Method	                Description
+clear()	    Removes all the elements from the dictionary
+copy()	    Returns a copy of the dictionary
+fromkeys()	Returns a dictionary with the specified keys and value
+get()	    Returns the value of the specified key
+items()    	Returns a list containing a tuple for each key value pair
+keys()	    Returns a list containing the dictionary's keys
+pop()	    **** Removes the element with the specified key
+popitem()	Removes the last inserted key-value pair
+setdefault()	Returns the value of the specified key. If the key does not exist: insert the key, with the specified value
+update()	Updates the dictionary with the specified key-value pairs
+values()	Returns a list of all the values in the dictionary
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------
+Modules:
+logically organise your python code
+
+import one python.py into another.py
+
+import xxx --> directly used in the function defined in that previous file in the new file
+
