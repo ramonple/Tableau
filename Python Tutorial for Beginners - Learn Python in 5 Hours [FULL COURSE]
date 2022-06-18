@@ -594,3 +594,153 @@ import one python.py into another.py
 
 import xxx --> directly used in the function defined in that previous file in the new file
 
+
+
+
+Extra 
+----------------------------------------- Tuple ()------------------------------------------------------------------
+A tuple is a collection which is [ordered] and [unchangeable].
+
+len()
+To determine how many items a tuple has, use the len() function:
+
+
+The tuple() Constructor
+# use the tuple() constructor to make a tuple
+thistuple = tuple(("apple", "banana", "cherry")) # note the double round-brackets
+
+
+Tuples are unchangeable, but we can change a tuple to a list.
+
+x = ("apple", "banana", "cherry")
+y = list(x)
+y[1] = "kiwi"
+x = tuple(y)
+
+print(x) >>> ("apple", "kiwi", "cherry")
+
+
+thistuple = ("apple", "banana", "cherry")
+y = list(thistuple)
+y.append("orange")
+y.remove("apple")
+
+thistuple = tuple(y)
+
+
+
+# Add tuple to a tuple
+thistuple = ("apple", "banana", "cherry")
+y = ("orange",)
+thistuple += y
+
+# delete the tuple
+del thistuple
+
+
+
+
+--- Unpack Tuples
+When we create a tuple, we normally assign values to it. This is called "packing" a tuple:
+
+Packing a tuple:
+fruits = ("apple", "banana", "cherry")
+
+in Python, we are also allowed to extract the values back into variables. This is called "unpacking":
+fruits = ("apple", "banana", "cherry")
+
+(green, yellow, red) = fruits
+
+print(green)
+print(yellow)
+print(red)
+>>>
+
+fruits = ("apple", "banana", "cherry")
+
+(green, yellow, red) = fruits
+
+print(green)
+print(yellow)
+print(red)
+>>>
+apple
+banana
+cherry
+
+
+
+-- Using Asterisk
+
+If the number of variables is less than the number of values, you can add an * to the variable name and 
+the values will be assigned to the variable as a list:
+
+fruits = ("apple", "mango", "papaya", "pineapple", "cherry")
+
+(green, *tropic, red) = fruits
+
+print(green)
+print(tropic)
+print(red)
+
+>>>
+apple
+['mango', 'papaya', 'pineapple']
+cherry
+
+
+
+
+---- Loop Through the Index Numbers
+# Use the range() and len() functions to create a suitable iterable.
+
+thistuple = ("apple", "banana", "cherry")
+for i in range(len(thistuple)):
+  print(thistuple[i])
+  
+  
+thistuple = ("apple", "banana", "cherry")
+i = 0
+while i < len(thistuple):
+  print(thistuple[i])
+  i = i + 1
+  
+
+
+
+
+Join Tuples
+
+1. Join Two Tuples +
+
+tuple1 = ("a", "b" , "c")
+tuple2 = (1, 2, 3)
+
+tuple3 = tuple1 + tuple2
+print(tuple3)
+>>>>
+('a', 'b', 'c', 1, 2, 3)
+
+
+2. Multiply Tuples *
+
+fruits = ("apple", "banana", "cherry")
+mytuple = fruits * 2
+
+print(mytuple)
+
+>>>
+
+('apple', 'banana', 'cherry', 'apple', 'banana', 'cherry')
+
+
+
+
+Method	Description
+count()	Returns the number of times a specified value occurs in a tuple
+index()	Searches the tuple for a specified value and returns the position of where it was found
+
+
+
+
+
