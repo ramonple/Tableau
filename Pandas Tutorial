@@ -1,0 +1,143 @@
+Pandas is a Python library.
+
+Pandas is used to analyze data.
+
+
+
+
+import pandas as pd
+
+mydataset = {
+  'cars': ["BMW", "Volvo", "Ford"],
+  'passings': [3, 7, 2]
+}
+
+myvar = pd.DataFrame(mydataset)
+
+>>>
+
+    cars  passings
+0    BMW         3
+1  Volvo         7
+2   Ford         2
+
+
+
+
+
+df = pd.read_csv('data.csv')
+print(df.to_string). # to_string() function is used to render a DataFrame to a console-friendly tabular output. 
+
+
+
+---------------------------- Pandas Series ------------------------
+What is a series?
+A Pandas Series is like a column in a table. It is a one-dimensional array holding data of any type.
+
+# create a Pandas Series
+import pandas as pd
+a = [1,7,2]
+myvar = pd.Series(a)
+print(myvar)
+
+>>>
+0    1
+1    7
+2    2
+dtype: int64
+# If nothing else is specified, the values are labeled with their index number. First value has index 0, second value has index 1 etc.
+
+
+
+# Create Labels
+import pandas as pd
+a = [1,7,2]
+myvar = pd.Series(a, index = ["x", "y", "z"])
+print(myvar)
+>>>
+x    1
+y    7
+z    2
+dtype: int64
+
+# return the value of 'y'
+print(myvar["y"])
+
+
+
+import pandas as pd
+calories = {"day1": 420, "day2": 380, "day3": 390}
+myvar = pd.Series(calories)
+print(myvar)
+>>>
+day1    420
+day2    380
+day3    390
+dtype: int64
+
+
+## To select only some of the items in the dictionary, use the index argument and specify only the items you want to include in the Series.
+
+import pandas as pd
+calories = {"day1": 420, "day2": 380, "day3": 390}
+myvar = pd.Series(calories, index = ["day1", "day2"]) ==> only use the first two and ingore the third one 'day3'
+print(myvar)
+
+
+-- Data Frames
+What is a DataFrame?
+A Pandas DataFrame is a 2 dimensional data structure, like a 2 dimensional array, or a table with rows and columns
+
+
+import pandas as pd
+
+data = {
+  "calories": [420, 380, 390],
+  "duration": [50, 40, 45]
+}
+myvar = pd.DataFrame(data)
+print(myvar)
+>>>
+   calories  duration
+0       420        50
+1       380        40
+2       390        45
+
+
+- Locate Row
+print(df.loc[0])
+print(df.loc[[0, 1]])
+print(df.loc["day2"])
+
+df = pd.read_csv('data.csv')
+
+
+### to return the entire DataFrame. !!!!!!!!!!!
+df.to_string() 
+
+### read json
+df.read_json()
+
+
+
+If you have a large DataFrame with many rows, Pandas will only return the first 5 rows, and the last 5 rows
+
+
+max_rows
+The number of rows returned is defined in Pandas option settings.
+You can check your system's maximum rows with the pd.options.display.max_rows statement.
+
+import pandas as pd
+
+print(pd.options.display.max_rows) 
+
+
+
+
+Read JSON
+
+Big data sets are often stored, or extracted as JSON.
+JSON is plain text, but has the format of an object, and is well known in the world of programming, including Pandas.
+In our examples we will be using a JSON file called 'data.json'.
+
+
