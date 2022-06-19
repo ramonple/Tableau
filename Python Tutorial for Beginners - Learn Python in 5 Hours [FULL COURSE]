@@ -390,7 +390,7 @@ print(type(set(list_of_days)))
 ==> input: the data type
 ==> output: Prints the value to console
 
-Get the length of a Set: len(). -----> for list it should be count
+Get the length of a Set: len()
 (To determine how many items a set has, use the len() function.)
 
 
@@ -437,7 +437,7 @@ set1 = {"a", "b" , "c"}
 set2 = {1, 2, 3}
 set3 = set1.union(set2)
 print(set3)
->> {1, 2, 'c', 3, 'a', 'b'}
+>> {1, 2, 'c', 3, 'a', 'b'} --> unordered
 
 2. update()
 set1 = {"a", "b" , "c"}
@@ -500,12 +500,12 @@ print(thisdict["brand"])
 
 
 
-Access Dictionary Items
+Access Dictionary Items --> Use index to find the corresponding value 
 x = thisdict["model"]
 x = thisdict.get("model")
 
 Get keys
-x = thisdict.keys()
+x = thisdict.keys() --> do not forget the ()
 
 Get Values:
 x = thisdict.values()
