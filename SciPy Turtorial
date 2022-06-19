@@ -1,0 +1,64 @@
+SciPy is a scientific computation library that uses NumPy underneath.
+SciPy stands for Scientific Python.
+It provides more utility functions for optimization, stats and signal processing.
+
+
+Why Use SciPy?
+If SciPy uses NumPy underneath, why can we not just use NumPy?
+SciPy has optimized and added functions that are frequently used in NumPy and Data Science.
+
+
+
+
+from scipy import constants
+print(constants.pi)
+
+>>> 3.141592653589793
+
+
+
+Constant Units
+A list of all units under the constants module can be seen using the dir() function.
+
+The units are placed under these categories:
+
+Metric
+Binary
+Mass
+Angle
+Time
+Length
+Pressure
+Volume
+Speed
+Temperature
+Energy
+Power
+Force
+
+
+Examples:
+print(constants.kilo)     #1000.0
+
+
+
+
+--------------------------- SciPy optimiser --------------------
+
+Root of Equation: optimze.root function
+
+fun - a function representing an equation.
+x0 - an initial guess for the root.
+
+# Find root of the equation x + cos(x):
+from scipy.optimize import root
+from math import cos
+
+def eqn(x):
+  return x + cos(x)
+
+myroot = root(eqn, 0)
+
+print(myroot.x)
+
+
