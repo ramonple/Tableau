@@ -3,7 +3,7 @@ Pandas is a Python library.
 Pandas is used to analyze data.
 
 
-
+---------------------------------------- Pandas Tutorial ----------------------------------------
 
 import pandas as pd
 
@@ -138,6 +138,175 @@ Read JSON
 
 Big data sets are often stored, or extracted as JSON.
 JSON is plain text, but has the format of an object, and is well known in the world of programming, including Pandas.
-In our examples we will be using a JSON file called 'data.json'.
+
+Example:
+import pandas as pd
+df = pd.read_json('data.json')
+print(df.to_string()).  # use to_string() to print the entire DataFrame.
+
+
+
+Dictionary as JSON
+JSON = Python Dictionary
+
+df = pd.DataFrame(data)
+print(df) 
+
+
+
+------ Analyzing DataFrames ---------
+
+-- head()
+ 
+import pandas as pd
+df = pd.read_csv('data.csv')
+print(df.head(10))
+
+
+
+-- tail()
+There is also a tail() method for viewing the last rows of the DataFrame.
+
+# Print the last 5 rows of the DataFrame:
+print(df.tail())
+
+
+
+df.info()
+
+
+
+
+---------------------------------------- Cleaning Data ----------------------------------------
+Data cleaning means fixing bad data in your data set.
+
+Bad data could be:
+
+Empty cells
+Data in wrong format
+Wrong data
+Duplicates
+
+
+--- Empty Cells ---
+
+
+1. Remocec Rows
+< df.dropna() >
+#  By default, the dropna() method returns a new DataFrame, and will not change the original.
+
+import pandas as pd
+df = pd.read_csv('data.csv')
+new_df = df.dropna()
+pront(new_df.to_string())
+
+df.dropna(inplace = True) # If you want to change the original DataFrame, use the inplace = True argument
+                          # Now, the dropna(inplace = True) will NOT return a new DataFrame, but it will remove all rows containg NULL values from the original DataFrame.
+                          
+
+df.fillna(130, inplace = True)  # Replace NULL values with the number 130
+
+
+# Replace Only For Specified Columns
+df["Calories"].fillna(130, inplace = True)
+
+x = df["Calories"].mean()
+x = df["Calories"].mode()
+x = df["Calories"].median()[0]
+
+df["xx"].fillna(x,inplace=True)
+
+
+
+df.dropna(subset=['Date'], inplace = True)
+
+---- Wrong Format
+df['Date'] = pd.to_datetime(df['Date'])
+
+
+---- Wrong Data
+# Set "Duration" = 45 in row 7:
+df.loc[7, 'Duration'] = 45
+
+
+# Loop through all values in the "Duration" column.
+# If the value is higher than 120, set it to 120:
+for x in df.index:
+  if df.loc[x, "Duration"] > 120:
+    df.loc[x, "Duration"] = 120
+    
+    
+# Delete rows where "Duration" is higher than 120:    
+for x in df.index:
+  if df.loc[x, "Duration"] > 120:
+    df.drop(x, inplace = True)
+    
+
+
+###### # loc and iloc in Pandas
+
+
+1. selecting via a single value
+loc[row_label, column_label]
+iloc[row_position, column_position]
+
+2. Selecting via a list of values
+for example:
+df.loc[['Thu', 'Fri'], 'Temperature'] = df.iloc[4, [1, 2]]
+df.loc['Fri', ['Temperature', 'Wind']] = df.iloc[4, [1, 2]]
+
+
+3. Selecting a range of data via slice
+
+loc[A:B]  # both A and B are included
+iloc[n:m]  # n is included, m is excluded
+
+# A:B:S to select data from label A to label B with step size S
+
+
+
+4. Selecting via conditions
+df.loc[df.Humidity > 50, :]
+df.loc[ (df.Humidity > 50) & (df.Weather == 'Shower'), ['Temperature','Wind']]
+
+df.iloc[df.Humidity > 50, :]
+df.iloc[list((df.Humidity > 50) & (df.Weather == 'Shower')), :]
+
+
+
+
+---- Removing Duplicates
+
+print(df.duplicated())
+
+df.drop_duplicates(inplace = True)
+
+
+
+
+
+---------------------------- Pandas - Data Correlations ----------------------------------
+
+df. corr()
+
+The number varies from -1 to 1.
+
+What is a good correlation? 
+It depends on the use, but I think it is safe to say you have to have at least 0.6 (or -0.6) to call it a good correlation.
+
+
+
+
+
+---------------------------- Plotting ----------------------------
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df.plot()
+plt.show()
+
+
+df.plot(kind = 'scatter', x = 'Duration', y = 'Calories')
+df["Duration"].plot(kind = 'hist')
 
 
