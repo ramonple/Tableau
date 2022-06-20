@@ -1,0 +1,69 @@
+https://www.askpython.com/python/built-in-methods/dot-notation
+
+
+
+In Python, almost every entity is traded as an Object. And knowing this is fundamental to grasp the significance of dot (.) notation.
+
+
+What is the Dot Notation?
+In simple words, the dot (.) notation is a way to access the attribute and methods of each method of instances of different object classes.
+
+
+------------------ Assessing Attributes  ---------------------------------------------
+class Person():
+
+    def __int__(self,name,age):
+        self.name=name
+        self.age=age
+    
+    def sayHello(self):
+        print("Hello)
+        
+    def sayName(self):
+        print(f"My name is {self.name})
+ 
+ """
+First, we create a Person Class that takes two parameters: name, and age. This is an object. 
+The object currently contains two methods: sayHello() and sayName().
+Now, we'll see how we can access those attributes and methods using dot notation from an instance of the class. 
+"""
+
+# Now that our class is ready, we need to create an instance object.
+
+#We create an instance of our Person Class to create an object.
+randomPerson = Person("Marshall",49)
+
+#Checking attributes through dot notation
+print("Name of the person:" + randomPerson.name)
+print("Age of the person:" + str(randomPerson.age) + "years")
+
+#Accessing the attributes through dot notation
+randomPerson.sayHello()
+randomPerson.sayName()
+### In the above two lines, we’re accessing the methods within the class with the object of a class in the format <object name>.<method name>
+
+Output:
+Name of the person: Marshall Mathers
+Age of the person: 49 years
+ 
+Hello, World
+My name is Marshall Mathers
+
+
+
+
+------------------------- Others -----------------------------------
+1. length a list
+
+array.len()
+
+
+
+
+2. splitting a string
+
+txt.split('')
+
+# separator
+'', ' ', ',', ...
+
