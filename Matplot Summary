@@ -1,0 +1,179 @@
+import matplotlib.pyplot as plt
+
+
+plt.plot(x,y,marker='o')
+=
+plt.plot(x,y,'o')
+
+
+
+-- format string: fmt (marker|line|color)
+
+plt.plot(x,y,'o-r') # marker='o',line ='-' solid line, color='r' red
+
+
+marker size: ms
+marker edge color: mec
+marker face color: mfc
+
+plt.plot(x,y,marker='o',ms=20,mec='r',mfc='r')
+
+
+
+
+----- Line
+
+plt.plot(x,y,linestyle = 'dotted'/'dashed')
+=
+plt.plot(x,y,ls='-'/':'/'--')
+
+
+plt.plot(x,y,color='r')
+
+plt.plot(x,y,linewidth='10')
+=
+plt.plot(x,y,lw='10')
+
+
+
+
+---- Labels and Title
+
+plt.title('')
+
+plt.xlabel('')
+plt.ylabel('')
+
+
+fontdict: set font properties for title and labels
+plt.title/xlabel/ylabel("xx",fontdict = font1/font2/font3)
+
+position: loc
+plt.title("xx",loc = 'left')
+
+
+
+
+---- Adding Grid Lines
+
+plt.grid()
+plt.grid(axis='x')
+plt.grid(axis='y')
+
+plt.grid(color='green',linestyle='--',linewidth=0.5)
+
+
+
+
+----- Multiple plots
+
+plt.subplot(1,2,1)
+plt.title("xx")
+
+plt.subplot(1,2,2)
+plt.title("yy")
+
+--> For the entire figure: suptitle()
+plt.suptitle("Entire figure title")
+
+
+
+
+
+------ Scatter Plots
+
+plt.scatter(x,y)
+plt.scatter(x,y,color='')
+
+colors = np.array(["red","green","blue",...])
+plt.scatter(x,y,c=colors)
+
+plt.scatter(x,y,c=colors,cmap='viridis')
+# 'Accent' Accent_r' ; 'Blues' "Blues_r"; "BuPu" "BuPu_r"
+plt.colorbar()
+
+
+sizes = np.array([20,14,15,32,..])
+plt.scatter(x,y,s=sizes)
+
+
+alpha: transparency of the dots
+
+plt.scatter(x,y,s=sizes,alpha=0.5)
+
+
+plt.scatter(x,y,c=colors,s=sizes,alpha=0.5,cmap='xx')
+
+
+
+------------ Bars 
+
+bar()
+
+plt.bar(x,y) 
+
+
+barh() ->horizontal
+
+plt.bar(x,y,color='red')
+plt.bar(x,y,color='hotpink')
+
+plt.bar(x,y,width=0.1)
+
+plt.barh(x,y,height=0.1)
+
+
+
+
+
+
+
+------------ Histogram
+
+plt.hist()
+
+
+
+
+
+
+
+---------------- Pie Charts
+
+y = np.array([35, 25, 25, 15])
+mylabels = ["Apples", "Bananas", "Cherries", "Dates"]
+
+plt.pie(y,labels = mylabels)
+
+plt.pie(y, labels = mylabels, startangle = 90)
+
+
+
+
+--- Explode
+Maybe you want one of the wedges to stand out? The explode parameter allows you to do that.
+
+
+y = np.array([35, 25, 25, 15])
+mylabels = ["Apples", "Bananas", "Cherries", "Dates"]
+myexplode = [0.2, 0, 0, 0] # only explode the first slice 0.2
+
+plt.pie(y, labels = mylabels, explode = myexplode)
+
+# shadow
+plt.pie(y, labels = mylabels, explode = myexplode, shadow = True)
+
+# colors
+plt.pie(y, labels = mylabels, colors = mycolors)
+
+# label
+plt.pie(y, labels = mylabels)
+
+
+# legends
+plt.pie(y, labels = mylabels)
+plt.legend()
+
+# legends with header
+plt.pie(y, labels = mylabels)
+plt.legend(title = "Four Fruits:")
