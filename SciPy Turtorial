@@ -63,3 +63,214 @@ print(myroot.x)
 
 
 
+--- minimize
+scipy.optimize.minimize()
+
+minimize(fun,x0,method) # fun:function; x0: initial guess for the root; method: name of the method used
+
+
+
+# Minimize the function x^2 + x + 2 with BFGS:
+
+from scipy.optimize import minimize
+
+def eqn(x):
+  return x**2 + x + 2
+
+mymin = minimize(eqn, 0, method='BFGS')
+
+print(mymin)
+
+
+
+
+--------------------------- Sparse Data ---------------------------
+
+What is sparse Data?
+
+Sparse Data: is a data set where most of the item values are zero.
+
+Dense Array: is the opposite of a sparse array: most of the values are not zero.
+
+
+scipy.sparse 
+
+CSC - Compressed Sparse Column. For efficient arithmetic, fast column slicing.
+
+CSR - Compressed Sparse Row. For fast row slicing, faster matrix vector products
+
+
+--- CSR Matrix
+
+scipy.sparse.csr_matrix()
+
+# create a sparse matrix
+
+import numpy as np
+from scipy.sparse import csr_matrix
+
+arr = np.array([0, 0, 0, 0, 0, 1, 1, 0, 2])
+
+print(csr_matrix(arr))
+
+
+>>> The example above returns:
+  (0, 5)	1
+  (0, 6)	1
+  (0, 8)	2
+
+
+From the result we can see that there are 3 items with value.
+
+The 1. item is in row 0 position 5 and has the value 1.
+
+The 2. item is in row 0 position 6 and has the value 1.
+
+The 3. item is in row 0 position 8 and has the value 2.
+
+
+
+
+--- Sparse Matrix Methods
+
+
+1. .data: 
+    Viewing stored data (not the zero items) with the data property:
+import numpy as np
+from scipy.sparse import csr_matrix
+
+arr = np.array([[0, 0, 0], [0, 0, 1], [1, 0, 2]])
+
+print(csr_matrix(arr).data)
+
+>>>>  [1 1 2]
+
+
+2. .count_nonzero()
+    Counting nonzeros with the count_nonzero() method:
+
+import numpy as np
+from scipy.sparse import csr_matrix
+
+arr = np.array([[0, 0, 0], [0, 0, 1], [1, 0, 2]])
+
+print(csr_matrix(arr).count_nonzero())
+
+>>> 3
+
+
+3. eliminate_zeros()
+        Removing zero-entries from the matrix with the eliminate_zeros() method:
+        
+import numpy as np
+from scipy.sparse import csr_matrix
+
+arr = np.array([[0, 0, 0], [0, 0, 1], [1, 0, 2]])
+
+mat = csr_matrix(arr)
+mat.eliminate_zeros()
+
+print(mat)
+
+>>>>>
+  (1, 2)	1
+  (2, 0)	1
+  (2, 2)	2
+
+
+
+4. .sum_duplicates()
+      Eliminating duplicate entries with the sum_duplicates() method:
+ 
+import numpy as np
+from scipy.sparse import csr_matrix
+
+arr = np.array([[0, 0, 0], [0, 0, 1], [1, 0, 2]])
+
+mat = csr_matrix(arr)
+mat.sum_duplicates()
+
+print(mat)
+
+
+
+>>> 
+  (1, 2)	1
+  (2, 0)	1
+  (2, 2)	2
+  
+  
+  
+
+5. .tocsc()
+    Converting from csr to csc with the tocsc() method:
+ 
+import numpy as np
+from scipy.sparse import csr_matrix
+
+arr = np.array([[0, 0, 0], [0, 0, 1], [1, 0, 2]])
+
+newarr = csr_matrix(arr).tocsc()
+
+print(newarr)
+
+
+>>>>
+  (2, 0)	1
+  (1, 2)	1
+  (2, 2)	2
+
+
+
+--------------------------- SciPy Graphs ---------------------------
+
+scipy.sparse.csgraph
+
+Adjacency matrix 邻接矩阵，相邻矩阵 is a nxn matrix where n is the number of elements in a graph
+
+an example of adjacency matrix:
+      A B C
+   A:[0 1 2]  
+   B:[1 0 0]
+   C:[2 0 0]
+   
+
+Connected Components
+#  Find all of the connected components with the connected_components() method.
+
+import numpy as np
+from scipy.sparse.csgraph import connected_components
+from scipy.sparse import csr_matrix
+
+arr = np.array([
+  [0, 1, 2],
+  [1, 0, 0],
+  [2, 0, 0]
+])
+
+newarr = csr_matrix(arr)
+
+print(connected_components(newarr))
+
+>>>> 
+(1, array([0, 0, 0], dtype=int32))
+
+
+
+
+
+   
+--------------------------- Spatial Data ---------------------------
+Spatial data refers to data that is represented in a geometric space.
+
+scipy.spatial
+
+--------------------------- Matlab Arrays  ---------------------------
+
+scipy.io
+
+--------------------------- ---------------------------
+
+
+
+
