@@ -96,8 +96,6 @@ print(knn.score(X_test,y_test))
 data['new_column'] = np.log(data['old_column'])
 
 
-
-
 Scaling data for feature comparison
 # Import StandardScaler from scikit-learn
 from sklearn.preprocessing import StandardScaler
@@ -110,6 +108,17 @@ wine_subset = wine[["Ash", "Alcalinity of ash", "Magnesium"]]
 
 # Apply the scaler to the DataFrame subset
 wine_subset_scaled = ss.fit_transform(wine_subset)
+
+
+
+---------- tranform() and fit_transform()
+Both are methods of class sklearn.preprocessing.StandardScaler() and used almost together while scaling or standardizing our training and test data.
+
+The Question is:
+Differences between fit_transform() and transform()
+
+fit_transform() is used on the training data 
+transform() is used on test data
 
 
 
@@ -162,16 +171,26 @@ volunteer["start_date_month"] = volunteer["start_date_converted"].apply(lambda r
 # Take a look at the converted and new month columns
 print(volunteer[["start_date_converted", "start_date_month"]].head())
 
-
+                                 ### pandas.DataFrame.apply() Apply a function along an axis of the DataFrame.
+                                                  for example, df.apply(np.sqrt), df.apply(np.sum, axis=0)
+               
 
 
 Text classification
 
 re — Regular expression operations
 
+import re
+
 pattern = re.compile("\d+ \. \d+")
   # break down the pattern in re.compile
   
+    Python’s re.compile() method is used to compile a regular expression pattern provided as a string into a regex pattern object (re.Pattern)
+             re.compile(pattern, flags=0)
+               # pattern: regex pattern in string format, which you are trying to match inside the target string.
+               # flags: The expression’s behavior can be modified by specifying regex flag values. This is an optional parameter
+               
+               
 \d+: backslash d" means that we want to grab digits, and the "plus" means we want to grab as many as possible. 
 \. : "backslash period" means we want to grab the decimal point
 \d+: another "backslash d plus" at the end to grab the digits on the right-hand side of the decimal.
@@ -185,7 +204,8 @@ def return_mileage(length):
     
     # Search the text for matches
     mile = re.match(pattern, length)
-    
+            # The match method returns a corresponding match object
+            
     # If a value is returned, use group(0) to return the found value
     if mile is not None:
         return float(mile.group(0))
@@ -248,7 +268,8 @@ print(volunteer_subset.head())
 # Add in the rest of the parameters
 def return_weights(vocab, original_vocab, vector, vector_index, top_n):
     zipped = dict(zip(vector[vector_index].indices, vector[vector_index].data))
-    
+           # The dict() function creates a dictionary.
+           
     # Let's transform that zipped dict into a series
     zipped_series = pd.Series({vocab[i]:zipped[i] for i in vector[vector_index].indices})
     
@@ -281,7 +302,12 @@ filtered_text = text_tfidf[:, list(filtered_words)]
 
 # Split the dataset according to the class distribution of category_desc
 train_X, test_X, train_y, test_y = train_test_split(filtered_text.toarray(), y, stratify=y)
-
+                                       # stratify 
+                                       # stratify parameter makes a split so that the proportion of values in the sample produced will 
+                                       # be the same as the proportion of values provided to parameter stratify
+                                       # For example, if variable y is a binary categorical variable with values 0 and 1 and there are 25% of zeros and 75% of ones, 
+                                       # stratify=y will make sure that your random split has 25% of 0's and 75% of 1's.
+                                       
 # Fit the model to the training data
 nb.fit(train_X, train_y)
 
@@ -339,9 +365,7 @@ print(ufo[["seconds", "date"]].dtypes)
 print(ufo[["length_of_time", "state", "type"]].isnull().sum())
 
 # Keep only rows where length_of_time, state, and type are not null
-ufo_no_missing = ufo[ufo["length_of_time"].notnull() & 
-          ufo["state"].notnull() & 
-          ufo["type"].notnull()]
+ufo_no_missing = ufo[ufo["length_of_time"].notnull() & ufo["state"].notnull() & ufo["type"].notnull()]
 
 # Print out the shape of the new dataset
 print(ufo_no_missing.shape)
