@@ -1,0 +1,185 @@
+--------------------------------------- 1 Linear Regression  --------------------------------------------------
+https://realpython.com/linear-regression-in-python/
+
+[ You may need three packages: NumPy, scikit-learn, and statsmodels ]
+
+NumPy: handling arrays
+scikit-learn if you don’t need detailed results and want to use the approach consistent with other regression techniques
+statsmodels if you need the advanced statistical parameters of a model
+
+
+-- Simple Linear Regression
+
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
+model = LinearRegression()
+model.fit(x,y)
+  ***  if needs to change the format: model.fit(x,y.reshape(-1,1))
+model.score(x,y) ---> R^2
+
+print(f"intercept: {model.intercept_}")
+print(f"slope: {model.coef_}")
+
+
+y_pred = model.intercept_ + model.coef_ * x
+or
+y_pred = model.predict(x_new)
+
+
+
+
+-- Multiple Linear Regression
+
+
+
+-- Polynomial Regression
+
+from sklearn.preprocessing import PolynomialFeature
+
+a. transformer = PolynomialFeature(degress = 2, include_basis = False )
+
+    # degree is an integer (2 by default) that represents the degree of the polynomial regression function.
+   
+    # interaction_only is a Boolean (False by default) that decides whether to include only interaction features (True) or all features (False).
+ 
+    # include_bias is a Boolean (True by default) that decides whether to include the bias, or intercept, column of 1 values (True) or not (False).
+
+
+# Before applying transformer, you need to fit it with .fit():
+b. transformer.fit(x)
+
+# Once transformer is fitted, then it’s ready to create a new, modified input array. You apply .transform() to do that:
+c. x_transformer.transform(x)
+
+
+# 3 IN TO ONE
+ x_ = PolynomialFeatures(degree=2, include_bias=False).fit_transform(x)
+
+
+
+- The code should be:
+
+>>> # Step 1: Import packages and classes
+>>> import numpy as np
+>>> from sklearn.linear_model import LinearRegression
+>>> from sklearn.preprocessing import PolynomialFeatures
+
+>>> # Step 2a: Provide data
+>>> x = [
+...   [0, 1], [5, 1], [15, 2], [25, 5], [35, 11], [45, 15], [55, 34], [60, 35]
+... ]
+>>> # x contains two columns
+>>> y = [4, 5, 20, 14, 32, 22, 38, 43]
+>>> x, y = np.array(x), np.array(y)
+
+>>> # Step 2b: Transform input data
+>>> x_ = PolynomialFeatures(degree=2, include_bias=False).fit_transform(x)
+
+>>> # Step 3: Create a model and fit it
+>>> model = LinearRegression().fit(x_, y)
+
+>>> # Step 4: Get results
+>>> r_sq = model.score(x_, y)
+>>> intercept, coefficients = model.intercept_, model.coef_
+
+>>> # Step 5: Predict response
+>>> y_pred = model.predict(x_)
+
+
+-- Advanced Linear Regression with statsmodels
+# You can implement linear regression in Python by using the package statsmodels as well. Typically, this is desirable when you need more detailed results.
+# the procedure is similar to scikit-learn
+
+import numpy as np
+import statsmodels.api as sm
+
+x = [
+...   [0, 1], [5, 1], [15, 2], [25, 5], [35, 11], [45, 15], [55, 34], [60, 35]
+... ]
+y = y = [4, 5, 20, 14, 32, 22, 38, 43]
+x , y = np.array(x), np.array(y)
+
+
+# You need to add the column of ones to the inputs if you want statsmodels to calculate the intercept 𝑏₀. 
+# It doesn’t take 𝑏₀ into account by default. This is just one function call:
+
+x = sm.add_constant(x)
+
+# now, the the modified x has three columns: 
+# the first column of ones, corresponding to 𝑏₀ and replacing the intercept, as well as two columns of the original features
+
+
+# The regression model based on ordinary least squares is an instance of the class
+model = sm.OLS(y, x)
+
+results = model.fit()
+
+print(results.summary())
+
+
+OLS Regression Results
+=============================================================================
+Dep. Variable:                     y   R-squared:                       0.862
+Model:                           OLS   Adj. R-squared:                  0.806
+Method:                Least Squares   F-statistic:                     15.56
+Date:               Thu, 12 May 2022   Prob (F-statistic):            0.00713
+Time:                       14:15:07   Log-Likelihood:                -24.316
+No. Observations:                  8   AIC:                             54.63
+Df Residuals:                      5   BIC:                             54.87
+Df Model:                          2
+Covariance Type:           nonrobust
+=============================================================================
+                coef    std err          t      P>|t|      [0.025      0.975]
+-----------------------------------------------------------------------------
+const         5.5226      4.431      1.246      0.268      -5.867      16.912
+x1            0.4471      0.285      1.567      0.178      -0.286       1.180
+x2            0.2550      0.453      0.563      0.598      -0.910       1.420
+=============================================================================
+Omnibus:                       0.561   Durbin-Watson:                   3.268
+Prob(Omnibus):                 0.755   Jarque-Bera (JB):                0.534
+Skew:                          0.380   Prob(JB):                        0.766
+Kurtosis:                      1.987   Cond. No.                         80.1
+=============================================================================
+
+Warnings:
+[1] Standard Errors assume that the covariance matrix of the errors is
+    correctly specified.
+    
+# This table is very comprehensive. You can find many statistical values associated with linear regression, including 𝑅², 𝑏₀, 𝑏₁, and 𝑏₂.
+
+
+-- The output we may want
+
+>>> print(f"coefficient of determination: {results.rsquared}")
+coefficient of determination: 0.8615939258756776
+
+>>> print(f"adjusted coefficient of determination: {results.rsquared_adj}")
+adjusted coefficient of determination: 0.8062314962259487
+
+>>> print(f"regression coefficients: {results.params}")
+regression coefficients: [5.52257928 0.44706965 0.25502548]
+
+
+# predict response
+
+>>> print(f"predicted response:\n{results.fittedvalues}")
+
+>>> print(f"predicted response:\n{results.predict(x)}")
+ 
+OR
+y_new = results.predict(x_new)
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
