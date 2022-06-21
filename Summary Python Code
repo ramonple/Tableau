@@ -83,24 +83,117 @@ def my_function(*kids):
  
  
  
+ enumerate() : simplify looping with counters 列举；枚举；计算
+ 
+ -------- interating with for loops
+ 
+index = 0
+ 
+for value in values:
+    print(index,value)
+    index += 1
+>>>
+0 a
+1 b
+2 c
+
+
+# if you forget to update the index
+
+index = 0
+for value in values:
+    print(index,value)
+>>>
+0 a
+0 b
+0 c
+
+------ use range() combined with len() --> this way, you do not need to update index by hand
+
+for index in range(len(values)):
+    value = values[index]
+    print(index,value)
+>>>
+0 a
+1 b
+2 c
+    
+
+
+----- Using Python's enumerate()
+
+Syntax:
+      enumerate( interable, start = 0 )
+
+1. 
+for count,value in enumerate(values):
+    print(count,value)
+    
+>>> 
+0 a
+1 b
+2 c
+ 
+The count of the current iteration
+The value of the item at the current iteration
+ 
+ 
+ 2.
+ for count,value in enumerate(values,start = 1):
+     print(count,value)
+     
+ >>>
+1 a
+2 b
+3 c
+ 
+ 
+ 
+ More examples:
+
+1. 
+languages = ['Python', 'Java', 'JavaScript']
+
+enumerate_prime = enumerate(languages)
+
+# convert the enumerate object to list
+print(list(enumerate_prime)
+# Output: [(0, 'Python'), (1, 'Java'), (2, 'JavaScript')]
  
  
  
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+ 2.
+
+grocery = ['bread', 'milk', 'butter']
+
+for item in enumerate(grocery):
+  print(item)
+
+print('\n')
+
+for count, item in enumerate(grocery):
+  print(count, item)
+
+print('\n')
+# changing default start value
+for count, item in enumerate(grocery, 100):
+  print(count, item)
+  
+  
+  
+>>> output:
+(0, 'bread')
+(1, 'milk')
+(2, 'butter')
+
+0 bread
+1 milk
+2 butter
+
+100 bread
+101 milk
+102 butter
  
  
  
