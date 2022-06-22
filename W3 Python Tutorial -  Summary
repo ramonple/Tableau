@@ -1,4 +1,44 @@
 
+------------ Cleaning Data
+<      https://www.youtube.com/watch?v=8A7L0GsBiLQ       >
+
+
+identifying and dealing with Missing Data
+
+df["column"].unique()
+# we can see whether there exists unpredicted data. like we want sex = 1 or 0, but we have sex = 3.
+
+len(df.loc [ ( df["columnA"] == 0) |( df["columnB"] == 0 )| ( df["columnC"]==0 ) ]) 
+# we want to see how many rows contain missing values
+
+len(df)
+# check the number of rows for the dataset.
+
+df_no_missing = df.loc [ ( df["columnA"] != 0 ) & ( df["columnB"] != 0 ) & ( df["columnC"]!=0 ) ] 
+
+
+
+-- One-Hot Encoding (can also refer to the folder 'Machine Learning Notebook - Jupyter: Linear Regression'
+
+Two popular methods:
+ColumnTransformer (from scikit-learn)
+get_dummies (from pandas)
+
+pd.get_dummies(X,columns=['Marriage']).head()
+---> we will have three columns: marriage_1, marriage_2, marriage_3 (each column contains 1 or 0 )
+
+
+
+
+
+
+
+
+
+
+
+
+
 ------------------ Python While Loops (break) (continue) ------------------
 
 break:
