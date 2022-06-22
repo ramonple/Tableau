@@ -11,7 +11,13 @@ statsmodels if you need the advanced statistical parameters of a model
 -- Simple Linear Regression
 
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
+
+data = pd.read_csv("data.csv")
+x = data.iloc[:,:-1].values.reshape(-1,1) # values converts it into a numpy array #[:,:-1], all rows, all columns but except the last column
+y = data.iloc[:,-1].values.reshape(-1,1) # -1 means that calculate the dimension of rows, but have 1 column # iloc[:,-1] all rows and the last column
 
 model = LinearRegression()
 model.fit(x,y)
@@ -26,6 +32,9 @@ y_pred = model.intercept_ + model.coef_ * x
 or
 y_pred = model.predict(x_new)
 
+plt.scatter(x,y)
+plt(x,y_pred,color='red')
+plt.show()
 
 
 
