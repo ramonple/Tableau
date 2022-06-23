@@ -9,7 +9,7 @@ sns.countplot(x=df['xx']).set_title('xxx')
 
 # check if there are any null values
 df.isnull().value().any()
-# drop tthe null values
+# drop the null values
 df.dropna()
 
 # resample price datase by month and forward fill the values
@@ -23,6 +23,24 @@ df = pd.contact([df_sales,df_prices],axis=1)
 plt.hist()
 sns.swarmplot()
 
+
+# iterating the columns
+for col in data.columns:
+    print(col)
+>>> the output is the columns name of each column, it is one row / an array  
+
+Pandas DataFrame.values attribute return a Numpy representation of the given DataFrame.
+
+
+# Eliminating null values
+    
+for i in X.columns:
+    X[i].fillna(int(X[i].mean))
+    
+# check
+for i in X.columns:
+   print(X[i].isnull().sum())
+ 
 
 ############### distributions
 # CDF 
