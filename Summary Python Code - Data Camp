@@ -1,0 +1,155 @@
+-------------------------------- Importing and Cleaning with Python ----------------------------------------
+
+pd.set_index('column_name')
+# set column as the index
+
+pd.dropna(how='all'/'any')
+# 'all': if all cells as NA, then frop
+# 'any': if any cell is NA, then drop
+
+df['xxx'].astype('category')
+df.info()
+
+df.duplicated()
+
+df.drop_duplicates(subset = ['xx'], keep = 'first'/'last' / False)
+# False: drop all duplicates
+
+
+data = np.loadtxt('data.txt',delimiter='\t',dtype = 'int')
+
+string.str.startwith('xx')
+# startswith() methods returns True if a string starts with the specified prefix(string). If not, it returns False.
+
+
+# From MATLAB to Python
+import numpy as np
+import scipy.io # io: input and output
+file_name = 'xxx.mat'
+annotations = scipy.io.loadmat(file_name)
+print(annotations["__head__"])
+--> expected output: b'MATLAB 5.0 MAT-file, Platform: GLNXA64, Created on: Sat Dec 14 14:13:07 2013'
+
+
+# Convert the text in the roles column of the jobs DataFrame to lower case.
+jobs['roles'] = jobs['roles'].str.lower()
+
+
+print(data.str.contains("2019")
+
+
+# Excel file and rename the columns
+filename = 'train.xlsx'
+df = pd.DataFrame(filename, names =['A','B','C'])
+
+
+
+ --- How to get the column names in Python?
+ 
+# 1.  iterating the columns
+for col in data.columns:
+    print(col)
+    
+# 2. Using column attributes with dataframe object
+list(data.columns) 
+
+# 3. Using keys() function
+data.keys()
+
+# 4 .column.values method
+list(data.columns.values)
+
+# 5. tolist()
+list(data.columns.values.tolist())
+
+# 6. sorted()
+sorted(data)
+
+
+data.fillna(method = 'backfill'/'bfill'/'pad'/'ffile'/None)
+
+
+pd.read_excel('xxx.xlsx',skiprows = n)
+
+
+pd.merge(df1,df2, on ='column', how ='outer'/'inner'/'left'/'right')
+
+# seprate column 'email' by '@'
+contact.email.str.split('@',expand=True)
+
+
+
+
+
+
+--------------------------------------- Python Programming ----------------------------------------
+
+[s.upper() for s in ['hello','world'] ]
+--> output: ['HELLO', 'WORLD']
+
+
+import random
+random.random() --> return random number between 0 and 1
+
+random.seed(123)
+def efficient_sample(n):
+    x = [random.random() for i in range(n) ]
+    return x
+    
+w = 'Python'
+w_iterator = iter(w)
+
+next(w_iterator) --> 'P'
+next(w_iterator) --> 'y'
+
+
+# Add 'Gloomhaven' to the boardgames list in the first position
+df.insert(0,'Gloomhaven')
+
+
+--------------------------------------- Data Manipulation with Python ---------------------------------------
+
+df.sort_values('column',ascending = True/ False)
+
+
+sns.scatterplot(x = "age", y = "value", hue = "emissions", data = valuation)
+# hue: identifying xxxx
+
+
+# Facet
+Facet plots, also known as trellis plots or small multiples, are figures made up of multiple subplots which have the same set of axes, 
+where each subplot shows a subset of the data.
+
+examples of facets:
+1. plt.scatter(x='',y='',color='',facet_col ='sex') --> one table for each 'sex' column
+2. plt.bar(x='',y='', color='',facet_row ='smoker') --> one table for each type of 'smoker'
+
+
+# sns.FacetGrid: 
+# Multi-plot grid for plotting conditional relationships.
+sns.FacetGrid (data, col='', row='')
+
+
+# sns.swarmplot
+# Draw a categorical scatterplot with non-overlapping points.
+sns.swarmplot(x=,y=,hue=,data=)
+
+
+df.nsmallest(n,columns,keep='first'/'last'/'all')
+# return the first n rows ordered by columns in ascending order
+# keep: where there are duplicate values
+
+
+from scipy import stats
+iqr_age = stats.iqr(age) # Calculate the inter-quartile range of the age
+
+
+np.corrcoef(x,y)
+# computes the Pearson's correlation coefficient given two arrays
+
+
+
+
+
+
+
